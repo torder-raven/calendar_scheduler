@@ -6,5 +6,5 @@ class DeleteScheduleUsecase {
 
   DeleteScheduleUsecase({required ScheduleRepository repository}) : _repository = repository;
 
-  Future<void> invoke({required Schedule schedule}) async => await _repository.deleteSchedule(schedule: schedule);
+  Future<void> invoke({required int scheduleId}) async => await _repository.deleteSchedule(scheduleId: scheduleId);
 }
