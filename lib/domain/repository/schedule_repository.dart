@@ -1,6 +1,6 @@
 import 'package:calendar_scheduler/domain/entity/schedule.dart';
 
-abstract class ScheduleRepository {
+abstract interface class ScheduleRepository {
   Future<void> deleteSchedule({required Schedule schedule});
   Future<void> temporaryDeleteSchedule({required Schedule schedule});
   Future<void> updateSchedule({required Schedule schedule});
