@@ -4,6 +4,7 @@ class Schedule {
   final int startTime;
   final int endTime;
   final int colorCode;
+  final int id;
 
   Schedule({
     required this.date,
@@ -11,5 +12,6 @@ class Schedule {
     required this.endTime,
     required this.colorCode,
     required this.content,
+    required this.id
   });
 }
