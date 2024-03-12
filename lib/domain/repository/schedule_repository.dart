@@ -6,6 +6,6 @@ abstract interface class ScheduleRepository {
   Future<void> updateSchedule({required Schedule schedule});
   Future<void> registerSchedule({required Schedule schedule});
   Future<List<Schedule>> getAllSchedule();
-  Future<List<Schedule>> getScheduleByColor({required String colorCode});
+  Future<List<Schedule>> getScheduleByColor({required int colorCode});
   Future<List<Schedule>> getTemporaryDeleteSchedule();
 }
