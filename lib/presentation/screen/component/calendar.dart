@@ -12,13 +12,14 @@ class Calendar extends StatelessWidget {
   final DateTime? selectedDay;
   final OnDaySelected onDaySelected;
 
-  const Calendar(
-      {super.key,
-      required this.focusedDay,
-      required this.firstDay,
-      required this.lastDay,
-      required this.selectedDay,
-      required this.onDaySelected});
+  const Calendar({
+    super.key,
+    required this.focusedDay,
+    required this.firstDay,
+    required this.lastDay,
+    required this.selectedDay,
+    required this.onDaySelected,
+  });
 
   @override
   Widget build(BuildContext context) {
