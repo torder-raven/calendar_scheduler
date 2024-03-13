@@ -7,4 +7,24 @@ class ColorResource {
   static final LIGHT_GRAY_COLOR = Colors.grey[200];
   static final DARK_GRAY_COLOR = Colors.grey[600];
   static final TEXT_FIELD_FILL_COLOR = Colors.grey[300];
+
+  static const SELECT_COLOR_RED = Colors.red;
+  static const SELECT_COLOR_ORANGE = Colors.orange;
+  static const SELECT_COLOR_YELLOW = Colors.yellow;
+  static const SELECT_COLOR_GREEN = Colors.green;
+  static const SELECT_COLOR_BLUE = Colors.blue;
+  static const SELECT_COLOR_INDIGO = Colors.indigo;
+  static const SELECT_COLOR_PURPLE = Colors.purple;
+  static const SELECT_COLOR_BLACK = Colors.black;
+
+  static List<Color> selectorColors = [
+    ColorResource.SELECT_COLOR_RED,
+    ColorResource.SELECT_COLOR_ORANGE,
+    ColorResource.SELECT_COLOR_YELLOW,
+    ColorResource.SELECT_COLOR_GREEN,
+    ColorResource.SELECT_COLOR_BLUE,
+    ColorResource.SELECT_COLOR_INDIGO,
+    ColorResource.SELECT_COLOR_PURPLE,
+    ColorResource.SELECT_COLOR_BLACK,
+  ];
 }
