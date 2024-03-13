@@ -1,7 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
 
-import 'package:calendar_scheduler/data/datasource/entity/schedule_entities.dart';
+import 'package:calendar_scheduler/data/datasource/entity/schedule_dao.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
@@ -17,7 +17,7 @@ const _DB_FILE_NAME = "db.sqlite";
  */
 @DriftDatabase(
   tables: [
-    ScheduleEntities,
+    ScheduleDao,
   ],
 )
 class LocalDataBase extends _$LocalDataBase {

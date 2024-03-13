@@ -3,12 +3,12 @@
 part of 'drift_database.dart';
 
 // ignore_for_file: type=lint
-class $ScheduleEntitiesTable extends ScheduleEntities
-    with TableInfo<$ScheduleEntitiesTable, ScheduleEntity> {
+class $ScheduleDaoTable extends ScheduleDao
+    with TableInfo<$ScheduleDaoTable, ScheduleDaoData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $ScheduleEntitiesTable(this.attachedDatabase, [this._alias]);
+  $ScheduleDaoTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -57,15 +57,6 @@ class $ScheduleEntitiesTable extends ScheduleEntities
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('CHECK ("is_deleted" IN (0, 1))'),
       clientDefault: () => false);
-  static const VerificationMeta _isDoneMeta = const VerificationMeta('isDone');
-  @override
-  late final GeneratedColumn<bool> isDone = GeneratedColumn<bool>(
-      'is_done', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('CHECK ("is_done" IN (0, 1))'),
-      clientDefault: () => false);
   static const VerificationMeta _createAtMeta =
       const VerificationMeta('createAt');
   @override
@@ -83,16 +74,15 @@ class $ScheduleEntitiesTable extends ScheduleEntities
         endTime,
         colorHexCode,
         isDeleted,
-        isDone,
         createAt
       ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'schedule_entities';
+  static const String $name = 'schedule_dao';
   @override
-  VerificationContext validateIntegrity(Insertable<ScheduleEntity> instance,
+  VerificationContext validateIntegrity(Insertable<ScheduleDaoData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -135,10 +125,6 @@ class $ScheduleEntitiesTable extends ScheduleEntities
       context.handle(_isDeletedMeta,
           isDeleted.isAcceptableOrUnknown(data['is_deleted']!, _isDeletedMeta));
     }
-    if (data.containsKey('is_done')) {
-      context.handle(_isDoneMeta,
-          isDone.isAcceptableOrUnknown(data['is_done']!, _isDoneMeta));
-    }
     if (data.containsKey('create_at')) {
       context.handle(_createAtMeta,
           createAt.isAcceptableOrUnknown(data['create_at']!, _createAtMeta));
@@ -149,9 +135,9 @@ class $ScheduleEntitiesTable extends ScheduleEntities
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  ScheduleEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
+  ScheduleDaoData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return ScheduleEntity(
+    return ScheduleDaoData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       content: attachedDatabase.typeMapping
@@ -166,20 +152,18 @@ class $ScheduleEntitiesTable extends ScheduleEntities
           .read(DriftSqlType.int, data['${effectivePrefix}color_hex_code'])!,
       isDeleted: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_deleted'])!,
-      isDone: attachedDatabase.typeMapping
-          .read(DriftSqlType.bool, data['${effectivePrefix}is_done'])!,
       createAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}create_at'])!,
     );
   }
 
   @override
-  $ScheduleEntitiesTable createAlias(String alias) {
-    return $ScheduleEntitiesTable(attachedDatabase, alias);
+  $ScheduleDaoTable createAlias(String alias) {
+    return $ScheduleDaoTable(attachedDatabase, alias);
   }
 }
 
-class ScheduleEntity extends DataClass implements Insertable<ScheduleEntity> {
+class ScheduleDaoData extends DataClass implements Insertable<ScheduleDaoData> {
   final int id;
   final String content;
   final DateTime date;
@@ -187,9 +171,8 @@ class ScheduleEntity extends DataClass implements Insertable<ScheduleEntity> {
   final int endTime;
   final int colorHexCode;
   final bool isDeleted;
-  final bool isDone;
   final DateTime createAt;
-  const ScheduleEntity(
+  const ScheduleDaoData(
       {required this.id,
       required this.content,
       required this.date,
@@ -197,7 +180,6 @@ class ScheduleEntity extends DataClass implements Insertable<ScheduleEntity> {
       required this.endTime,
       required this.colorHexCode,
       required this.isDeleted,
-      required this.isDone,
       required this.createAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -209,13 +191,12 @@ class ScheduleEntity extends DataClass implements Insertable<ScheduleEntity> {
     map['end_time'] = Variable<int>(endTime);
     map['color_hex_code'] = Variable<int>(colorHexCode);
     map['is_deleted'] = Variable<bool>(isDeleted);
-    map['is_done'] = Variable<bool>(isDone);
     map['create_at'] = Variable<DateTime>(createAt);
     return map;
   }
 
-  ScheduleEntitiesCompanion toCompanion(bool nullToAbsent) {
-    return ScheduleEntitiesCompanion(
+  ScheduleDaoCompanion toCompanion(bool nullToAbsent) {
+    return ScheduleDaoCompanion(
       id: Value(id),
       content: Value(content),
       date: Value(date),
@@ -223,15 +204,14 @@ class ScheduleEntity extends DataClass implements Insertable<ScheduleEntity> {
       endTime: Value(endTime),
       colorHexCode: Value(colorHexCode),
       isDeleted: Value(isDeleted),
-      isDone: Value(isDone),
       createAt: Value(createAt),
     );
   }
 
-  factory ScheduleEntity.fromJson(Map<String, dynamic> json,
+  factory ScheduleDaoData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return ScheduleEntity(
+    return ScheduleDaoData(
       id: serializer.fromJson<int>(json['id']),
       content: serializer.fromJson<String>(json['content']),
       date: serializer.fromJson<DateTime>(json['date']),
@@ -239,7 +219,6 @@ class ScheduleEntity extends DataClass implements Insertable<ScheduleEntity> {
       endTime: serializer.fromJson<int>(json['endTime']),
       colorHexCode: serializer.fromJson<int>(json['colorHexCode']),
       isDeleted: serializer.fromJson<bool>(json['isDeleted']),
-      isDone: serializer.fromJson<bool>(json['isDone']),
       createAt: serializer.fromJson<DateTime>(json['createAt']),
     );
   }
@@ -254,12 +233,11 @@ class ScheduleEntity extends DataClass implements Insertable<ScheduleEntity> {
       'endTime': serializer.toJson<int>(endTime),
       'colorHexCode': serializer.toJson<int>(colorHexCode),
       'isDeleted': serializer.toJson<bool>(isDeleted),
-      'isDone': serializer.toJson<bool>(isDone),
       'createAt': serializer.toJson<DateTime>(createAt),
     };
   }
 
-  ScheduleEntity copyWith(
+  ScheduleDaoData copyWith(
           {int? id,
           String? content,
           DateTime? date,
@@ -267,9 +245,8 @@ class ScheduleEntity extends DataClass implements Insertable<ScheduleEntity> {
           int? endTime,
           int? colorHexCode,
           bool? isDeleted,
-          bool? isDone,
           DateTime? createAt}) =>
-      ScheduleEntity(
+      ScheduleDaoData(
         id: id ?? this.id,
         content: content ?? this.content,
         date: date ?? this.date,
@@ -277,12 +254,11 @@ class ScheduleEntity extends DataClass implements Insertable<ScheduleEntity> {
         endTime: endTime ?? this.endTime,
         colorHexCode: colorHexCode ?? this.colorHexCode,
         isDeleted: isDeleted ?? this.isDeleted,
-        isDone: isDone ?? this.isDone,
         createAt: createAt ?? this.createAt,
       );
   @override
   String toString() {
-    return (StringBuffer('ScheduleEntity(')
+    return (StringBuffer('ScheduleDaoData(')
           ..write('id: $id, ')
           ..write('content: $content, ')
           ..write('date: $date, ')
@@ -290,19 +266,18 @@ class ScheduleEntity extends DataClass implements Insertable<ScheduleEntity> {
           ..write('endTime: $endTime, ')
           ..write('colorHexCode: $colorHexCode, ')
           ..write('isDeleted: $isDeleted, ')
-          ..write('isDone: $isDone, ')
           ..write('createAt: $createAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, content, date, startTime, endTime,
-      colorHexCode, isDeleted, isDone, createAt);
+  int get hashCode => Object.hash(
+      id, content, date, startTime, endTime, colorHexCode, isDeleted, createAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is ScheduleEntity &&
+      (other is ScheduleDaoData &&
           other.id == this.id &&
           other.content == this.content &&
           other.date == this.date &&
@@ -310,11 +285,10 @@ class ScheduleEntity extends DataClass implements Insertable<ScheduleEntity> {
           other.endTime == this.endTime &&
           other.colorHexCode == this.colorHexCode &&
           other.isDeleted == this.isDeleted &&
-          other.isDone == this.isDone &&
           other.createAt == this.createAt);
 }
 
-class ScheduleEntitiesCompanion extends UpdateCompanion<ScheduleEntity> {
+class ScheduleDaoCompanion extends UpdateCompanion<ScheduleDaoData> {
   final Value<int> id;
   final Value<String> content;
   final Value<DateTime> date;
@@ -322,9 +296,8 @@ class ScheduleEntitiesCompanion extends UpdateCompanion<ScheduleEntity> {
   final Value<int> endTime;
   final Value<int> colorHexCode;
   final Value<bool> isDeleted;
-  final Value<bool> isDone;
   final Value<DateTime> createAt;
-  const ScheduleEntitiesCompanion({
+  const ScheduleDaoCompanion({
     this.id = const Value.absent(),
     this.content = const Value.absent(),
     this.date = const Value.absent(),
@@ -332,10 +305,9 @@ class ScheduleEntitiesCompanion extends UpdateCompanion<ScheduleEntity> {
     this.endTime = const Value.absent(),
     this.colorHexCode = const Value.absent(),
     this.isDeleted = const Value.absent(),
-    this.isDone = const Value.absent(),
     this.createAt = const Value.absent(),
   });
-  ScheduleEntitiesCompanion.insert({
+  ScheduleDaoCompanion.insert({
     this.id = const Value.absent(),
     required String content,
     required DateTime date,
@@ -343,14 +315,13 @@ class ScheduleEntitiesCompanion extends UpdateCompanion<ScheduleEntity> {
     required int endTime,
     required int colorHexCode,
     this.isDeleted = const Value.absent(),
-    this.isDone = const Value.absent(),
     this.createAt = const Value.absent(),
   })  : content = Value(content),
         date = Value(date),
         startTime = Value(startTime),
         endTime = Value(endTime),
         colorHexCode = Value(colorHexCode);
-  static Insertable<ScheduleEntity> custom({
+  static Insertable<ScheduleDaoData> custom({
     Expression<int>? id,
     Expression<String>? content,
     Expression<DateTime>? date,
@@ -358,7 +329,6 @@ class ScheduleEntitiesCompanion extends UpdateCompanion<ScheduleEntity> {
     Expression<int>? endTime,
     Expression<int>? colorHexCode,
     Expression<bool>? isDeleted,
-    Expression<bool>? isDone,
     Expression<DateTime>? createAt,
   }) {
     return RawValuesInsertable({
@@ -369,12 +339,11 @@ class ScheduleEntitiesCompanion extends UpdateCompanion<ScheduleEntity> {
       if (endTime != null) 'end_time': endTime,
       if (colorHexCode != null) 'color_hex_code': colorHexCode,
       if (isDeleted != null) 'is_deleted': isDeleted,
-      if (isDone != null) 'is_done': isDone,
       if (createAt != null) 'create_at': createAt,
     });
   }
 
-  ScheduleEntitiesCompanion copyWith(
+  ScheduleDaoCompanion copyWith(
       {Value<int>? id,
       Value<String>? content,
       Value<DateTime>? date,
@@ -382,9 +351,8 @@ class ScheduleEntitiesCompanion extends UpdateCompanion<ScheduleEntity> {
       Value<int>? endTime,
       Value<int>? colorHexCode,
       Value<bool>? isDeleted,
-      Value<bool>? isDone,
       Value<DateTime>? createAt}) {
-    return ScheduleEntitiesCompanion(
+    return ScheduleDaoCompanion(
       id: id ?? this.id,
       content: content ?? this.content,
       date: date ?? this.date,
@@ -392,7 +360,6 @@ class ScheduleEntitiesCompanion extends UpdateCompanion<ScheduleEntity> {
       endTime: endTime ?? this.endTime,
       colorHexCode: colorHexCode ?? this.colorHexCode,
       isDeleted: isDeleted ?? this.isDeleted,
-      isDone: isDone ?? this.isDone,
       createAt: createAt ?? this.createAt,
     );
   }
@@ -421,9 +388,6 @@ class ScheduleEntitiesCompanion extends UpdateCompanion<ScheduleEntity> {
     if (isDeleted.present) {
       map['is_deleted'] = Variable<bool>(isDeleted.value);
     }
-    if (isDone.present) {
-      map['is_done'] = Variable<bool>(isDone.value);
-    }
     if (createAt.present) {
       map['create_at'] = Variable<DateTime>(createAt.value);
     }
@@ -432,7 +396,7 @@ class ScheduleEntitiesCompanion extends UpdateCompanion<ScheduleEntity> {
 
   @override
   String toString() {
-    return (StringBuffer('ScheduleEntitiesCompanion(')
+    return (StringBuffer('ScheduleDaoCompanion(')
           ..write('id: $id, ')
           ..write('content: $content, ')
           ..write('date: $date, ')
@@ -440,7 +404,6 @@ class ScheduleEntitiesCompanion extends UpdateCompanion<ScheduleEntity> {
           ..write('endTime: $endTime, ')
           ..write('colorHexCode: $colorHexCode, ')
           ..write('isDeleted: $isDeleted, ')
-          ..write('isDone: $isDone, ')
           ..write('createAt: $createAt')
           ..write(')'))
         .toString();
@@ -449,11 +412,10 @@ class ScheduleEntitiesCompanion extends UpdateCompanion<ScheduleEntity> {
 
 abstract class _$LocalDataBase extends GeneratedDatabase {
   _$LocalDataBase(QueryExecutor e) : super(e);
-  late final $ScheduleEntitiesTable scheduleEntities =
-      $ScheduleEntitiesTable(this);
+  late final $ScheduleDaoTable scheduleDao = $ScheduleDaoTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [scheduleEntities];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [scheduleDao];
 }

@@ -5,7 +5,7 @@ import '../drift_database.dart';
 /**
  * 일정 데이터 모델
  */
-class ScheduleEntities extends Table {
+class ScheduleDao extends Table {
   // 일정 PK
   IntColumn get id => integer().autoIncrement()();
 
