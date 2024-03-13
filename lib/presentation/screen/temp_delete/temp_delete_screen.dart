@@ -1,5 +1,3 @@
-import 'package:calendar_scheduler/domain/entity/schedule.dart';
-import 'package:calendar_scheduler/domain/usecase/delete_shcedule.dart';
 import 'package:calendar_scheduler/domain/usecase/get_temporary_delete_schedule.dart';
 import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +90,7 @@ class _ScheduleList extends StatelessWidget {
             final list = snapshot.requireData;
 
             return ListView.separated(
-              itemCount: snapshot.data?.length ?? 0,
+              itemCount: list.length,
               separatorBuilder: (context, index) {
                 return DefaultComponent.defaultSizedBoxWithHeight;
               },
