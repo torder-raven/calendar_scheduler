@@ -50,6 +50,11 @@ class LocalDataBase extends _$LocalDataBase {
       (select(scheduleDao)..where((tbl) => tbl.colorCode.equals(colorCode)))
           .get();
 
+  // Future 방식으로 특정 조건(isDeleted)에 맞는 Schedule 조회
+  Future<List<ScheduleDaoData>> getAllScheduleByDeleted() =>
+      (select(scheduleDao)..where((tbl) => tbl.isDeleted.equals(true)))
+          .get();
+
   // Schedule 생성
   Future<int> registerSchedule(ScheduleDaoCompanion data) =>
       into(scheduleDao).insert(data);

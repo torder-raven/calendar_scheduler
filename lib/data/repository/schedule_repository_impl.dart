@@ -41,8 +41,10 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
 
   @override
   Future<List<Schedule>> getTemporaryDeleteSchedule() {
-    // TODO: implement getTemporaryDeleteSchedule
-    throw UnimplementedError();
+    return _db.getAllScheduleByDeleted().then((scheduleDaoDataList) =>
+        scheduleDaoDataList
+            .map((scheduleDaoData) => scheduleDaoData.toSchedule())
+            .toList());
   }
 
   @override
@@ -60,7 +62,8 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
         )
         .then((scheduleDaoData) => _db.updateScheduleById(
               id: scheduleDaoData.id,
-              data: scheduleDaoData.copyWith(isDeleted: true).toCompanion(false),
+              data:
+                  scheduleDaoData.copyWith(isDeleted: true).toCompanion(false),
             ));
   }
 
