@@ -57,12 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           builder: (_) {
             return ScheduleRegisterBottomSheet(
-              selectedDate: DateTime(
-                // TODO 라벨에서 오늘 날짜 받아오기
-                DateTime.now().year,
-                DateTime.now().month,
-                DateTime.now().day,
-              ),
+              selectedDate: _selectedDay
             );
           },
         );

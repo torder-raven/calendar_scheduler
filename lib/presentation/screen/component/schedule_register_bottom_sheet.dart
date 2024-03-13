@@ -185,17 +185,6 @@ class _SaveScheduleButton extends StatelessWidget {
       content: currentContent,
       id: 0,
     );
-
-    print(schedule.date);
-    print(schedule.startTime);
-    print(schedule.endTime);
-    print(schedule.colorCode);
-    print(schedule.content);
-
-    // print("${DateTime.now().year == schedule.date.year && DateTime.now().month == schedule.date.month &&DateTime.now().day == schedule.date.day}");
     await registerSchedule.invoke(schedule: schedule);
-
-    // final s = serviceLocator<GetAllScheduleUsecase>();
-    //print((await s.invoke(currentDateTime).then((value) => "111111${value.length}")));
   }
 }
