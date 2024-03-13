@@ -30,34 +30,31 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    return SafeArea(
-      child: Scaffold(
-        appBar: homeScreenAppBar(
-          theme: theme,
-          onDeletePressed: goToTempDeleteScreen,
-        ),
-        floatingActionButton: renderFloatingActionButton(),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Calendar(
-                focusedDay: _selectedDay,
-                firstDay: _FIRST_DAY,
-                lastDay: _LAST_DAY,
-                selectedDay: _selectedDay,
-                onDaySelected: onDaySelected,
-              ),
-              DefaultComponent.defaultHeightSizedBox,
-              DateBanner(
-                date: _selectedDay,
-              ),
-              DefaultComponent.defaultHeightSizedBox,
-              ScheduleListView(
-                date: _selectedDay,
-              )
-            ],
-          ),
+    return Scaffold(
+      appBar: homeScreenAppBar(
+        theme: Theme.of(context),
+        onDeletePressed: goToTempDeleteScreen,
+      ),
+      floatingActionButton: renderFloatingActionButton(),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Calendar(
+              focusedDay: _selectedDay,
+              firstDay: _FIRST_DAY,
+              lastDay: _LAST_DAY,
+              selectedDay: _selectedDay,
+              onDaySelected: onDaySelected,
+            ),
+            DefaultComponent.defaultHeightSizedBox,
+            DateBanner(
+              date: _selectedDay,
+            ),
+            DefaultComponent.defaultHeightSizedBox,
+            ScheduleListView(
+              date: _selectedDay,
+            )
+          ],
         ),
       ),
     );
