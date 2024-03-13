@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../const/colors.dart';
+import '../../const/styles.dart';
 
 class TimeInputField extends StatefulWidget {
   final String selectedTimeType;
@@ -17,19 +18,7 @@ class TimeInputField extends StatefulWidget {
 
 class _TimeInputFieldState extends State<TimeInputField> {
   int selectedTime = 0;
-  TextEditingController _textEditingController = TextEditingController();
-
-  TextStyle textStyle = const TextStyle(
-      color: ColorResource.INPUT_TEXT_FIELD_FILL_COLOR,
-      fontWeight: FontWeight.w400,
-      fontSize: 13.0);
-
-  OutlineInputBorder outlineInputBorder = OutlineInputBorder(
-    borderSide: const BorderSide(
-      color: ColorResource.INPUT_TEXT_FIELD_BORDER_COLOR,
-    ),
-    borderRadius: BorderRadius.circular(8.0),
-  );
+  final TextEditingController _textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,56 +27,27 @@ class _TimeInputFieldState extends State<TimeInputField> {
       children: [
         Text(
           widget.selectedTimeType,
-          style: TextStyle(
-            color: ColorResource.INPUT_TEXT_LABEL_COLOR,
-            fontWeight: FontWeight.w600,
-            fontSize: 14.0,
-          ),
+          style: Styles.inputLabelTextStyle,
         ),
-        SizedBox(
-          height: 6.0,
-        ),
+        const SizedBox(height: 6.0,),
         GestureDetector(
           onTap: () {
-            showCupertinoDialog(
-              context: context,
-              barrierDismissible: true,
-              builder: (BuildContext context) {
-                return Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    color: Colors.white,
-                    height: 300.0,
-                    child: CupertinoDatePicker(
-                      mode: CupertinoDatePickerMode.time,
-                      onDateTimeChanged: (DateTime date) {
-                        setState(() {
-                          int totalTime = (date.hour * 60) + date.minute;
-                          selectedTime = totalTime;
-                          _textEditingController.text =
-                              totalTime.intTimeToTimeString();
-                        });
-                      },
-                    ),
-                  ),
-                );
-              },
-            );
+            showTimePickerDialog();
           },
           child: TextField(
             controller: _textEditingController,
             enabled: false,
             cursorColor: Colors.grey,
-            style: textStyle,
+            style: Styles.inputTextStyle,
             decoration: InputDecoration(
               isDense: true,
-              border: outlineInputBorder,
+              border: Styles.inputTextOutlineInputBorder,
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
               filled: false,
               fillColor: Colors.white,
-              hintText: "00:00",
-              hintStyle: textStyle.copyWith(
+              hintText: 0.intTimeToTimeString(),
+              hintStyle: Styles.inputTextStyle.copyWith(
                 color: ColorResource.INPUT_TEXT_FIELD_HINT_COLOR,
               ),
             ),
@@ -100,5 +60,32 @@ class _TimeInputFieldState extends State<TimeInputField> {
   @override
   void dispose() {
     _textEditingController.removeListener;
+    super.dispose();
+  }
+
+  void showTimePickerDialog() {
+    showCupertinoDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Align(
+          alignment: Alignment.center,
+          child: Container(
+            color: Colors.white,
+            height: 300.0,
+            child: CupertinoDatePicker(
+              mode: CupertinoDatePickerMode.time,
+              onDateTimeChanged: (DateTime date) {
+                setState(() {
+                  int totalTime = (date.hour * 60) + date.minute;
+                  selectedTime = totalTime;
+                  _textEditingController.text = totalTime.intTimeToTimeString();
+                });
+              },
+            ),
+          ),
+        );
+      },
+    );
   }
 }
