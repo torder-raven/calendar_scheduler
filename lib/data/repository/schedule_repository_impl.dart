@@ -1,11 +1,12 @@
 import 'package:calendar_scheduler/data/datasource/drift_database.dart';
 import 'package:calendar_scheduler/domain/entity/schedule.dart';
+import 'package:drift/drift.dart';
 
 import '../../domain/repository/schedule_repository.dart';
 
 class ScheduleRepositoryImpl implements ScheduleRepository {
   // 테스트 코드 -> 나중에 Di로 교체해야할 듯?
-  final database = LocalDataBase();
+  final _db = LocalDataBase();
 
   ScheduleRepositoryImpl() {
     testFunction();
@@ -33,10 +34,11 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
 
   @override
   Future<List<Schedule>> getAllSchedule({required DateTime date}) {
-    return database.getAllScheduleByDateTime(datetime: date).then(
-        (scheduleDaoDataList) => scheduleDaoDataList
-            .map((scheduleDaoData) => scheduleDaoData.toSchedule())
-            .toList());
+    return _db.getAllScheduleByDateTime(datetime: date).then(
+            (scheduleDaoDataList) =>
+            scheduleDaoDataList
+                .map((scheduleDaoData) => scheduleDaoData.toSchedule())
+                .toList());
   }
 
   @override
@@ -53,8 +55,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
 
   @override
   Future<void> registerSchedule({required Schedule schedule}) {
-    // TODO: implement registerSchedule
-    throw UnimplementedError();
+    return _db.registerSchedule(schedule.toRegisterScheduleDao());
   }
 
   @override
@@ -71,12 +72,28 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
 }
 
 extension _ScheduleDaoDataMapper on ScheduleDaoData {
-  Schedule toSchedule() => Schedule(
+  Schedule toSchedule() =>
+      Schedule(
         date: date,
         startTime: startTime,
         endTime: endTime,
         colorCode: colorHexCode,
         content: content,
         id: id,
+      );
+}
+
+extension _ScheduleMapper on Schedule {
+  /**
+   * Register의 경우 id 값이 포함될 경우 충돌이 발생!
+   * DB에 생성하는 경우에 사용!
+   */
+  ScheduleDaoCompanion toRegisterScheduleDao() =>
+      ScheduleDaoCompanion(
+        content: Value(content),
+        date: Value(date),
+        startTime: Value(startTime),
+        endTime: Value(endTime),
+        colorHexCode: Value(colorCode),
       );
 }

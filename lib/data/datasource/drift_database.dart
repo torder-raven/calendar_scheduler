@@ -24,7 +24,8 @@ class LocalDataBase extends _$LocalDataBase {
   LocalDataBase() : super(_openConnection());
 
   // Stream 방식으로 모든 Schedule 읽기
-  Stream<List<ScheduleDaoData>> getAllScheduleAsStream() => select(scheduleDao).watch();
+  Stream<List<ScheduleDaoData>> getAllScheduleAsStream() =>
+      select(scheduleDao).watch();
 
   // Future 방식으로 모든 Schedule 읽기
   Future<List<ScheduleDaoData>> getAllSchedule() => select(scheduleDao).get();
@@ -34,6 +35,10 @@ class LocalDataBase extends _$LocalDataBase {
     required DateTime datetime,
   }) =>
       (select(scheduleDao)..where((tbl) => tbl.date.equals(datetime))).get();
+
+  // Schedule 생성
+  Future<int> registerSchedule(ScheduleDaoCompanion data) =>
+      into(scheduleDao).insert(data);
 
   @override
   int get schemaVersion => 1;
