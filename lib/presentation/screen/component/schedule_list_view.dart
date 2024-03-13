@@ -39,8 +39,7 @@ class ScheduleListView extends StatelessWidget {
               separatorBuilder: (context, index) {
                 return DefaultComponent.defaultSizedBoxWithHeight;
               },
-              itemBuilder: (context, index) =>
-                  buildScheduleListItem(context, list[index]),
+              itemBuilder: (context, index) => TempDeleteItem(schedule: list[index]),
             );
           },
         ),

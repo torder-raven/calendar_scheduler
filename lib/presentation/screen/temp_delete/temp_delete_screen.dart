@@ -96,8 +96,7 @@ class _ScheduleList extends StatelessWidget {
               separatorBuilder: (context, index) {
                 return DefaultComponent.defaultSizedBoxWithHeight;
               },
-              itemBuilder: (context, index) =>
-                  buildTempDeleteScheduleListItem(context, list[index]),
+              itemBuilder: (context, index) => DeleteItem(schedule : list[index]),
             );
           },
         ),
