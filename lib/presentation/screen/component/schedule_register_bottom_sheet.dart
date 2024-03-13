@@ -101,13 +101,13 @@ class _SaveScheduleButton extends StatelessWidget {
           onPressed: () {},
           style: ElevatedButton.styleFrom(
             elevation: 0,
-            backgroundColor: Colors.grey[300],
+            backgroundColor: ColorResource.BUTTON_NORMAL_COLOR,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(6.0),
             ),
           ),
           child: Text(
-            "저장",
+            Strings.TEXT_SAVE,
             style: TextStyle(color: Colors.white),
           ),
         ));
