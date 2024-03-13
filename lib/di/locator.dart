@@ -9,12 +9,16 @@ import 'package:calendar_scheduler/domain/usecase/temporary_delete_schedule.dart
 import 'package:calendar_scheduler/domain/usecase/update_schedule.dart';
 import 'package:get_it/get_it.dart';
 
+import '../data/datasource/drift_database.dart';
+
 final serviceLocator = GetIt.instance;
 
 void initServiceLocator() {
-  serviceLocator.registerLazySingleton<ScheduleRepository>(
-      () => ScheduleRepositoryImpl());
+  serviceLocator.registerLazySingleton<LocalDataBase>(() => LocalDataBase());
+  final _db = serviceLocator<LocalDataBase>();
 
+  serviceLocator.registerLazySingleton<ScheduleRepository>(
+      () => ScheduleRepositoryImpl(db: _db));
   final _repository = serviceLocator<ScheduleRepository>();
 
   //usecases

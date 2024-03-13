@@ -5,10 +5,11 @@ import 'package:drift/drift.dart';
 import '../../domain/repository/schedule_repository.dart';
 
 class ScheduleRepositoryImpl implements ScheduleRepository {
-  // 테스트 코드 -> 나중에 Di로 교체해야할 듯?
-  final _db = LocalDataBase();
+  final LocalDataBase _db;
 
-  ScheduleRepositoryImpl() {}
+  ScheduleRepositoryImpl({
+    required LocalDataBase db,
+  }) : _db = db;
 
   @override
   Future<void> deleteSchedule({required int scheduleId}) {
