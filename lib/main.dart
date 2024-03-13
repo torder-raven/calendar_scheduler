@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(
     MaterialApp(
-      home: const HomeScreen(),
+      home: HomeScreen(),
       theme: calendarTheme,
     ),
   );

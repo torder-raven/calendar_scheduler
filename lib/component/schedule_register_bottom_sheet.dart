@@ -1,5 +1,8 @@
 import 'package:calendar_scheduler/component/color_selection_field.dart';
+import 'package:calendar_scheduler/component/content_input_field.dart';
 import 'package:flutter/material.dart';
+
+import '../const/strings.dart';
 
 class ScheduleRegisterBottomSheet extends StatelessWidget {
   final DateTime selectedDate;
@@ -23,7 +26,8 @@ class ScheduleRegisterBottomSheet extends StatelessWidget {
               _BottomSheetHeader(
                 selectedDate: selectedDate,
               ),
-              ColorSelectionField(colorCode: 0)
+              ColorSelectionField(colorCode: 0),
+              ContentInputField(),
             ],
           ),
         ),
@@ -47,7 +51,9 @@ class _BottomSheetHeader extends StatelessWidget {
         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
       ),
       IconButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
         icon: Icon(Icons.close),
       ),
     ]);
