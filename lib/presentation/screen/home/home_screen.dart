@@ -46,11 +46,11 @@ class _HomeScreenState extends State<HomeScreen> {
               selectedDay: _selectedDay,
               onDaySelected: onDaySelected,
             ),
-            DefaultComponent.defaultHeightSizedBox,
+            DefaultComponent.defaultSizedBoxWithHeightSmall,
             DateBanner(
               date: _selectedDay,
             ),
-            DefaultComponent.defaultHeightSizedBox,
+            DefaultComponent.defaultSizedBoxWithHeightSmall,
             ScheduleListView(
               date: _selectedDay,
             )

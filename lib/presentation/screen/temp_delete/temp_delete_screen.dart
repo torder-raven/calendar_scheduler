@@ -92,7 +92,7 @@ class _ScheduleList extends StatelessWidget {
     if (snapshot.hasData && snapshot.data!.isEmpty) {
       return Center(
         child: Text(
-          Strings.SCHEDULE_LIST_EMPTY_TEXT,
+          Strings.EMPTY_SCHEDULE,
           style: Theme.of(context).textTheme.titleLarge,
         ),
       );
