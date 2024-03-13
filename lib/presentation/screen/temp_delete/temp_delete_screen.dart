@@ -1,4 +1,5 @@
 import 'package:calendar_scheduler/domain/entity/schedule.dart';
+import 'package:calendar_scheduler/domain/usecase/delete_shcedule.dart';
 import 'package:calendar_scheduler/domain/usecase/get_temporary_delete_schedule.dart';
 import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,6 @@ class _WarningText extends StatelessWidget {
   }
 }
 
-
 class _ScheduleList extends StatelessWidget {
   const _ScheduleList({Key? key}) : super(key: key);
 
@@ -108,53 +108,57 @@ class _ScheduleList extends StatelessWidget {
           _buildScheduleListItem(context, list[index]),
     );
   }
-}
 
-Widget _buildScheduleListItem(BuildContext context, Schedule schedule) {
-  return Dismissible(
-    key: ObjectKey(schedule.id),
-    direction: DismissDirection.horizontal,
-    confirmDismiss: (direction) => _showDismissDialog(context, direction),
-    child: GestureDetector(
-      child: ScheduleCard(
-        startTime: schedule.startTime,
-        endTime: schedule.endTime,
-        content: schedule.content,
-        color: schedule.colorCode,
+  Widget _buildScheduleListItem(BuildContext context, Schedule schedule) {
+    deleteSchedule() {
+      serviceLocator<DeleteScheduleUsecase>().invoke(scheduleId: schedule.id);
+      Navigator.of(context).pop(true);
+    }
+
+    cancelToDeleteSchedule() {
+      Navigator.of(context).pop(false);
+    }
+
+    return Dismissible(
+      key: ObjectKey(schedule.id),
+      direction: DismissDirection.horizontal,
+      confirmDismiss: (direction) => _showDismissDialog(
+          context, direction, deleteSchedule, cancelToDeleteSchedule),
+      child: GestureDetector(
+        child: ScheduleCard(
+          startTime: schedule.startTime,
+          endTime: schedule.endTime,
+          content: schedule.content,
+          color: schedule.colorCode,
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-Future<bool?> _showDismissDialog(
-    BuildContext context, DismissDirection direction) {
-  return showDialog<bool>(
-    context: context,
-    builder: (ctx) {
-      return AlertDialog(
-        title: const Text(Strings.DELETE_CONFIRM_TEXT),
-        content: Text(Strings.TEMP_DELETE_WARNING),
-        actions: <Widget>[
-          ElevatedButton(
-            onPressed: () => cancelToDeleteSchedule,
-            child: const Text(Strings.CANCEL),
-          ),
-          ElevatedButton(
-            onPressed: () => deleteSchedule,
-            child: Text(Strings.DELETE),
-          ),
-        ],
-      );
-    },
-  );
-}
-
-deleteSchedule(BuildContext context) {
-  serviceLocator<GetTemporaryDeleteScheduleUsecase>().invoke();
-  Navigator.of(context).pop(true);
-}
-
-cancelToDeleteSchedule(BuildContext context) {
-  serviceLocator<GetTemporaryDeleteScheduleUsecase>().invoke();
-  Navigator.of(context).pop(true);
+  Future<bool?> _showDismissDialog(
+    BuildContext context,
+    DismissDirection direction,
+    VoidCallback onDelete,
+    VoidCallback onDeleteCancel,
+  ) {
+    return showDialog<bool>(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          title: const Text(Strings.DELETE_CONFIRM_TEXT),
+          content: Text(Strings.TEMP_DELETE_WARNING),
+          actions: <Widget>[
+            ElevatedButton(
+              onPressed: () => onDelete,
+              child: const Text(Strings.CANCEL),
+            ),
+            ElevatedButton(
+              onPressed: () => onDeleteCancel,
+              child: Text(Strings.DELETE),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
