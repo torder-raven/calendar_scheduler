@@ -1,8 +1,10 @@
+import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_register_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
 import '../../const/colors.dart';
 import '../../const/strings.dart';
+import '../../const/styles.dart';
 
 class ColorSelectionField extends StatelessWidget {
   final int? selectedColorId;
@@ -15,15 +17,11 @@ class ColorSelectionField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           Strings.LABEL_COLOR,
-          style: TextStyle(
-            color: ColorResource.INPUT_TEXT_LABEL_COLOR,
-            fontWeight: FontWeight.w600,
-            fontSize: 14.0,
-          ),
+          style: Styles.inputLabelTextStyle,
         ),
-        SizedBox(
+        const SizedBox(
           height: 6.0,
         ),
         renderColors()
@@ -36,10 +34,10 @@ class ColorSelectionField extends StatelessWidget {
     return Row(
       children: List.generate(colors.length, (index) {
         return Padding(
-          padding: EdgeInsets.only(right: 8.0),
+          padding: const EdgeInsets.only(right: 8.0),
           child: GestureDetector(
             onTap: () {
-                colorIdSetter(colors[index].value);
+              colorIdSetter(colors[index].value);
             },
             child: Container(
               width: 30.0,
@@ -47,9 +45,7 @@ class ColorSelectionField extends StatelessWidget {
               decoration: BoxDecoration(
                 image: colors[index].value == selectedColorId
                     ? DecorationImage(
-                        image: AssetImage(
-                          "asset/img/img_check.png",
-                        ),
+                        image: AssetImage("img_check".convertToPngFileFormat()),
                       )
                     : null,
                 shape: BoxShape.circle,

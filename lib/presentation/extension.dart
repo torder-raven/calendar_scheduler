@@ -7,3 +7,10 @@ extension IntExtension on int {
   }
 }
 
+extension Formatter on String {
+  String convertToPngFileFormat() {
+    return "asset/img/$this.png";
+  }
+}
+
+
