@@ -9,6 +9,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   final _db = LocalDataBase();
 
   ScheduleRepositoryImpl() {}
+
   @override
   Future<void> deleteSchedule({required int scheduleId}) {
     return _db.deleteScheduleById(
@@ -53,8 +54,14 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
 
   @override
   Future<void> temporaryDeleteSchedule({required int scheduleId}) {
-    // TODO: implement temporaryDeleteSchedule
-    throw UnimplementedError();
+    return _db
+        .getScheduleById(
+          scheduleId: scheduleId,
+        )
+        .then((scheduleDaoData) => _db.updateScheduleById(
+              id: scheduleDaoData.id,
+              data: scheduleDaoData.copyWith(isDeleted: true).toCompanion(false),
+            ));
   }
 
   @override

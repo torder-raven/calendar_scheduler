@@ -31,6 +31,13 @@ class LocalDataBase extends _$LocalDataBase {
   Future<List<ScheduleDaoData>> getAllSchedule() => select(scheduleDao).get();
 
   // Future 방식으로 특정 조건(Date)에 맞는 Schedule 조회
+  Future<ScheduleDaoData> getScheduleById({
+    required int scheduleId,
+  }) =>
+      (select(scheduleDao)..where((tbl) => tbl.id.equals(scheduleId)))
+          .getSingle();
+
+  // Future 방식으로 특정 조건(Date)에 맞는 Schedule 조회
   Future<List<ScheduleDaoData>> getAllScheduleByDateTime({
     required DateTime datetime,
   }) =>
