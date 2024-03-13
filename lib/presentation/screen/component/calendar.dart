@@ -1,4 +1,5 @@
 import 'package:calendar_scheduler/presentation/const/colors.dart';
+import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -65,8 +66,8 @@ class Calendar extends StatelessWidget {
           color: backgroundColor,
           borderRadius: BorderRadius.circular(6.0),
         ),
-        width: 50.0,
-        height: 40.0,
+        width: DefaultComponent.defaultCalendarDayWidth,
+        height: DefaultComponent.defaultCalendarDayHeight,
         child: Center(
           child: Text(
             "${day.day}",
