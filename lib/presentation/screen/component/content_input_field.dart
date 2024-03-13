@@ -1,11 +1,28 @@
+import 'package:calendar_scheduler/presentation/screen/component/schedule_register_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
 import '../../const/colors.dart';
 import '../../const/strings.dart';
 import '../../const/styles.dart';
 
-class ContentInputField extends StatelessWidget {
-  const ContentInputField({super.key});
+class ContentInputField extends StatefulWidget {
+  final ContentSetter contentSetter;
+  ContentInputField({super.key, required this.contentSetter});
+
+  @override
+  State<ContentInputField> createState() => _ContentInputFieldState();
+}
+
+class _ContentInputFieldState extends State<ContentInputField> {
+  final TextEditingController _textEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _textEditingController.addListener(() {
+      widget.contentSetter(_textEditingController.text);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +37,7 @@ class ContentInputField extends StatelessWidget {
           height: 6.0,
         ),
         TextField(
+          controller: _textEditingController,
           cursorColor: Colors.grey,
           maxLines: 3,
           style: Styles.inputTextStyle.copyWith(fontSize: 14.0),
@@ -39,5 +57,11 @@ class ContentInputField extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
   }
 }

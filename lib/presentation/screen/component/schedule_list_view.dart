@@ -1,3 +1,4 @@
+import 'package:calendar_scheduler/di/locator.dart';
 import 'package:calendar_scheduler/domain/usecase/get_all_schedule.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_item_builder.dart';
 import 'package:flutter/material.dart';
@@ -16,22 +17,23 @@ class ScheduleListView extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: StreamBuilder(
-          stream: GetIt.I<GetAllScheduleUsecase>().invoke(date),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+            stream: serviceLocator<GetAllScheduleUsecase>().invoke(date),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
 
-            if (snapshot.hasData && snapshot.data!.isEmpty) {
-              return Center(
-                child: Text(
-                  Strings.EMPTY_SCHEDULE,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              );
-            }
+              if (snapshot.hasData && snapshot.data!.isEmpty) {
+                return Center(
+                  child: Text(
+                    Strings.EMPTY_SCHEDULE,
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                );
+              }
+             
             final list = snapshot.requireData;
 
             return ListView.separated(

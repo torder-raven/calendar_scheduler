@@ -81,6 +81,7 @@ class _TimeInputFieldState extends State<TimeInputField> {
                 setState(() {
                   int totalTime = (date.hour * 60) + date.minute;
                   selectedTime = totalTime;
+                  widget.timeSetter(totalTime);
                   _textEditingController.text = totalTime.intTimeToTimeString();
                 });
               },
