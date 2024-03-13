@@ -94,3 +94,9 @@ LazyDatabase _openConnection() {
     return NativeDatabase(dbFile);
   });
 }
+
+extension TEST on Expression<bool> {
+  printDate() {
+    print(isLiteral);
+  }
+}

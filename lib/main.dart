@@ -1,3 +1,4 @@
+import 'package:calendar_scheduler/domain/usecase/get_all_schedule.dart';
 import 'package:calendar_scheduler/presentation/const/theme.dart';
 import 'package:calendar_scheduler/presentation/screen/home/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,9 @@ void main() async {
   await initializeDateFormatting();
   initServiceLocator();
 
+
+  
+  
   runApp(
     MaterialApp(
       home: HomeScreen(),

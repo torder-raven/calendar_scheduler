@@ -50,6 +50,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
 
   @override
   Future<void> registerSchedule({required Schedule schedule}) {
+    _db.getAllSchedule().then((value) => print(value.length));
     return _db.registerSchedule(
       schedule.toRegisterScheduleDao(),
     );
