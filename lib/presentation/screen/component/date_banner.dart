@@ -38,8 +38,8 @@ class DateBanner extends StatelessWidget {
   }
 
   Widget countText({required TextStyle style}) {
-    return FutureBuilder(
-        future: GetIt.I<GetAllScheduleUsecase>().invoke(date),
+    return StreamBuilder(
+        stream: GetIt.I<GetAllScheduleUsecase>().invoke(date),
         builder: (context, snapshot) {
           int count = 0;
           if (snapshot.hasData) {

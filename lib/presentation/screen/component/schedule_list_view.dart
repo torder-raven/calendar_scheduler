@@ -1,4 +1,3 @@
-import 'package:calendar_scheduler/domain/entity/schedule.dart';
 import 'package:calendar_scheduler/domain/usecase/get_all_schedule.dart';
 import 'package:calendar_scheduler/presentation/const/strings.dart';
 import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
@@ -17,8 +16,8 @@ class ScheduleListView extends StatelessWidget {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: FutureBuilder(
-            future: GetIt.I<GetAllScheduleUsecase>().invoke(date),
+        child: StreamBuilder(
+            stream: GetIt.I<GetAllScheduleUsecase>().invoke(date),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Center(
