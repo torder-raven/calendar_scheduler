@@ -4,17 +4,12 @@ import 'package:flutter/material.dart';
 import '../../const/colors.dart';
 import '../../const/strings.dart';
 
-class ColorSelectionField extends StatefulWidget {
+class ColorSelectionField extends StatelessWidget {
   final int? selectedColorId;
   final ColorIdSetter colorIdSetter;
   const ColorSelectionField(
       {super.key, this.selectedColorId, required this.colorIdSetter});
 
-  @override
-  State<ColorSelectionField> createState() => _ColorSelectionFieldState();
-}
-
-class _ColorSelectionFieldState extends State<ColorSelectionField> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -44,15 +39,13 @@ class _ColorSelectionFieldState extends State<ColorSelectionField> {
           padding: EdgeInsets.only(right: 8.0),
           child: GestureDetector(
             onTap: () {
-              setState(() {
-                widget.colorIdSetter(colors[index].value);
-              });
+                colorIdSetter(colors[index].value);
             },
             child: Container(
               width: 30.0,
               height: 30.0,
               decoration: BoxDecoration(
-                image: colors[index].value == widget.selectedColorId
+                image: colors[index].value == selectedColorId
                     ? DecorationImage(
                         image: AssetImage(
                           "asset/img/img_check.png",
