@@ -1,5 +1,8 @@
 import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:calendar_scheduler/presentation/screen/component/calendar.dart';
+import 'package:calendar_scheduler/presentation/screen/component/date_banner.dart';
+import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
+import 'package:calendar_scheduler/presentation/screen/component/schedule_list_view.dart';
 import 'package:flutter/material.dart';
 
 final _FIRST_DAY = DateTime.utc(1900);
@@ -32,6 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
               lastDay: _LAST_DAY,
               selectedDay: _selectedDay,
               onDaySelected: onDaySelected,
+            ),
+            DefaultComponent.defaultHeightSizedBox,
+            DateBanner(
+              date: _selectedDay,
+            ),
+            DefaultComponent.defaultHeightSizedBox,
+            ScheduleListView(
+              date: _selectedDay,
             ),
           ],
         ),
