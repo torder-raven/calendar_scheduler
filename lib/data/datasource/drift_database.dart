@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:calendar_scheduler/data/datasource/entity/schedules.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
@@ -10,7 +11,15 @@ part 'drift_database.g.dart';
 
 const _DB_FILE_NAME = "db.sqlite";
 
-@DriftDatabase()
+/**
+ * LocalDataBase 클래스
+ * flutter pub run build_runner build 으로 database generate 가능
+ */
+@DriftDatabase(
+  tables: [
+    Schedules,
+  ],
+)
 class LocalDataBase extends _$LocalDataBase {
   LocalDataBase() : super(_openConnection());
 
