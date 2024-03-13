@@ -1,10 +1,11 @@
 import 'package:calendar_scheduler/domain/entity/schedule.dart';
+import 'package:calendar_scheduler/domain/usecase/delete_shcedule.dart';
 import 'package:calendar_scheduler/domain/usecase/get_temporary_delete_schedule.dart';
 import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
 import 'package:flutter/material.dart';
 import '../../../di/locator.dart';
 import '../../const/strings.dart';
-import '../component/schedule.builder.dart';
+import '../component/schedule_item_builder.dart';
 
 class TempDeleteScreen extends StatefulWidget {
   const TempDeleteScreen({Key? key}) : super(key: key);
@@ -70,11 +71,35 @@ class _ScheduleList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: DefaultComponent.defaultPaddingSize,
-        child: FutureBuilder<List<Schedule>>(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: FutureBuilder(
           future: serviceLocator<GetTemporaryDeleteScheduleUsecase>().invoke(),
-          builder: (context, AsyncSnapshot<List> snapData) =>
-              buildScheduleList(snapData, context),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            if (snapshot.hasData && snapshot.data!.isEmpty) {
+              return Center(
+                child: Text(
+                  Strings.EMPTY_SCHEDULE,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              );
+            }
+            final list = snapshot.requireData;
+
+            return ListView.separated(
+              itemCount: snapshot.data?.length ?? 0,
+              separatorBuilder: (context, index) {
+                return DefaultComponent.defaultSizedBoxWithHeight;
+              },
+              itemBuilder: (context, index) =>
+                  buildTempDeleteScheduleListItem(context, list[index]),
+            );
+          },
         ),
       ),
     );
