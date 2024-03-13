@@ -2,35 +2,19 @@ import 'package:flutter/material.dart';
 
 import '../../const/colors.dart';
 import '../../const/strings.dart';
-
+import '../../const/styles.dart';
 
 class ContentInputField extends StatelessWidget {
   const ContentInputField({super.key});
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = const TextStyle(
-        color: ColorResource.INPUT_TEXT_FIELD_FILL_COLOR,
-        fontWeight: FontWeight.w400,
-        fontSize: 14.0);
-
-    OutlineInputBorder outlineInputBorder = OutlineInputBorder(
-      borderSide: const BorderSide(
-        color: ColorResource.INPUT_TEXT_FIELD_BORDER_COLOR,
-      ),
-      borderRadius: BorderRadius.circular(8.0),
-    );
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           Strings.LABEL_CONTENT,
-          style: TextStyle(
-            color: ColorResource.INPUT_TEXT_LABEL_COLOR,
-            fontWeight: FontWeight.w600,
-            fontSize: 14.0,
-          ),
+          style: Styles.inputLabelTextStyle,
         ),
         const SizedBox(
           height: 6.0,
@@ -38,21 +22,21 @@ class ContentInputField extends StatelessWidget {
         TextField(
           cursorColor: Colors.grey,
           maxLines: 3,
-          style: textStyle,
+          style: Styles.inputTextStyle.copyWith(fontSize: 14.0),
           decoration: InputDecoration(
             isDense: true,
             contentPadding:
-                EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-            enabledBorder: outlineInputBorder,
-            focusedBorder: outlineInputBorder,
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+            enabledBorder: Styles.inputTextOutlineInputBorder,
+            focusedBorder: Styles.inputTextOutlineInputBorder,
             filled: false,
             fillColor: Colors.white,
             hintText: Strings.CONTENT_HINT_TEXT,
-            hintStyle: textStyle.copyWith(
+            hintStyle: Styles.inputTextStyle.copyWith(
               color: ColorResource.INPUT_TEXT_FIELD_HINT_COLOR,
             ),
           ),
-        )
+        ),
       ],
     );
   }
