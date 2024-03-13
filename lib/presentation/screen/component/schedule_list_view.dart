@@ -48,7 +48,7 @@ class ScheduleListView extends StatelessWidget {
                   );
                 },
                 separatorBuilder: (BuildContext context, int index) {
-                  return DefaultComponent.defaultHeightSizedBox;
+                  return DefaultComponent.defaultSizedBoxWithHeightSmall;
                 },
                 itemCount: list.length,
               );

@@ -31,11 +31,11 @@ class ScheduleCard extends StatelessWidget {
                 startTime: startTime,
                 endTime: endTime,
               ),
-              DefaultComponent.defaultSizedBox,
+              DefaultComponent.defaultSizedBoxWithWidth,
               _Content(
                 content: content,
               ),
-              DefaultComponent.defaultSizedBox,
+              DefaultComponent.defaultSizedBoxWithWidth,
               _Category(
                 color: color,
               ),
