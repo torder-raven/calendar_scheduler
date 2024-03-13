@@ -47,15 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  DateTime today() {
-    final now = DateTime.now();
-    return DateTime.utc(
-      now.year,
-      now.month,
-      now.day,
-    );
-  }
-
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
       _selectedDay = selectedDay;
