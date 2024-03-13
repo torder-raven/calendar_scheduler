@@ -8,6 +8,8 @@ import 'package:path/path.dart' as path;
 
 part 'drift_database.g.dart';
 
+const _DB_FILE_NAME = "db.sqlite";
+
 @DriftDatabase()
 class LocalDataBase extends _$LocalDataBase {
   LocalDataBase() : super(_openConnection());
@@ -22,7 +24,7 @@ LazyDatabase _openConnection() {
     final dbFile = File(
       path.join(
         dbFolder.path,
-        "db.sqlite",
+        _DB_FILE_NAME,
       ),
     );
     return NativeDatabase(dbFile);
