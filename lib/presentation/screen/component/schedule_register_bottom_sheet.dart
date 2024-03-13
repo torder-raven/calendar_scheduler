@@ -13,10 +13,12 @@ class ScheduleRegisterBottomSheet extends StatefulWidget {
   const ScheduleRegisterBottomSheet({super.key, required this.selectedDate});
 
   @override
-  State<ScheduleRegisterBottomSheet> createState() => _ScheduleRegisterBottomSheetState();
+  State<ScheduleRegisterBottomSheet> createState() =>
+      _ScheduleRegisterBottomSheetState();
 }
 
-class _ScheduleRegisterBottomSheetState extends State<ScheduleRegisterBottomSheet> {
+class _ScheduleRegisterBottomSheetState
+    extends State<ScheduleRegisterBottomSheet> {
   int selectedColorId = ColorResource.selectorColors[0].value;
 
   @override
@@ -37,11 +39,14 @@ class _ScheduleRegisterBottomSheetState extends State<ScheduleRegisterBottomShee
               _BottomSheetHeader(
                 selectedDate: widget.selectedDate,
               ),
-              ColorSelectionField(selectedColorId: selectedColorId, colorIdSetter: (int id) {
-                setState(() {
-                   selectedColorId = id;
-                });
-              },),
+              ColorSelectionField(
+                selectedColorId: selectedColorId,
+                colorIdSetter: (int id) {
+                  setState(() {
+                    selectedColorId = id;
+                  });
+                },
+              ),
               Spacer(),
               _TimeInputRenderer(),
               Spacer(),
@@ -57,6 +62,7 @@ class _ScheduleRegisterBottomSheetState extends State<ScheduleRegisterBottomShee
 }
 
 typedef ColorIdSetter = void Function(int id);
+typedef TimeSetter = void Function(int time);
 
 class _BottomSheetHeader extends StatelessWidget {
   final DateTime selectedDate;
@@ -82,7 +88,14 @@ class _BottomSheetHeader extends StatelessWidget {
   }
 }
 
-class _TimeInputRenderer extends StatelessWidget {
+class _TimeInputRenderer extends StatefulWidget {
+  @override
+  State<_TimeInputRenderer> createState() => _TimeInputRendererState();
+}
+
+class _TimeInputRendererState extends State<_TimeInputRenderer> {
+  int selectedTime = 0;
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -90,14 +103,24 @@ class _TimeInputRenderer extends StatelessWidget {
         Expanded(
           child: TimeInputField(
             selectedTimeType: Strings.LABEL_START_TIME,
+            timeSetter: (int time) {
+              setState(() {
+                selectedTime = time;
+              });
+            },
           ),
         ),
         SizedBox(width: 4.0),
         Expanded(
           child: TimeInputField(
             selectedTimeType: Strings.LABEL_END_TIME,
+            timeSetter: (int time) {
+              setState(() {
+                selectedTime = time;
+              });
+            },
           ),
-        ),
+        )
       ],
     );
   }
