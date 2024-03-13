@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../presentation/const/colors.dart';
-import '../presentation/const/strings.dart';
+import '../../const/colors.dart';
+import '../../const/strings.dart';
+
 
 class ContentInputField extends StatelessWidget {
   const ContentInputField({super.key});
