@@ -41,11 +41,11 @@ class $ScheduleDaoTable extends ScheduleDao
   late final GeneratedColumn<int> endTime = GeneratedColumn<int>(
       'end_time', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _colorHexCodeMeta =
-      const VerificationMeta('colorHexCode');
+  static const VerificationMeta _colorCodeMeta =
+      const VerificationMeta('colorCode');
   @override
-  late final GeneratedColumn<int> colorHexCode = GeneratedColumn<int>(
-      'color_hex_code', aliasedName, false,
+  late final GeneratedColumn<int> colorCode = GeneratedColumn<int>(
+      'color_code', aliasedName, false,
       type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _isDeletedMeta =
       const VerificationMeta('isDeleted');
@@ -66,16 +66,8 @@ class $ScheduleDaoTable extends ScheduleDao
       requiredDuringInsert: false,
       clientDefault: () => DateTime.now());
   @override
-  List<GeneratedColumn> get $columns => [
-        id,
-        content,
-        date,
-        startTime,
-        endTime,
-        colorHexCode,
-        isDeleted,
-        createAt
-      ];
+  List<GeneratedColumn> get $columns =>
+      [id, content, date, startTime, endTime, colorCode, isDeleted, createAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -113,13 +105,11 @@ class $ScheduleDaoTable extends ScheduleDao
     } else if (isInserting) {
       context.missing(_endTimeMeta);
     }
-    if (data.containsKey('color_hex_code')) {
-      context.handle(
-          _colorHexCodeMeta,
-          colorHexCode.isAcceptableOrUnknown(
-              data['color_hex_code']!, _colorHexCodeMeta));
+    if (data.containsKey('color_code')) {
+      context.handle(_colorCodeMeta,
+          colorCode.isAcceptableOrUnknown(data['color_code']!, _colorCodeMeta));
     } else if (isInserting) {
-      context.missing(_colorHexCodeMeta);
+      context.missing(_colorCodeMeta);
     }
     if (data.containsKey('is_deleted')) {
       context.handle(_isDeletedMeta,
@@ -148,8 +138,8 @@ class $ScheduleDaoTable extends ScheduleDao
           .read(DriftSqlType.int, data['${effectivePrefix}start_time'])!,
       endTime: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}end_time'])!,
-      colorHexCode: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}color_hex_code'])!,
+      colorCode: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}color_code'])!,
       isDeleted: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_deleted'])!,
       createAt: attachedDatabase.typeMapping
@@ -169,7 +159,7 @@ class ScheduleDaoData extends DataClass implements Insertable<ScheduleDaoData> {
   final DateTime date;
   final int startTime;
   final int endTime;
-  final int colorHexCode;
+  final int colorCode;
   final bool isDeleted;
   final DateTime createAt;
   const ScheduleDaoData(
@@ -178,7 +168,7 @@ class ScheduleDaoData extends DataClass implements Insertable<ScheduleDaoData> {
       required this.date,
       required this.startTime,
       required this.endTime,
-      required this.colorHexCode,
+      required this.colorCode,
       required this.isDeleted,
       required this.createAt});
   @override
@@ -189,7 +179,7 @@ class ScheduleDaoData extends DataClass implements Insertable<ScheduleDaoData> {
     map['date'] = Variable<DateTime>(date);
     map['start_time'] = Variable<int>(startTime);
     map['end_time'] = Variable<int>(endTime);
-    map['color_hex_code'] = Variable<int>(colorHexCode);
+    map['color_code'] = Variable<int>(colorCode);
     map['is_deleted'] = Variable<bool>(isDeleted);
     map['create_at'] = Variable<DateTime>(createAt);
     return map;
@@ -202,7 +192,7 @@ class ScheduleDaoData extends DataClass implements Insertable<ScheduleDaoData> {
       date: Value(date),
       startTime: Value(startTime),
       endTime: Value(endTime),
-      colorHexCode: Value(colorHexCode),
+      colorCode: Value(colorCode),
       isDeleted: Value(isDeleted),
       createAt: Value(createAt),
     );
@@ -217,7 +207,7 @@ class ScheduleDaoData extends DataClass implements Insertable<ScheduleDaoData> {
       date: serializer.fromJson<DateTime>(json['date']),
       startTime: serializer.fromJson<int>(json['startTime']),
       endTime: serializer.fromJson<int>(json['endTime']),
-      colorHexCode: serializer.fromJson<int>(json['colorHexCode']),
+      colorCode: serializer.fromJson<int>(json['colorCode']),
       isDeleted: serializer.fromJson<bool>(json['isDeleted']),
       createAt: serializer.fromJson<DateTime>(json['createAt']),
     );
@@ -231,7 +221,7 @@ class ScheduleDaoData extends DataClass implements Insertable<ScheduleDaoData> {
       'date': serializer.toJson<DateTime>(date),
       'startTime': serializer.toJson<int>(startTime),
       'endTime': serializer.toJson<int>(endTime),
-      'colorHexCode': serializer.toJson<int>(colorHexCode),
+      'colorCode': serializer.toJson<int>(colorCode),
       'isDeleted': serializer.toJson<bool>(isDeleted),
       'createAt': serializer.toJson<DateTime>(createAt),
     };
@@ -243,7 +233,7 @@ class ScheduleDaoData extends DataClass implements Insertable<ScheduleDaoData> {
           DateTime? date,
           int? startTime,
           int? endTime,
-          int? colorHexCode,
+          int? colorCode,
           bool? isDeleted,
           DateTime? createAt}) =>
       ScheduleDaoData(
@@ -252,7 +242,7 @@ class ScheduleDaoData extends DataClass implements Insertable<ScheduleDaoData> {
         date: date ?? this.date,
         startTime: startTime ?? this.startTime,
         endTime: endTime ?? this.endTime,
-        colorHexCode: colorHexCode ?? this.colorHexCode,
+        colorCode: colorCode ?? this.colorCode,
         isDeleted: isDeleted ?? this.isDeleted,
         createAt: createAt ?? this.createAt,
       );
@@ -264,7 +254,7 @@ class ScheduleDaoData extends DataClass implements Insertable<ScheduleDaoData> {
           ..write('date: $date, ')
           ..write('startTime: $startTime, ')
           ..write('endTime: $endTime, ')
-          ..write('colorHexCode: $colorHexCode, ')
+          ..write('colorCode: $colorCode, ')
           ..write('isDeleted: $isDeleted, ')
           ..write('createAt: $createAt')
           ..write(')'))
@@ -273,7 +263,7 @@ class ScheduleDaoData extends DataClass implements Insertable<ScheduleDaoData> {
 
   @override
   int get hashCode => Object.hash(
-      id, content, date, startTime, endTime, colorHexCode, isDeleted, createAt);
+      id, content, date, startTime, endTime, colorCode, isDeleted, createAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -283,7 +273,7 @@ class ScheduleDaoData extends DataClass implements Insertable<ScheduleDaoData> {
           other.date == this.date &&
           other.startTime == this.startTime &&
           other.endTime == this.endTime &&
-          other.colorHexCode == this.colorHexCode &&
+          other.colorCode == this.colorCode &&
           other.isDeleted == this.isDeleted &&
           other.createAt == this.createAt);
 }
@@ -294,7 +284,7 @@ class ScheduleDaoCompanion extends UpdateCompanion<ScheduleDaoData> {
   final Value<DateTime> date;
   final Value<int> startTime;
   final Value<int> endTime;
-  final Value<int> colorHexCode;
+  final Value<int> colorCode;
   final Value<bool> isDeleted;
   final Value<DateTime> createAt;
   const ScheduleDaoCompanion({
@@ -303,7 +293,7 @@ class ScheduleDaoCompanion extends UpdateCompanion<ScheduleDaoData> {
     this.date = const Value.absent(),
     this.startTime = const Value.absent(),
     this.endTime = const Value.absent(),
-    this.colorHexCode = const Value.absent(),
+    this.colorCode = const Value.absent(),
     this.isDeleted = const Value.absent(),
     this.createAt = const Value.absent(),
   });
@@ -313,21 +303,21 @@ class ScheduleDaoCompanion extends UpdateCompanion<ScheduleDaoData> {
     required DateTime date,
     required int startTime,
     required int endTime,
-    required int colorHexCode,
+    required int colorCode,
     this.isDeleted = const Value.absent(),
     this.createAt = const Value.absent(),
   })  : content = Value(content),
         date = Value(date),
         startTime = Value(startTime),
         endTime = Value(endTime),
-        colorHexCode = Value(colorHexCode);
+        colorCode = Value(colorCode);
   static Insertable<ScheduleDaoData> custom({
     Expression<int>? id,
     Expression<String>? content,
     Expression<DateTime>? date,
     Expression<int>? startTime,
     Expression<int>? endTime,
-    Expression<int>? colorHexCode,
+    Expression<int>? colorCode,
     Expression<bool>? isDeleted,
     Expression<DateTime>? createAt,
   }) {
@@ -337,7 +327,7 @@ class ScheduleDaoCompanion extends UpdateCompanion<ScheduleDaoData> {
       if (date != null) 'date': date,
       if (startTime != null) 'start_time': startTime,
       if (endTime != null) 'end_time': endTime,
-      if (colorHexCode != null) 'color_hex_code': colorHexCode,
+      if (colorCode != null) 'color_code': colorCode,
       if (isDeleted != null) 'is_deleted': isDeleted,
       if (createAt != null) 'create_at': createAt,
     });
@@ -349,7 +339,7 @@ class ScheduleDaoCompanion extends UpdateCompanion<ScheduleDaoData> {
       Value<DateTime>? date,
       Value<int>? startTime,
       Value<int>? endTime,
-      Value<int>? colorHexCode,
+      Value<int>? colorCode,
       Value<bool>? isDeleted,
       Value<DateTime>? createAt}) {
     return ScheduleDaoCompanion(
@@ -358,7 +348,7 @@ class ScheduleDaoCompanion extends UpdateCompanion<ScheduleDaoData> {
       date: date ?? this.date,
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
-      colorHexCode: colorHexCode ?? this.colorHexCode,
+      colorCode: colorCode ?? this.colorCode,
       isDeleted: isDeleted ?? this.isDeleted,
       createAt: createAt ?? this.createAt,
     );
@@ -382,8 +372,8 @@ class ScheduleDaoCompanion extends UpdateCompanion<ScheduleDaoData> {
     if (endTime.present) {
       map['end_time'] = Variable<int>(endTime.value);
     }
-    if (colorHexCode.present) {
-      map['color_hex_code'] = Variable<int>(colorHexCode.value);
+    if (colorCode.present) {
+      map['color_code'] = Variable<int>(colorCode.value);
     }
     if (isDeleted.present) {
       map['is_deleted'] = Variable<bool>(isDeleted.value);
@@ -402,7 +392,7 @@ class ScheduleDaoCompanion extends UpdateCompanion<ScheduleDaoData> {
           ..write('date: $date, ')
           ..write('startTime: $startTime, ')
           ..write('endTime: $endTime, ')
-          ..write('colorHexCode: $colorHexCode, ')
+          ..write('colorCode: $colorCode, ')
           ..write('isDeleted: $isDeleted, ')
           ..write('createAt: $createAt')
           ..write(')'))
