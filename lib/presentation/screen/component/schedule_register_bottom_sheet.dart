@@ -1,10 +1,11 @@
+import 'package:calendar_scheduler/presentation/const/colors.dart';
 import 'package:calendar_scheduler/presentation/screen/component/time_input_field.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../const/strings.dart';
 import 'color_selection_field.dart';
 import 'content_input_field.dart';
-
 
 class ScheduleRegisterBottomSheet extends StatelessWidget {
   final DateTime selectedDate;
@@ -23,14 +24,19 @@ class ScheduleRegisterBottomSheet extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.only(bottom: bottomInset),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _BottomSheetHeader(
                 selectedDate: selectedDate,
               ),
               ColorSelectionField(colorCode: 0),
+              Spacer(),
               _TimeInputRenderer(),
+              Spacer(),
               ContentInputField(),
+              Spacer(),
+              _SaveScheduleButton(),
             ],
           ),
         ),
@@ -81,5 +87,29 @@ class _TimeInputRenderer extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class _SaveScheduleButton extends StatelessWidget {
+  const _SaveScheduleButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            elevation: 0,
+            backgroundColor: Colors.grey[300],
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6.0),
+            ),
+          ),
+          child: Text(
+            "저장",
+            style: TextStyle(color: Colors.white),
+          ),
+        ));
   }
 }
