@@ -29,7 +29,9 @@ class _TimeInputFieldState extends State<TimeInputField> {
           widget.selectedTimeType,
           style: Styles.inputLabelTextStyle,
         ),
-        const SizedBox(height: 6.0,),
+        const SizedBox(
+          height: 6.0,
+        ),
         GestureDetector(
           onTap: () {
             showTimePickerDialog();

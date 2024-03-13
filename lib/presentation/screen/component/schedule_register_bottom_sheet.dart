@@ -1,4 +1,5 @@
 import 'package:calendar_scheduler/presentation/const/colors.dart';
+import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:calendar_scheduler/presentation/screen/component/time_input_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,7 @@ class _ScheduleRegisterBottomSheetState
       padding: const EdgeInsets.all(16.0),
       child: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height / 2 + bottomInset,
+        height: ((MediaQuery.of(context).size.height / 2) + bottomInset),
         child: Padding(
           padding: EdgeInsets.only(bottom: bottomInset),
           child: Column(
@@ -71,12 +72,14 @@ class _BottomSheetHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String title =
-        "${selectedDate.year}년 ${selectedDate.month}월 ${selectedDate.day}일";
+    String title = selectedDate.toFormattedString(Strings.DATE_FORMAT);
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       Text(
         title,
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w800,
+        ),
       ),
       IconButton(
         onPressed: () {
