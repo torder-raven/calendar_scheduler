@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../const/colors.dart';
-import '../const/strings.dart';
+import '../presentation/const/colors.dart';
+import '../presentation/const/strings.dart';
+
 
 class ColorSelectionField extends StatefulWidget {
   final int colorCode;

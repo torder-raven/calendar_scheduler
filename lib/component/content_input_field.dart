@@ -1,7 +1,8 @@
-import 'package:calendar_scheduler/const/colors.dart';
 import 'package:flutter/material.dart';
 
-import '../const/strings.dart';
+import '../presentation/const/colors.dart';
+import '../presentation/const/strings.dart';
+
 
 class ContentInputField extends StatelessWidget {
   const ContentInputField({super.key});

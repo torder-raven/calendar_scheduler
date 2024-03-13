@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../component/schedule_register_bottom_sheet.dart';
+import '../../../component/schedule_register_bottom_sheet.dart';
 import '../../const/colors.dart';
 
 class HomeScreen extends StatefulWidget {

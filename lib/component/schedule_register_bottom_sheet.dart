@@ -2,7 +2,6 @@ import 'package:calendar_scheduler/component/color_selection_field.dart';
 import 'package:calendar_scheduler/component/content_input_field.dart';
 import 'package:flutter/material.dart';
 
-import '../const/strings.dart';
 
 class ScheduleRegisterBottomSheet extends StatelessWidget {
   final DateTime selectedDate;
