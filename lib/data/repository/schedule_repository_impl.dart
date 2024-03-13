@@ -8,37 +8,19 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   // 테스트 코드 -> 나중에 Di로 교체해야할 듯?
   final _db = LocalDataBase();
 
-  ScheduleRepositoryImpl() {
-    testFunction();
-  }
-
-  /**
-   * 개발을 위한 테스트 코드 (삭제 예정)
-   */
-  testFunction() async {
-    database.getAllScheduleAsStream().listen((scheduleDaoDataList) {
-      print("stream : $scheduleDaoDataList");
-    });
-
-    print("getAllSchedule : ${await database.getAllSchedule()}");
-    print(
-        "getAllScheduleByDateTime DateTime(${DateTime.now()}) : ${await database.getAllScheduleByDateTime(datetime: DateTime.now())}");
-    print("getAllSchedule : ${await getAllSchedule(date: DateTime.now())}");
-  }
+  ScheduleRepositoryImpl() {}
 
   @override
   Future<void> deleteSchedule({required int scheduleId}) {
-    // TODO: implement deleteSchedule
-    throw UnimplementedError();
+    return _db.deleteScheduleById(scheduleId: scheduleId);
   }
 
   @override
   Future<List<Schedule>> getAllSchedule({required DateTime date}) {
     return _db.getAllScheduleByDateTime(datetime: date).then(
-            (scheduleDaoDataList) =>
-            scheduleDaoDataList
-                .map((scheduleDaoData) => scheduleDaoData.toSchedule())
-                .toList());
+        (scheduleDaoDataList) => scheduleDaoDataList
+            .map((scheduleDaoData) => scheduleDaoData.toSchedule())
+            .toList());
   }
 
   @override
@@ -72,8 +54,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
 }
 
 extension _ScheduleDaoDataMapper on ScheduleDaoData {
-  Schedule toSchedule() =>
-      Schedule(
+  Schedule toSchedule() => Schedule(
         date: date,
         startTime: startTime,
         endTime: endTime,
@@ -88,8 +69,7 @@ extension _ScheduleMapper on Schedule {
    * Register의 경우 id 값이 포함될 경우 충돌이 발생!
    * DB에 생성하는 경우에 사용!
    */
-  ScheduleDaoCompanion toRegisterScheduleDao() =>
-      ScheduleDaoCompanion(
+  ScheduleDaoCompanion toRegisterScheduleDao() => ScheduleDaoCompanion(
         content: Value(content),
         date: Value(date),
         startTime: Value(startTime),
