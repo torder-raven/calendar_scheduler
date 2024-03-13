@@ -4,6 +4,9 @@ import 'package:calendar_scheduler/domain/entity/schedule.dart';
 import '../../domain/repository/schedule_repository.dart';
 
 class ScheduleRepositoryImpl implements ScheduleRepository {
+  // 테스트 코드 -> 나중에 Di로 교체해야할 듯?
+  final database = LocalDataBase();
+
   ScheduleRepositoryImpl() {}
 
   @override
