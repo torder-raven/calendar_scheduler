@@ -15,4 +15,7 @@ class DefaultComponent {
   static SizedBox defaultSizedBox = SizedBox(width: 16.0);
   static EdgeInsets defaultPaddingSize = EdgeInsets.all(20.0);
   static double defaultCircleSize =  16.0;
+
+  static double defaultCalendarDayWidth = 50.0;
+  static double defaultCalendarDayHeight = 40.0;
 }
