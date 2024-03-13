@@ -49,7 +49,7 @@ class LocalDataBase extends _$LocalDataBase {
 
   // Future 방식으로 특정 조건(isDeleted)에 맞는 Schedule 조회
   Future<List<ScheduleDaoData>> getAllScheduleByDeleted() =>
-      (select(scheduleDao)..where((tbl) => tbl.isDeleted.equals(true))).get();
+      (select(scheduleDao)..where((tbl) => tbl.isDeleted)).get();
 
   // Future 방식으로 특정 조건(Date)에 맞는 Schedule 조회
   Future<ScheduleDaoData> getScheduleById({

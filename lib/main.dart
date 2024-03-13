@@ -1,15 +1,14 @@
-import 'package:calendar_scheduler/const/theme.dart';
-import 'package:calendar_scheduler/data/datasource/drift_database.dart';
-import 'package:calendar_scheduler/data/repository/schedule_repository_impl.dart';
-import 'package:calendar_scheduler/screen/home/home_screen.dart';
+import 'package:calendar_scheduler/presentation/const/theme.dart';
+import 'package:calendar_scheduler/presentation/screen/home/home_screen.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  /**
-   * 개발을 위한 테스트 코드 (삭제 예정)
-   */
+import 'di/locator.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  ScheduleRepositoryImpl();
+
+  initServiceLocator();
+
   runApp(
     MaterialApp(
       home: const HomeScreen(),
