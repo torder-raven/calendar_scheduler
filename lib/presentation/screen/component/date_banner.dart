@@ -1,8 +1,8 @@
+import 'package:calendar_scheduler/di/locator.dart';
 import 'package:calendar_scheduler/domain/usecase/get_all_schedule.dart';
 import 'package:calendar_scheduler/presentation/const/strings.dart';
 import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
 class DateBanner extends StatelessWidget {
   final DateTime date;
@@ -39,7 +39,7 @@ class DateBanner extends StatelessWidget {
 
   Widget countText({required TextStyle style}) {
     return StreamBuilder(
-        stream: GetIt.I<GetAllScheduleUsecase>().invoke(date),
+        stream: serviceLocator<GetAllScheduleUsecase>().invoke(date),
         builder: (context, snapshot) {
           int count = 0;
           if (snapshot.hasData) {
