@@ -1,9 +1,9 @@
+import 'package:calendar_scheduler/di/locator.dart';
 import 'package:calendar_scheduler/domain/usecase/get_all_schedule.dart';
 import 'package:calendar_scheduler/presentation/const/strings.dart';
 import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_card.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
 class ScheduleListView extends StatelessWidget {
   final DateTime date;
@@ -17,7 +17,7 @@ class ScheduleListView extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: StreamBuilder(
-            stream: GetIt.I<GetAllScheduleUsecase>().invoke(date),
+            stream: serviceLocator<GetAllScheduleUsecase>().invoke(date),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return const Center(
