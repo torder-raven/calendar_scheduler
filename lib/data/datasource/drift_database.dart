@@ -23,6 +23,18 @@ const _DB_FILE_NAME = "db.sqlite";
 class LocalDataBase extends _$LocalDataBase {
   LocalDataBase() : super(_openConnection());
 
+  // Stream 방식으로 모든 Schedule 읽기
+  Stream<List<ScheduleDaoData>> getAllScheduleAsStream() => select(scheduleDao).watch();
+
+  // Future 방식으로 모든 Schedule 읽기
+  Future<List<ScheduleDaoData>> getAllSchedule() => select(scheduleDao).get();
+
+  // Future 방식으로 특정 조건(Date)에 맞는 Schedule 읽기
+  Future<List<ScheduleDaoData>> getAllScheduleByDateTime({
+    required DateTime datetime,
+  }) =>
+      (select(scheduleDao)..where((tbl) => tbl.date.equals(datetime))).get();
+
   @override
   int get schemaVersion => 1;
 }

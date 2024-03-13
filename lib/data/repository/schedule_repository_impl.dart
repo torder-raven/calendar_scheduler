@@ -7,7 +7,23 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   // 테스트 코드 -> 나중에 Di로 교체해야할 듯?
   final database = LocalDataBase();
 
-  ScheduleRepositoryImpl() {}
+  ScheduleRepositoryImpl() {
+    testFunction();
+  }
+
+  /**
+   * 개발을 위한 테스트 코드 (삭제 예정)
+   */
+  testFunction() async {
+    database.getAllScheduleAsStream().listen((scheduleDaoDataList) {
+      print("stream : $scheduleDaoDataList");
+    });
+
+    print("getAllSchedule : ${await database.getAllSchedule()}");
+    print(
+        "getAllScheduleByDateTime DateTime(${DateTime.now()}) : ${await database.getAllScheduleByDateTime(datetime: DateTime.now())}");
+    print("getAllSchedule : ${await getAllSchedule(date: DateTime.now())}");
+  }
 
   @override
   Future<void> deleteSchedule({required int scheduleId}) {
@@ -17,8 +33,10 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
 
   @override
   Future<List<Schedule>> getAllSchedule({required DateTime date}) {
-    // TODO: implement getAllSchedule
-    throw UnimplementedError();
+    return database.getAllScheduleByDateTime(datetime: date).then(
+        (scheduleDaoDataList) => scheduleDaoDataList
+            .map((scheduleDaoData) => scheduleDaoData.toSchedule())
+            .toList());
   }
 
   @override
@@ -50,4 +68,15 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
     // TODO: implement updateSchedule
     throw UnimplementedError();
   }
+}
+
+extension _ScheduleDaoDataMapper on ScheduleDaoData {
+  Schedule toSchedule() => Schedule(
+        date: date,
+        startTime: startTime,
+        endTime: endTime,
+        colorCode: colorHexCode,
+        content: content,
+        id: id,
+      );
 }
