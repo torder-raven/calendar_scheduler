@@ -51,8 +51,17 @@ class LocalDataBase extends _$LocalDataBase {
   Future<int> deleteSchedule() => delete(scheduleDao).go();
 
   // 특정 조건(scheduleId)을 가진 Schedule 삭제
-  Future<int> deleteScheduleById({required int scheduleId}) =>
+  Future<int> deleteScheduleById({
+    required int scheduleId,
+  }) =>
       (delete(scheduleDao)..where((tbl) => tbl.id.equals(scheduleId))).go();
+
+  // ID 값을 기준으로 업데이트
+  Future<int> updateScheduleById({
+    required int id,
+    required ScheduleDaoCompanion data,
+  }) =>
+      (update(scheduleDao)..where((tbl) => tbl.id.equals(id))).write(data);
 
   @override
   int get schemaVersion => 1;

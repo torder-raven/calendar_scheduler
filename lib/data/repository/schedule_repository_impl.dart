@@ -9,24 +9,31 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   final _db = LocalDataBase();
 
   ScheduleRepositoryImpl() {}
-
   @override
   Future<void> deleteSchedule({required int scheduleId}) {
-    return _db.deleteScheduleById(scheduleId: scheduleId);
+    return _db.deleteScheduleById(
+      scheduleId: scheduleId,
+    );
   }
 
   @override
   Future<List<Schedule>> getAllSchedule({required DateTime date}) {
-    return _db.getAllScheduleByDateTime(datetime: date).then(
-        (scheduleDaoDataList) => scheduleDaoDataList
+    return _db
+        .getAllScheduleByDateTime(
+          datetime: date,
+        )
+        .then((scheduleDaoDataList) => scheduleDaoDataList
             .map((scheduleDaoData) => scheduleDaoData.toSchedule())
             .toList());
   }
 
   @override
   Future<List<Schedule>> getScheduleByColor({required int colorCode}) {
-    return _db.getAllScheduleByColorCode(colorCode: colorCode).then(
-        (scheduleDaoDataList) => scheduleDaoDataList
+    return _db
+        .getAllScheduleByColorCode(
+          colorCode: colorCode,
+        )
+        .then((scheduleDaoDataList) => scheduleDaoDataList
             .map((scheduleDaoData) => scheduleDaoData.toSchedule())
             .toList());
   }
@@ -39,7 +46,9 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
 
   @override
   Future<void> registerSchedule({required Schedule schedule}) {
-    return _db.registerSchedule(schedule.toRegisterScheduleDao());
+    return _db.registerSchedule(
+      schedule.toRegisterScheduleDao(),
+    );
   }
 
   @override
@@ -50,8 +59,10 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
 
   @override
   Future<void> updateSchedule({required Schedule schedule}) {
-    // TODO: implement updateSchedule
-    throw UnimplementedError();
+    return _db.updateScheduleById(
+      id: schedule.id,
+      data: schedule.toRegisterScheduleDao(),
+    );
   }
 }
 
