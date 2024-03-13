@@ -1,11 +1,13 @@
-import 'package:flutter/cupertino.dart';
+import 'package:calendar_scheduler/domain/entity/schedule.dart';
+import 'package:calendar_scheduler/domain/usecase/get_temporary_delete_schedule.dart';
+import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
+import '../../../di/locator.dart';
+import '../../const/strings.dart';
 import '../component/schedule_card.dart';
 
 class TempDeleteScreen extends StatefulWidget {
-  const TempDeleteScreen({super.key});
+  const TempDeleteScreen({Key? key}) : super(key: key);
 
   @override
   State<TempDeleteScreen> createState() => _TempDeleteScreenState();
@@ -14,36 +16,145 @@ class TempDeleteScreen extends StatefulWidget {
 class _TempDeleteScreenState extends State<TempDeleteScreen> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 50.0,
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            DefaultComponent.defaultSizedBoxWithHeight,
+            _Title(),
+            DefaultComponent.defaultSizedBoxWithHeight,
+            _WarningText(),
+            DefaultComponent.defaultSizedBoxWithHeight,
+            _ScheduleList(),
+          ],
         ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView.separated(
-                itemCount: 100,
-                itemBuilder: (context, index) {
-                  return ScheduleCard(
-                      startTime: 791,
-                      endTime: 800,
-                      content: "공부하긔",
-                      color: 0xFF0DB2B2
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return SizedBox(
-                    height: 8.0,
-                  );
-                },
-              ),
-            ),
-          ),
+      ),
+    );
+  }
+}
+
+class _Title extends StatelessWidget {
+  const _Title({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      Strings.TEMP_DELETE_TITLE,
+      style: Theme.of(context).textTheme.titleLarge,
+    );
+  }
+}
+
+class _WarningText extends StatelessWidget {
+  const _WarningText({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        DefaultComponent.defaultSizedBoxWithHeight,
+        Text(
+          Strings.TEMP_DELETE_WARNING,
+          style: Theme.of(context).textTheme.displaySmall,
         ),
       ],
     );
   }
+}
+
+
+class _ScheduleList extends StatelessWidget {
+  const _ScheduleList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Padding(
+        padding: DefaultComponent.defaultPaddingSize,
+        child: FutureBuilder<List<Schedule>>(
+          future: serviceLocator<GetTemporaryDeleteScheduleUsecase>().invoke(),
+          builder: (context, AsyncSnapshot<List> snapData) =>
+              _buildScheduleList(snapData, context),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScheduleList(
+      AsyncSnapshot<List> snapshot, BuildContext context) {
+    if (!snapshot.hasData) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    if (snapshot.hasData && snapshot.data!.isEmpty) {
+      return Center(
+        child: Text(
+          Strings.SCHEDULE_LIST_EMPTY_TEXT,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+      );
+    }
+    final list = snapshot.requireData;
+
+    return ListView.separated(
+      itemCount: snapshot.data?.length ?? 0,
+      separatorBuilder: (context, index) {
+        return DefaultComponent.defaultSizedBoxWithHeight;
+      },
+      itemBuilder: (context, index) =>
+          _buildScheduleListItem(context, list[index]),
+    );
+  }
+}
+
+Widget _buildScheduleListItem(BuildContext context, Schedule schedule) {
+  return Dismissible(
+    key: ObjectKey(schedule.id),
+    direction: DismissDirection.horizontal,
+    confirmDismiss: (direction) => _showDismissDialog(context, direction),
+    child: GestureDetector(
+      child: ScheduleCard(
+        startTime: schedule.startTime,
+        endTime: schedule.endTime,
+        content: schedule.content,
+        color: schedule.colorCode,
+      ),
+    ),
+  );
+}
+
+Future<bool?> _showDismissDialog(
+    BuildContext context, DismissDirection direction) {
+  return showDialog<bool>(
+    context: context,
+    builder: (ctx) {
+      return AlertDialog(
+        title: const Text(Strings.DELETE_CONFIRM_TEXT),
+        content: Text(Strings.TEMP_DELETE_WARNING),
+        actions: <Widget>[
+          ElevatedButton(
+            onPressed: () => cancelToDeleteSchedule,
+            child: const Text(Strings.CANCEL),
+          ),
+          ElevatedButton(
+            onPressed: () => deleteSchedule,
+            child: Text(Strings.DELETE),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+deleteSchedule(BuildContext context) {
+  serviceLocator<GetTemporaryDeleteScheduleUsecase>().invoke();
+  Navigator.of(context).pop(true);
+}
+
+cancelToDeleteSchedule(BuildContext context) {
+  serviceLocator<GetTemporaryDeleteScheduleUsecase>().invoke();
+  Navigator.of(context).pop(true);
 }
