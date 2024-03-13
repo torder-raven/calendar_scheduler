@@ -27,11 +27,9 @@ class ScheduleRegisterBottomSheet extends StatefulWidget {
 
 class _ScheduleRegisterBottomSheetState
     extends State<ScheduleRegisterBottomSheet> {
-  // DateTime currentDateTime = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
-    // currentDateTime = widget.selectedDate;
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
     return Padding(
