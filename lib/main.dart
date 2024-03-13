@@ -12,7 +12,7 @@ void main() async {
 
   runApp(
     MaterialApp(
-      home: const HomeScreen(),
+      home: HomeScreen(),
       theme: calendarTheme,
     ),
   );
