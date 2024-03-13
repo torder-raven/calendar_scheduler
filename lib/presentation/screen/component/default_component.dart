@@ -13,6 +13,7 @@ class DefaultComponent {
   );
 
   static SizedBox defaultSizedBox = SizedBox(width: 16.0);
+  static SizedBox defaultHeightSizedBox = const SizedBox(height: 8.0);
   static EdgeInsets defaultPaddingSize = EdgeInsets.all(20.0);
   static double defaultCircleSize =  16.0;
 

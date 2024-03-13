@@ -1,6 +1,8 @@
 import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:calendar_scheduler/presentation/screen/component/calendar.dart';
-import 'package:calendar_scheduler/presentation/screen/component/calendar.dart';
+import 'package:calendar_scheduler/presentation/screen/component/date_banner.dart';
+import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
+import 'package:calendar_scheduler/presentation/screen/component/schedule_list_view.dart';
 import 'package:calendar_scheduler/presentation/screen/temp_delete/temp_delete_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -28,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Scaffold(
         appBar: homeScreenAppBar(
@@ -45,6 +48,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 selectedDay: _selectedDay,
                 onDaySelected: onDaySelected,
               ),
+              DefaultComponent.defaultHeightSizedBox,
+              DateBanner(
+                date: _selectedDay,
+              ),
+              DefaultComponent.defaultHeightSizedBox,
+              ScheduleListView(
+                date: _selectedDay,
+              )
             ],
           ),
         ),
