@@ -13,12 +13,12 @@ final calendarTheme = ThemeData(
 final defaultTextTheme = TextTheme(
   displayMedium: TextStyle(
       fontWeight: FontWeight.w600,
-      color: Colors.white,
+      color: Colors.black54,
       fontSize: 16.0,
     ),
   displaySmall: TextStyle(
     fontWeight: FontWeight.w600,
-    color: Colors.white,
+    color: Colors.black54,
     fontSize: 10.0,
   ),
 );
