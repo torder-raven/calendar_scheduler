@@ -25,8 +25,10 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
 
   @override
   Future<List<Schedule>> getScheduleByColor({required int colorCode}) {
-    // TODO: implement getScheduleByColor
-    throw UnimplementedError();
+    return _db.getAllScheduleByColorCode(colorCode: colorCode).then(
+        (scheduleDaoDataList) => scheduleDaoDataList
+            .map((scheduleDaoData) => scheduleDaoData.toSchedule())
+            .toList());
   }
 
   @override
@@ -58,7 +60,7 @@ extension _ScheduleDaoDataMapper on ScheduleDaoData {
         date: date,
         startTime: startTime,
         endTime: endTime,
-        colorCode: colorHexCode,
+        colorCode: colorCode,
         content: content,
         id: id,
       );
@@ -74,6 +76,6 @@ extension _ScheduleMapper on Schedule {
         date: Value(date),
         startTime: Value(startTime),
         endTime: Value(endTime),
-        colorHexCode: Value(colorCode),
+        colorCode: Value(colorCode),
       );
 }

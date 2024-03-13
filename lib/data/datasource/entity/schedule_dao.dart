@@ -22,7 +22,7 @@ class ScheduleDao extends Table {
   IntColumn get endTime => integer()();
 
   // 일정 컬러 코드
-  IntColumn get colorHexCode => integer()();
+  IntColumn get colorCode => integer()();
 
   // 삭제된 일정인지?
   BoolColumn get isDeleted => boolean().clientDefault(() => false)();

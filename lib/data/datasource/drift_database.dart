@@ -23,26 +23,32 @@ const _DB_FILE_NAME = "db.sqlite";
 class LocalDataBase extends _$LocalDataBase {
   LocalDataBase() : super(_openConnection());
 
-  // Stream 방식으로 모든 Schedule 읽기
+  // Stream 방식으로 모든 Schedule 조회
   Stream<List<ScheduleDaoData>> getAllScheduleAsStream() =>
       select(scheduleDao).watch();
 
-  // Future 방식으로 모든 Schedule 읽기
+  // Future 방식으로 모든 Schedule 조회
   Future<List<ScheduleDaoData>> getAllSchedule() => select(scheduleDao).get();
 
-  // Future 방식으로 특정 조건(Date)에 맞는 Schedule 읽기
+  // Future 방식으로 특정 조건(Date)에 맞는 Schedule 조회
   Future<List<ScheduleDaoData>> getAllScheduleByDateTime({
     required DateTime datetime,
   }) =>
       (select(scheduleDao)..where((tbl) => tbl.date.equals(datetime))).get();
+
+  // Future 방식으로 특정 조건(colorCode)에 맞는 Schedule 조회
+  Future<List<ScheduleDaoData>> getAllScheduleByColorCode({
+    required int colorCode,
+  }) =>
+      (select(scheduleDao)..where((tbl) => tbl.colorCode.equals(colorCode)))
+          .get();
 
   // Schedule 생성
   Future<int> registerSchedule(ScheduleDaoCompanion data) =>
       into(scheduleDao).insert(data);
 
   // Schedule 모두 삭제
-  Future<int> deleteSchedule() =>
-      delete(scheduleDao).go();
+  Future<int> deleteSchedule() => delete(scheduleDao).go();
 
   // 특정 조건(scheduleId)을 가진 Schedule 삭제
   Future<int> deleteScheduleById({required int scheduleId}) =>
