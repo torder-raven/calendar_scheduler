@@ -6,5 +6,5 @@ class GetAllScheduleUsecase {
 
   GetAllScheduleUsecase({required ScheduleRepository repository}) : _repository = repository;
 
-  Future<List<Schedule>> invoke(DateTime date) async => await _repository.getAllSchedule(date: date);
+  Stream<List<Schedule>> invoke(DateTime date) => _repository.getAllSchedule(date: date);
 }

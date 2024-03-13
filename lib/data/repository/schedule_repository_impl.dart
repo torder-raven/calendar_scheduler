@@ -19,12 +19,12 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   }
 
   @override
-  Future<List<Schedule>> getAllSchedule({required DateTime date}) {
+  Stream<List<Schedule>> getAllSchedule({required DateTime date}) {
     return _db
         .getAllScheduleByDateTime(
           datetime: date,
         )
-        .then((scheduleDaoDataList) => scheduleDaoDataList
+        .map((scheduleDaoDataList) => scheduleDaoDataList
             .map((scheduleDaoData) => scheduleDaoData.toSchedule())
             .toList());
   }

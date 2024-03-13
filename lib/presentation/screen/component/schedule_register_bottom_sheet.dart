@@ -165,7 +165,7 @@ class _SaveScheduleButton extends StatelessWidget {
             ),
           ),
           child: Text(
-            Strings.TEXT_SAVE,
+            Strings.SAVE,
             style: TextStyle(color: Colors.white),
           ),
         ));
