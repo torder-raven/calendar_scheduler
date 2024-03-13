@@ -2,14 +2,10 @@ import 'package:calendar_scheduler/domain/usecase/register_schedule.dart';
 import 'package:calendar_scheduler/presentation/const/colors.dart';
 import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:calendar_scheduler/presentation/screen/component/time_input_field.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
 import '../../../di/locator.dart';
 import '../../../domain/entity/schedule.dart';
-import '../../../domain/repository/schedule_repository.dart';
-import '../../../domain/usecase/get_all_schedule.dart';
 import '../../const/strings.dart';
 import 'color_selection_field.dart';
 import 'content_input_field.dart';
@@ -160,7 +156,9 @@ class _SaveScheduleButton extends StatelessWidget {
     return SizedBox(
         width: double.infinity,
         child: ElevatedButton(
-          onPressed: saveSchedule,
+          onPressed: () {
+            saveSchedule(context);
+          },
           style: ElevatedButton.styleFrom(
             elevation: 0,
             backgroundColor: ColorResource.BUTTON_NORMAL_COLOR,
@@ -175,7 +173,7 @@ class _SaveScheduleButton extends StatelessWidget {
         ));
   }
 
-  Future<void> saveSchedule() async {
+  Future<void> saveSchedule(BuildContext context) async {
     final registerSchedule = serviceLocator<RegisterScheduleUsecase>();
     final schedule = Schedule(
       date: currentDateTime,
@@ -186,5 +184,6 @@ class _SaveScheduleButton extends StatelessWidget {
       id: 0,
     );
     await registerSchedule.invoke(schedule: schedule);
+    Navigator.of(context).pop();
   }
 }
