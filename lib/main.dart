@@ -13,8 +13,6 @@ void main() async {
   await initializeDateFormatting();
   initServiceLocator();
 
-  await testFunction();
-
   runApp(
     MaterialApp(
       home: HomeScreen(),
