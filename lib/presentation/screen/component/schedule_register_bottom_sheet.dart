@@ -7,10 +7,17 @@ import '../../const/strings.dart';
 import 'color_selection_field.dart';
 import 'content_input_field.dart';
 
-class ScheduleRegisterBottomSheet extends StatelessWidget {
+class ScheduleRegisterBottomSheet extends StatefulWidget {
   final DateTime selectedDate;
 
   const ScheduleRegisterBottomSheet({super.key, required this.selectedDate});
+
+  @override
+  State<ScheduleRegisterBottomSheet> createState() => _ScheduleRegisterBottomSheetState();
+}
+
+class _ScheduleRegisterBottomSheetState extends State<ScheduleRegisterBottomSheet> {
+  int selectedColorId = ColorResource.selectorColors[0].value;
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +35,13 @@ class ScheduleRegisterBottomSheet extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _BottomSheetHeader(
-                selectedDate: selectedDate,
+                selectedDate: widget.selectedDate,
               ),
-              ColorSelectionField(colorCode: 0),
+              ColorSelectionField(selectedColorId: selectedColorId, colorIdSetter: (int id) {
+                setState(() {
+                   selectedColorId = id;
+                });
+              },),
               Spacer(),
               _TimeInputRenderer(),
               Spacer(),
@@ -44,6 +55,8 @@ class ScheduleRegisterBottomSheet extends StatelessWidget {
     );
   }
 }
+
+typedef ColorIdSetter = void Function(int id);
 
 class _BottomSheetHeader extends StatelessWidget {
   final DateTime selectedDate;

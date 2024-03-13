@@ -21,7 +21,6 @@ class ColorResource {
   static const SELECT_COLOR_BLUE = Colors.blue;
   static const SELECT_COLOR_INDIGO = Colors.indigo;
   static const SELECT_COLOR_PURPLE = Colors.purple;
-  static const SELECT_COLOR_BLACK = Colors.black;
 
   static List<Color> selectorColors = [
     ColorResource.SELECT_COLOR_RED,
@@ -31,6 +30,5 @@ class ColorResource {
     ColorResource.SELECT_COLOR_BLUE,
     ColorResource.SELECT_COLOR_INDIGO,
     ColorResource.SELECT_COLOR_PURPLE,
-    ColorResource.SELECT_COLOR_BLACK,
   ];
 }
