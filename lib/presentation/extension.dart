@@ -7,6 +7,8 @@ extension IntExtension on int {
 
     return "${(this ~/ minuteInHour)}:${(this % minuteInHour).toString().padLeft(2, defaultPadString)}";
   }
+
+  String addUnit(String unit) => "$this$unit";
 }
 
 extension DateTimeExtension on DateTime {

@@ -47,7 +47,7 @@ class DateBanner extends StatelessWidget {
           }
 
           return Text(
-            "$count개",
+            count.addUnit(Strings.DATE_COUNT_UNIT),
             style: style,
           );
         });
