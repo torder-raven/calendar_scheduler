@@ -30,16 +30,24 @@ class _TimeInputFieldState extends State<TimeInputField> {
       children: [
         Text(
           widget.selectedTimeType,
+          style: TextStyle(
+            color: ColorResource.INPUT_TEXT_LABEL_COLOR,
+            fontWeight: FontWeight.w600,
+            fontSize: 14.0,
+          ),
+        ),
+        SizedBox(
+          height: 6.0,
         ),
         TextField(
+          enabled: false,
           cursorColor: Colors.grey,
           style: textStyle,
           decoration: InputDecoration(
             isDense: true,
+            border: outlineInputBorder,
             contentPadding:
                 EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-            enabledBorder: outlineInputBorder,
-            focusedBorder: outlineInputBorder,
             filled: false,
             fillColor: Colors.white,
             hintText: "AM 00:00",

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../presentation/const/colors.dart';
 import '../presentation/const/strings.dart';
 
-
 class ColorSelectionField extends StatefulWidget {
   final int colorCode;
   const ColorSelectionField({super.key, required this.colorCode});
@@ -20,7 +19,11 @@ class _ColorSelectionFieldState extends State<ColorSelectionField> {
       children: [
         Text(
           Strings.LABEL_COLOR,
-          style: TextStyle(fontWeight: FontWeight.w600),
+          style: TextStyle(
+            color: ColorResource.INPUT_TEXT_LABEL_COLOR,
+            fontWeight: FontWeight.w600,
+            fontSize: 14.0,
+          ),
         ),
         SizedBox(
           height: 6.0,

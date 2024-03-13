@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../presentation/const/colors.dart';
 import '../presentation/const/strings.dart';
 
-
 class ContentInputField extends StatelessWidget {
   const ContentInputField({super.key});
 
@@ -26,7 +25,11 @@ class ContentInputField extends StatelessWidget {
       children: [
         Text(
           Strings.LABEL_CONTENT,
-          style: textStyle,
+          style: TextStyle(
+            color: ColorResource.INPUT_TEXT_LABEL_COLOR,
+            fontWeight: FontWeight.w600,
+            fontSize: 14.0,
+          ),
         ),
         const SizedBox(
           height: 6.0,
@@ -36,6 +39,9 @@ class ContentInputField extends StatelessWidget {
           maxLines: 3,
           style: textStyle,
           decoration: InputDecoration(
+            isDense: true,
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
             enabledBorder: outlineInputBorder,
             focusedBorder: outlineInputBorder,
             filled: false,
