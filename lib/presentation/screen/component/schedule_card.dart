@@ -1,5 +1,6 @@
 import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:flutter/material.dart';
+
 import 'default_component.dart';
 
 class ScheduleCard extends StatelessWidget {
@@ -29,7 +30,6 @@ class ScheduleCard extends StatelessWidget {
               _Time(
                 startTime: startTime,
                 endTime: endTime,
-                color: color,
               ),
               DefaultComponent.defaultSizedBox,
               _Content(
@@ -50,33 +50,31 @@ class ScheduleCard extends StatelessWidget {
 class _Time extends StatelessWidget {
   final int startTime;
   final int endTime;
-  final int color;
 
   const _Time({
     required this.startTime,
     required this.endTime,
-    required this.color,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    final theme = Theme.of(context);
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "${startTime.intTimeToTimeString()}~",
-          style: Theme.of(context)
-              .textTheme
-              .displayMedium
-              ?.copyWith(color: Color(color)),
+          startTime.intTimeToTimeString(),
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: theme.primaryColor,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         Text(
           endTime.intTimeToTimeString(),
-          style: Theme.of(context)
-              .textTheme
-              .displayMedium
-              ?.copyWith(color: Color(color)),
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.primaryColor,
+          ),
         ),
       ],
     );
@@ -96,7 +94,7 @@ class _Content extends StatelessWidget {
     return Expanded(
       child: Text(
         content,
-        style: Theme.of(context).textTheme.displayMedium,
+        style: Theme.of(context).textTheme.bodyMedium,
       ),
     );
   }
