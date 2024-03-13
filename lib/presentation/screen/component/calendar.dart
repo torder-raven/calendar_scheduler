@@ -9,7 +9,7 @@ class Calendar extends StatelessWidget {
   final DateTime focusedDay;
   final DateTime firstDay;
   final DateTime lastDay;
-  final DateTime? selectedDay;
+  final DateTime selectedDay;
   final OnDaySelected onDaySelected;
 
   const Calendar({
@@ -49,11 +49,9 @@ class Calendar extends StatelessWidget {
   }
 
   bool selectedDayPredicate(DateTime date) {
-    if (selectedDay == null) return false;
-
-    return date.year == selectedDay!.year &&
-        date.month == selectedDay!.month &&
-        date.day == selectedDay!.day;
+    return date.year == selectedDay.year &&
+        date.month == selectedDay.month &&
+        date.day == selectedDay.day;
   }
 
   Widget defaultDayWidget({
