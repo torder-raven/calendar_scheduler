@@ -6,28 +6,23 @@ import '../../../di/locator.dart';
 import '../../../domain/entity/schedule.dart';
 import '../../const/strings.dart';
 
-class TempDeleteItem extends StatefulWidget {
+class TempDeleteItem extends StatelessWidget {
   final Schedule schedule;
 
   const TempDeleteItem({super.key, required this.schedule});
 
   @override
-  State<TempDeleteItem> createState() => _TempDeleteItemState();
-}
-
-class _TempDeleteItemState extends State<TempDeleteItem> {
-  @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: ObjectKey(widget.schedule.id),
+      key: ObjectKey(schedule.id),
       direction: DismissDirection.horizontal,
-      confirmDismiss: (direction) => showTempDeleteDialog(widget.schedule.id, context),
+      confirmDismiss: (direction) => showTempDeleteDialog(schedule.id, context),
       child: GestureDetector(
         child: ScheduleCard(
-          startTime: widget.schedule.startTime,
-          endTime: widget.schedule.endTime,
-          content: widget.schedule.content,
-          color: widget.schedule.colorCode,
+          startTime: schedule.startTime,
+          endTime: schedule.endTime,
+          content: schedule.content,
+          color: schedule.colorCode,
         ),
       ),
     );
