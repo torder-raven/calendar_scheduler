@@ -8,6 +8,10 @@ class ColorResource {
   static final DARK_GRAY_COLOR = Colors.grey[600];
   static final TEXT_FIELD_FILL_COLOR = Colors.grey[300];
 
+  static const INPUT_TEXT_FIELD_FILL_COLOR = Colors.black;
+  static const INPUT_TEXT_FIELD_BORDER_COLOR = Color(0xFFE5E6EB);
+  static const INPUT_TEXT_FIELD_HINT_COLOR = Color(0xFFABAFBF);
+
   static const SELECT_COLOR_RED = Colors.red;
   static const SELECT_COLOR_ORANGE = Colors.orange;
   static const SELECT_COLOR_YELLOW = Colors.yellow;
