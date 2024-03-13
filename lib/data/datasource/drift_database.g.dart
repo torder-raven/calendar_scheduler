@@ -3,12 +3,12 @@
 part of 'drift_database.dart';
 
 // ignore_for_file: type=lint
-class $SchedulesTable extends Schedules
-    with TableInfo<$SchedulesTable, Schedule> {
+class $ScheduleEntitiesTable extends ScheduleEntities
+    with TableInfo<$ScheduleEntitiesTable, ScheduleEntity> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $SchedulesTable(this.attachedDatabase, [this._alias]);
+  $ScheduleEntitiesTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -90,9 +90,9 @@ class $SchedulesTable extends Schedules
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'schedules';
+  static const String $name = 'schedule_entities';
   @override
-  VerificationContext validateIntegrity(Insertable<Schedule> instance,
+  VerificationContext validateIntegrity(Insertable<ScheduleEntity> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -149,9 +149,9 @@ class $SchedulesTable extends Schedules
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Schedule map(Map<String, dynamic> data, {String? tablePrefix}) {
+  ScheduleEntity map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Schedule(
+    return ScheduleEntity(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
       content: attachedDatabase.typeMapping
@@ -174,12 +174,12 @@ class $SchedulesTable extends Schedules
   }
 
   @override
-  $SchedulesTable createAlias(String alias) {
-    return $SchedulesTable(attachedDatabase, alias);
+  $ScheduleEntitiesTable createAlias(String alias) {
+    return $ScheduleEntitiesTable(attachedDatabase, alias);
   }
 }
 
-class Schedule extends DataClass implements Insertable<Schedule> {
+class ScheduleEntity extends DataClass implements Insertable<ScheduleEntity> {
   final int id;
   final String content;
   final DateTime date;
@@ -189,7 +189,7 @@ class Schedule extends DataClass implements Insertable<Schedule> {
   final bool isDeleted;
   final bool isDone;
   final DateTime createAt;
-  const Schedule(
+  const ScheduleEntity(
       {required this.id,
       required this.content,
       required this.date,
@@ -214,8 +214,8 @@ class Schedule extends DataClass implements Insertable<Schedule> {
     return map;
   }
 
-  SchedulesCompanion toCompanion(bool nullToAbsent) {
-    return SchedulesCompanion(
+  ScheduleEntitiesCompanion toCompanion(bool nullToAbsent) {
+    return ScheduleEntitiesCompanion(
       id: Value(id),
       content: Value(content),
       date: Value(date),
@@ -228,10 +228,10 @@ class Schedule extends DataClass implements Insertable<Schedule> {
     );
   }
 
-  factory Schedule.fromJson(Map<String, dynamic> json,
+  factory ScheduleEntity.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Schedule(
+    return ScheduleEntity(
       id: serializer.fromJson<int>(json['id']),
       content: serializer.fromJson<String>(json['content']),
       date: serializer.fromJson<DateTime>(json['date']),
@@ -259,7 +259,7 @@ class Schedule extends DataClass implements Insertable<Schedule> {
     };
   }
 
-  Schedule copyWith(
+  ScheduleEntity copyWith(
           {int? id,
           String? content,
           DateTime? date,
@@ -269,7 +269,7 @@ class Schedule extends DataClass implements Insertable<Schedule> {
           bool? isDeleted,
           bool? isDone,
           DateTime? createAt}) =>
-      Schedule(
+      ScheduleEntity(
         id: id ?? this.id,
         content: content ?? this.content,
         date: date ?? this.date,
@@ -282,7 +282,7 @@ class Schedule extends DataClass implements Insertable<Schedule> {
       );
   @override
   String toString() {
-    return (StringBuffer('Schedule(')
+    return (StringBuffer('ScheduleEntity(')
           ..write('id: $id, ')
           ..write('content: $content, ')
           ..write('date: $date, ')
@@ -302,7 +302,7 @@ class Schedule extends DataClass implements Insertable<Schedule> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Schedule &&
+      (other is ScheduleEntity &&
           other.id == this.id &&
           other.content == this.content &&
           other.date == this.date &&
@@ -314,7 +314,7 @@ class Schedule extends DataClass implements Insertable<Schedule> {
           other.createAt == this.createAt);
 }
 
-class SchedulesCompanion extends UpdateCompanion<Schedule> {
+class ScheduleEntitiesCompanion extends UpdateCompanion<ScheduleEntity> {
   final Value<int> id;
   final Value<String> content;
   final Value<DateTime> date;
@@ -324,7 +324,7 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
   final Value<bool> isDeleted;
   final Value<bool> isDone;
   final Value<DateTime> createAt;
-  const SchedulesCompanion({
+  const ScheduleEntitiesCompanion({
     this.id = const Value.absent(),
     this.content = const Value.absent(),
     this.date = const Value.absent(),
@@ -335,7 +335,7 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
     this.isDone = const Value.absent(),
     this.createAt = const Value.absent(),
   });
-  SchedulesCompanion.insert({
+  ScheduleEntitiesCompanion.insert({
     this.id = const Value.absent(),
     required String content,
     required DateTime date,
@@ -350,7 +350,7 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
         startTime = Value(startTime),
         endTime = Value(endTime),
         colorHexCode = Value(colorHexCode);
-  static Insertable<Schedule> custom({
+  static Insertable<ScheduleEntity> custom({
     Expression<int>? id,
     Expression<String>? content,
     Expression<DateTime>? date,
@@ -374,7 +374,7 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
     });
   }
 
-  SchedulesCompanion copyWith(
+  ScheduleEntitiesCompanion copyWith(
       {Value<int>? id,
       Value<String>? content,
       Value<DateTime>? date,
@@ -384,7 +384,7 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
       Value<bool>? isDeleted,
       Value<bool>? isDone,
       Value<DateTime>? createAt}) {
-    return SchedulesCompanion(
+    return ScheduleEntitiesCompanion(
       id: id ?? this.id,
       content: content ?? this.content,
       date: date ?? this.date,
@@ -432,7 +432,7 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
 
   @override
   String toString() {
-    return (StringBuffer('SchedulesCompanion(')
+    return (StringBuffer('ScheduleEntitiesCompanion(')
           ..write('id: $id, ')
           ..write('content: $content, ')
           ..write('date: $date, ')
@@ -449,10 +449,11 @@ class SchedulesCompanion extends UpdateCompanion<Schedule> {
 
 abstract class _$LocalDataBase extends GeneratedDatabase {
   _$LocalDataBase(QueryExecutor e) : super(e);
-  late final $SchedulesTable schedules = $SchedulesTable(this);
+  late final $ScheduleEntitiesTable scheduleEntities =
+      $ScheduleEntitiesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [schedules];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [scheduleEntities];
 }

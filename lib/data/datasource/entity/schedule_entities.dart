@@ -5,7 +5,7 @@ import '../drift_database.dart';
 /**
  * 일정 데이터 모델
  */
-class Schedules extends Table {
+class ScheduleEntities extends Table {
   // 일정 PK
   IntColumn get id => integer().autoIncrement()();
 
@@ -26,9 +26,6 @@ class Schedules extends Table {
 
   // 삭제된 일정인지?
   BoolColumn get isDeleted => boolean().clientDefault(() => false)();
-
-  // 완료된 일정인지?
-  BoolColumn get isDone => boolean().clientDefault(() => false)();
 
   // 일정 생성 일자
   DateTimeColumn get createAt =>
