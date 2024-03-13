@@ -1,12 +1,19 @@
+import 'package:calendar_scheduler/domain/usecase/register_schedule.dart';
 import 'package:calendar_scheduler/presentation/const/colors.dart';
 import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:calendar_scheduler/presentation/screen/component/time_input_field.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../di/locator.dart';
+import '../../../domain/entity/schedule.dart';
 import '../../const/strings.dart';
 import 'color_selection_field.dart';
 import 'content_input_field.dart';
+
+int currentStartTime = 0;
+int currentEndTime = 0;
+int currentSelectedColorId = ColorResource.selectorColors[0].value;
+String currentContent = "";
 
 class ScheduleRegisterBottomSheet extends StatefulWidget {
   final DateTime selectedDate;
@@ -20,7 +27,6 @@ class ScheduleRegisterBottomSheet extends StatefulWidget {
 
 class _ScheduleRegisterBottomSheetState
     extends State<ScheduleRegisterBottomSheet> {
-  int selectedColorId = ColorResource.selectorColors[0].value;
 
   @override
   Widget build(BuildContext context) {
@@ -41,19 +47,28 @@ class _ScheduleRegisterBottomSheetState
                 selectedDate: widget.selectedDate,
               ),
               ColorSelectionField(
-                selectedColorId: selectedColorId,
+                selectedColorId: currentSelectedColorId,
                 colorIdSetter: (int id) {
                   setState(() {
-                    selectedColorId = id;
+                    currentSelectedColorId = id;
                   });
                 },
               ),
               Spacer(),
               _TimeInputRenderer(),
               Spacer(),
-              ContentInputField(),
+              ContentInputField(
+                contentSetter: (String content) {
+                  setState(() {
+                    currentContent = content;
+                  });
+                },
+              ),
               Spacer(),
-              _SaveScheduleButton(),
+              Container(
+                  child: _SaveScheduleButton(
+                currentDateTime: widget.selectedDate,
+              )),
             ],
           ),
         ),
@@ -62,6 +77,7 @@ class _ScheduleRegisterBottomSheetState
   }
 }
 
+typedef ContentSetter = void Function(String content);
 typedef ColorIdSetter = void Function(int id);
 typedef TimeSetter = void Function(int time);
 
@@ -97,8 +113,6 @@ class _TimeInputRenderer extends StatefulWidget {
 }
 
 class _TimeInputRendererState extends State<_TimeInputRenderer> {
-  int selectedTime = 0;
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -108,18 +122,20 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
             selectedTimeType: Strings.LABEL_START_TIME,
             timeSetter: (int time) {
               setState(() {
-                selectedTime = time;
+                currentStartTime = time;
               });
             },
           ),
         ),
-        SizedBox(width: 4.0),
+        SizedBox(
+          width: 4.0,
+        ),
         Expanded(
           child: TimeInputField(
             selectedTimeType: Strings.LABEL_END_TIME,
             timeSetter: (int time) {
               setState(() {
-                selectedTime = time;
+                currentEndTime = time;
               });
             },
           ),
@@ -130,14 +146,17 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
 }
 
 class _SaveScheduleButton extends StatelessWidget {
-  const _SaveScheduleButton({super.key});
+  final currentDateTime;
+  const _SaveScheduleButton({required this.currentDateTime, super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
         width: double.infinity,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            saveSchedule(context);
+          },
           style: ElevatedButton.styleFrom(
             elevation: 0,
             backgroundColor: ColorResource.BUTTON_NORMAL_COLOR,
@@ -150,5 +169,19 @@ class _SaveScheduleButton extends StatelessWidget {
             style: TextStyle(color: Colors.white),
           ),
         ));
+  }
+
+  Future<void> saveSchedule(BuildContext context) async {
+    final registerSchedule = serviceLocator<RegisterScheduleUsecase>();
+    final schedule = Schedule(
+      date: currentDateTime,
+      startTime: currentStartTime,
+      endTime: currentEndTime,
+      colorCode: currentSelectedColorId,
+      content: currentContent,
+      id: 0,
+    );
+    await registerSchedule.invoke(schedule: schedule);
+    Navigator.of(context).pop();
   }
 }
