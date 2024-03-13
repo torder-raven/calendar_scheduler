@@ -1,9 +1,12 @@
+import 'package:calendar_scheduler/presentation/extension.dart';
+import 'package:calendar_scheduler/presentation/screen/component/calendar.dart';
+import 'package:calendar_scheduler/presentation/screen/component/date_banner.dart';
+import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
+import 'package:calendar_scheduler/presentation/screen/component/schedule_list_view.dart';
 import 'package:flutter/material.dart';
 
 import '../../const/colors.dart';
 import '../component/schedule_register_bottom_sheet.dart';
-import 'package:calendar_scheduler/presentation/extension.dart';
-import 'package:calendar_scheduler/presentation/screen/component/calendar.dart';
 
 final _FIRST_DAY = DateTime.utc(1900);
 final _LAST_DAY = DateTime.utc(3000);
@@ -28,18 +31,24 @@ class _HomeScreenState extends State<HomeScreen> {
     return SafeArea(
       child: Scaffold(
         floatingActionButton: renderFloatingActionButton(),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Calendar(
-                focusedDay: _selectedDay,
-                firstDay: _FIRST_DAY,
-                lastDay: _LAST_DAY,
-                selectedDay: _selectedDay,
-                onDaySelected: onDaySelected,
-              ),
-            ],
-          ),
+        body: Column(
+          children: [
+            Calendar(
+              focusedDay: _selectedDay,
+              firstDay: _FIRST_DAY,
+              lastDay: _LAST_DAY,
+              selectedDay: _selectedDay,
+              onDaySelected: onDaySelected,
+            ),
+            DefaultComponent.defaultHeightSizedBox,
+            DateBanner(
+              date: _selectedDay,
+            ),
+            DefaultComponent.defaultHeightSizedBox,
+            ScheduleListView(
+              date: _selectedDay,
+            ),
+          ],
         ),
       ),
     );
