@@ -1,9 +1,12 @@
 import 'package:calendar_scheduler/domain/usecase/get_all_schedule.dart';
 import 'package:calendar_scheduler/presentation/const/strings.dart';
-import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
-import 'package:calendar_scheduler/presentation/screen/component/schedule_card.dart';
+import 'package:calendar_scheduler/presentation/screen/component/schedule.builder.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+
+import '../../../di/locator.dart';
+import '../../../domain/entity/schedule.dart';
+import '../../../domain/usecase/delete_shcedule.dart';
 
 class ScheduleListView extends StatelessWidget {
   final DateTime date;
@@ -17,42 +20,11 @@ class ScheduleListView extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: StreamBuilder(
-            stream: GetIt.I<GetAllScheduleUsecase>().invoke(date),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-
-              if (snapshot.hasData && snapshot.data!.isEmpty) {
-                return Center(
-                  child: Text(
-                    Strings.EMPTY_SCHEDULE,
-                    style: theme.textTheme.bodyMedium,
-                  ),
-                );
-              }
-
-              final list = snapshot.requireData;
-
-              return ListView.separated(
-                itemBuilder: (BuildContext context, int index) {
-                  final schedule = list[index];
-
-                  return ScheduleCard(
-                    startTime: schedule.startTime,
-                    endTime: schedule.endTime,
-                    content: schedule.content,
-                    color: schedule.colorCode,
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return DefaultComponent.defaultSizedBoxWithHeightSmall;
-                },
-                itemCount: list.length,
-              );
-            }),
+          stream: GetIt.I<GetAllScheduleUsecase>().invoke(date),
+          builder: (context, snapshot) {
+            return buildScheduleList(snapshot, context);
+          },
+        ),
       ),
     );
   }
