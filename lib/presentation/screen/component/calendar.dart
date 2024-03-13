@@ -2,6 +2,8 @@ import 'package:calendar_scheduler/presentation/const/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+const CALENDAR_LOCALE = "ko_KR";
+
 class Calendar extends StatelessWidget {
   final DateTime focusedDay;
   final DateTime firstDay;
@@ -23,6 +25,7 @@ class Calendar extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return TableCalendar(
+      locale: CALENDAR_LOCALE,
       focusedDay: focusedDay,
       firstDay: firstDay,
       lastDay: lastDay,
