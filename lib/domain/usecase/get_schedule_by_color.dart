@@ -6,5 +6,6 @@ class GetScheduleByColorUsecase {
   final ScheduleRepository _repository;
 
   GetScheduleByColorUsecase({required ScheduleRepository repository}) : _repository = repository;
-  Future<void> invoke({required int colorCode}) => _repository.getScheduleByColor(colorCode: colorCode);
+
+  Future<List<Schedule>> invoke({required int colorCode}) async => await _repository.getScheduleByColor(colorCode: colorCode);
 }
