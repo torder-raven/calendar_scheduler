@@ -47,7 +47,7 @@ class ColorSelectionField extends StatelessWidget {
               width: 30.0,
               height: 30.0,
               decoration: BoxDecoration(
-                image: colors[index].value == initialSelectedColorId
+                image: colors[index].value == selectedColorId
                     ? DecorationImage(
                         image: AssetImage("img_check".convertToPngFileFormat()),
                       )

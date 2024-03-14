@@ -22,13 +22,6 @@ int currentId = 0;
 class ScheduleEditBottomSheet extends StatefulWidget {
   final Schedule prevSchedule;
 
-  /*final DateTime prevDateTime;
-  final int prevStartTime;
-  final int prevEndTime;
-  final int prevSelectedColorId;
-  final String prevContent;
-  final int prevId;*/
-
   const ScheduleEditBottomSheet({
     super.key,
     required this.prevSchedule,
@@ -40,6 +33,8 @@ class ScheduleEditBottomSheet extends StatefulWidget {
 }
 
 class _ScheduleEditBottomSheetState extends State<ScheduleEditBottomSheet> {
+  final colors = ColorResource.selectorColors;
+
   @override
   void initState() {
     currentDateTime = widget.prevSchedule.date;
@@ -70,7 +65,8 @@ class _ScheduleEditBottomSheetState extends State<ScheduleEditBottomSheet> {
                 selectedDate: widget.prevSchedule.date,
               ),
               ColorSelectionField(
-                initialSelectedColorId: currentSelectedColorId,
+                colors: colors,
+                selectedColorId: currentSelectedColorId,
                 colorIdSetter: (int id) {
                   setState(() {
                     currentSelectedColorId = id;

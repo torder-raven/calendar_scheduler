@@ -16,7 +16,8 @@ class TempDeleteItem extends StatelessWidget {
   const TempDeleteItem({super.key, required this.schedule});
 
   void tempDeleteItem() {
-    serviceLocator<TemporaryDeleteScheduleUsecase>().invoke(scheduleId: schedule.id);
+    serviceLocator<TemporaryDeleteScheduleUsecase>()
+        .invoke(scheduleId: schedule.id);
   }
 
   @override
@@ -26,13 +27,13 @@ class TempDeleteItem extends StatelessWidget {
       direction: DismissDirection.horizontal,
       confirmDismiss: (direction) => Platform.isAndroid
           ? androidDialog(
-              onConfirm: tempDeleteItem,
-              title: Strings.TEMP_DELETE_CONFIRM_TITLE,
-              context: context)
+          onConfirm: tempDeleteItem,
+          title: Strings.TEMP_DELETE_CONFIRM_TITLE,
+          context: context)
           : iosDialog(
-              onConfirm: tempDeleteItem,
-              title: Strings.TEMP_DELETE_CONFIRM_TITLE,
-              context: context),
+          onConfirm: tempDeleteItem,
+          title: Strings.TEMP_DELETE_CONFIRM_TITLE,
+          context: context),
       child: GestureDetector(
         child: ScheduleCard(
           startTime: schedule.startTime,
@@ -51,8 +52,7 @@ class DeleteItem extends StatelessWidget {
   const DeleteItem({super.key, required this.schedule});
 
   void deleteItem() {
-    serviceLocator<DeleteScheduleUsecase>()
-        .invoke(scheduleId: schedule.id);
+    serviceLocator<DeleteScheduleUsecase>().invoke(scheduleId: schedule.id);
   }
 
   @override
@@ -62,15 +62,15 @@ class DeleteItem extends StatelessWidget {
       direction: DismissDirection.horizontal,
       confirmDismiss: (direction) => Platform.isAndroid
           ? androidDialog(
-              onConfirm: deleteItem,
-              title: Strings.DELETE_CONFIRM_TITLE,
-              context: context,
-            )
+        onConfirm: deleteItem,
+        title: Strings.DELETE_CONFIRM_TITLE,
+        context: context,
+      )
           : iosDialog(
-              onConfirm: deleteItem,
-              title: Strings.DELETE_CONFIRM_TITLE,
-              context: context,
-            ),
+        onConfirm: deleteItem,
+        title: Strings.DELETE_CONFIRM_TITLE,
+        context: context,
+      ),
       child: GestureDetector(
         child: ScheduleCard(
           startTime: schedule.startTime,
@@ -79,6 +79,22 @@ class DeleteItem extends StatelessWidget {
           color: schedule.colorCode,
         ),
       ),
+    );
+  }
+}
+
+class NormalItem extends StatelessWidget {
+  final Schedule schedule;
+
+  const NormalItem({super.key, required this.schedule});
+
+  @override
+  Widget build(BuildContext context) {
+    return ScheduleCard(
+      startTime: schedule.startTime,
+      endTime: schedule.endTime,
+      content: schedule.content,
+      color: schedule.colorCode,
     );
   }
 }
