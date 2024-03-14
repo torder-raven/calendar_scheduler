@@ -22,7 +22,7 @@ class ColorResource {
   static const SELECT_COLOR_INDIGO = Colors.indigo;
   static const SELECT_COLOR_PURPLE = Colors.purple;
 
-  static List<Color> selectorColors = [
+  static const List<Color> selectorColors = [
     ColorResource.SELECT_COLOR_RED,
     ColorResource.SELECT_COLOR_ORANGE,
     ColorResource.SELECT_COLOR_YELLOW,
