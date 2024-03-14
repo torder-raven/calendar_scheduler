@@ -29,8 +29,10 @@ class _TimeInputFieldState extends State<TimeInputField> {
 
   @override
   void initState() {
-    selectedTime = widget.initialTime;
-    _textEditingController.text = selectedTime.intTimeToTimeString();
+    if (widget.initialTime != 0) {
+      selectedTime = widget.initialTime;
+      _textEditingController.text = selectedTime.intTimeToTimeString();
+    }
     super.initState();
   }
 
