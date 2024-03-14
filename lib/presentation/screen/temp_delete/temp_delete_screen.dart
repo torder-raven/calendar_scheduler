@@ -1,5 +1,6 @@
 import 'package:calendar_scheduler/domain/usecase/get_temporary_delete_schedule.dart';
 import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
+import 'package:calendar_scheduler/presentation/screen/temp_delete/temp_delete_screen_app_bar.dart';
 import 'package:flutter/material.dart';
 import '../../../di/locator.dart';
 import '../../const/strings.dart';
@@ -16,11 +17,13 @@ class _TempDeleteScreenState extends State<TempDeleteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: tempDeleteScreenAppBar(
+          theme: Theme.of(context),
+         backPressed: () {  },
+        ),
       body: SafeArea(
         child: Column(
           children: [
-            DefaultComponent.defaultSizedBoxWithHeight,
-            _Title(),
             DefaultComponent.defaultSizedBoxWithHeight,
             _WarningText(),
             DefaultComponent.defaultSizedBoxWithHeight,
@@ -30,17 +33,14 @@ class _TempDeleteScreenState extends State<TempDeleteScreen> {
       ),
     );
   }
-}
-
-class _Title extends StatelessWidget {
-  const _Title({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Text(
-      Strings.TEMP_DELETE_TITLE,
-      style: Theme.of(context).textTheme.titleLarge,
-    );
+  void dispose() {
+    super.dispose();
+  }
+
+  void goToTempDeleteScreen() {
+    Navigator.pop(context);
   }
 }
 
@@ -55,7 +55,7 @@ class _WarningText extends StatelessWidget {
         DefaultComponent.defaultSizedBoxWithHeight,
         Text(
           Strings.TEMP_DELETE_WARNING,
-          style: Theme.of(context).textTheme.displaySmall,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
       ],
     );
@@ -94,7 +94,8 @@ class _ScheduleList extends StatelessWidget {
               separatorBuilder: (context, index) {
                 return DefaultComponent.defaultSizedBoxWithHeight;
               },
-              itemBuilder: (context, index) => DeleteItem(schedule : list[index]),
+              itemBuilder: (context, index) =>
+                  DeleteItem(schedule: list[index]),
             );
           },
         ),
