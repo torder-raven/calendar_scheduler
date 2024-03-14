@@ -7,10 +7,15 @@ import '../../const/colors.dart';
 import '../../const/styles.dart';
 
 class TimeInputField extends StatefulWidget {
+  final int initialTime;
   final String selectedTimeType;
   final TimeSetter timeSetter;
-  TimeInputField(
-      {super.key, required this.selectedTimeType, required this.timeSetter});
+  const TimeInputField({
+    super.key,
+    required this.selectedTimeType,
+    required this.timeSetter,
+    required this.initialTime,
+  });
 
   @override
   State<TimeInputField> createState() => _TimeInputFieldState();
@@ -19,6 +24,13 @@ class TimeInputField extends StatefulWidget {
 class _TimeInputFieldState extends State<TimeInputField> {
   int selectedTime = 0;
   final TextEditingController _textEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    selectedTime = widget.initialTime;
+    _textEditingController.text = selectedTime.intTimeToTimeString();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

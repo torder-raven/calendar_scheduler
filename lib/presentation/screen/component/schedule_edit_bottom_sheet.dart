@@ -16,6 +16,7 @@ int currentStartTime = 0;
 int currentEndTime = 0;
 int currentSelectedColorId = ColorResource.selectorColors[0].value;
 String currentContent = "";
+int currentId = 0;
 
 class ScheduleEditBottomSheet extends StatefulWidget {
   final DateTime prevDateTime;
@@ -23,6 +24,7 @@ class ScheduleEditBottomSheet extends StatefulWidget {
   final int prevEndTime;
   final int prevSelectedColorId;
   final String prevContent;
+  final int prevId;
 
   const ScheduleEditBottomSheet({
     super.key,
@@ -31,6 +33,7 @@ class ScheduleEditBottomSheet extends StatefulWidget {
     required this.prevEndTime,
     required this.prevSelectedColorId,
     required this.prevContent,
+    required this.prevId,
   });
 
   @override
@@ -46,6 +49,7 @@ class _ScheduleEditBottomSheetState extends State<ScheduleEditBottomSheet> {
     currentEndTime = widget.prevEndTime;
     currentSelectedColorId = widget.prevSelectedColorId;
     currentContent = widget.prevContent;
+    currentId = widget.prevId;
     super.initState();
   }
 
@@ -68,7 +72,7 @@ class _ScheduleEditBottomSheetState extends State<ScheduleEditBottomSheet> {
                 selectedDate: widget.prevDateTime,
               ),
               ColorSelectionField(
-                selectedColorId: currentSelectedColorId,
+                initialSelectedColorId: currentSelectedColorId,
                 colorIdSetter: (int id) {
                   setState(() {
                     currentSelectedColorId = id;
@@ -138,6 +142,7 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
       children: [
         Expanded(
           child: TimeInputField(
+            initialTime: currentStartTime,
             selectedTimeType: Strings.LABEL_START_TIME,
             timeSetter: (int time) {
               setState(() {
@@ -151,6 +156,7 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
         ),
         Expanded(
           child: TimeInputField(
+            initialTime: currentEndTime,
             selectedTimeType: Strings.LABEL_END_TIME,
             timeSetter: (int time) {
               setState(() {
@@ -197,7 +203,7 @@ class _SaveScheduleButton extends StatelessWidget {
       endTime: currentEndTime,
       colorCode: currentSelectedColorId,
       content: currentContent,
-      id: 0,
+      id: currentId,
     );
     await updateSchedule.invoke(schedule: schedule);
     Navigator.of(context).pop();

@@ -6,8 +6,9 @@ import '../../const/strings.dart';
 import '../../const/styles.dart';
 
 class ContentInputField extends StatefulWidget {
+  final String initialContent;
   final ContentSetter contentSetter;
-  ContentInputField({super.key, required this.contentSetter});
+  ContentInputField({super.key, required this.contentSetter, required this.initialContent});
 
   @override
   State<ContentInputField> createState() => _ContentInputFieldState();
@@ -19,6 +20,7 @@ class _ContentInputFieldState extends State<ContentInputField> {
   @override
   void initState() {
     super.initState();
+    _textEditingController.text = widget.initialContent;
     _textEditingController.addListener(() {
       widget.contentSetter(_textEditingController.text);
     });
