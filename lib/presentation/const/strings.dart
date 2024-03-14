@@ -12,6 +12,8 @@ class Strings {
   static const CANCEL_TEXT = "취소";
   static const DELETE_CONFIRM_TEXT = "정말 삭제하시겠습니까?";
   static const TEMP_DELETE_WARNING = "*스와이프하면 영구삭제됩니다.";
+  static const TEMP_DELETE_CONFIRM_TITLE = "삭제하시겠습니까?";
+  static const DELETE_CONFIRM_TITLE = "정말 영구 삭제하시겠습니까?";
   static const TEMP_DELETE_TITLE = "휴지통";
   static const DATE_COUNT_UNIT = "개";
   static const LABEL_COLOR = "색상";
@@ -22,3 +24,4 @@ class Strings {
   static const INPUT_ERROR_TIME = "입력 시간을 다시 확인해주세요.";
   static const INPUT_ERROR_CONTENT = "내용을 입력해주세요.";
 }
+
