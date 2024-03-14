@@ -53,9 +53,9 @@ class _ScheduleRegisterBottomSheetState
                   });
                 },
               ),
-              Spacer(),
+              const Spacer(),
               _TimeInputRenderer(),
-              Spacer(),
+              const Spacer(),
               ContentInputField(
                 initialContent: currentContent,
                 contentSetter: (String content) {
@@ -64,16 +64,28 @@ class _ScheduleRegisterBottomSheetState
                   });
                 },
               ),
-              Spacer(),
-              Container(
-                  child: _SaveScheduleButton(
+              const Spacer(),
+              _SaveScheduleButton(
                 currentDateTime: widget.selectedDate,
-              )),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    resetPrevData();
+    super.dispose();
+  }
+
+  void resetPrevData() {
+    currentStartTime = 0;
+    currentEndTime = 0;
+    currentSelectedColorId = ColorResource.selectorColors[0].value;
+    currentContent = "";
   }
 }
 

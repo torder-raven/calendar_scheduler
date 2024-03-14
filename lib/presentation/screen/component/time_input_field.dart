@@ -78,6 +78,7 @@ class _TimeInputFieldState extends State<TimeInputField> {
   @override
   void dispose() {
     _textEditingController.removeListener;
+    _textEditingController.dispose();
     super.dispose();
   }
 
@@ -107,9 +108,7 @@ class _TimeInputFieldState extends State<TimeInputField> {
                     child: CupertinoDatePicker(
                       mode: CupertinoDatePickerMode.time,
                       onDateTimeChanged: (DateTime date) {
-                        setState(() {
                           currentSelectedDateTime = date;
-                        });
                       },
                     ),
                   ),
