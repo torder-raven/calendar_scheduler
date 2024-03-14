@@ -13,6 +13,7 @@ class ColorResource {
   static const INPUT_TEXT_FIELD_BORDER_COLOR = Color(0xFFE5E6EB);
   static const INPUT_TEXT_FIELD_HINT_COLOR = Color(0xFFABAFBF);
   static const BUTTON_NORMAL_COLOR = Color(0xFF262831);
+  static const BUTTON_EDIT_COLOR = Color(0xFF403CFF);
 
   static const SELECT_COLOR_RED = Colors.red;
   static const SELECT_COLOR_ORANGE = Colors.orange;

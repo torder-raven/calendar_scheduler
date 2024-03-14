@@ -2,8 +2,10 @@ import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_register_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../../const/colors.dart';
+import '../../const/strings.dart';
 import '../../const/styles.dart';
 
 class TimeInputField extends StatefulWidget {
@@ -78,29 +80,114 @@ class _TimeInputFieldState extends State<TimeInputField> {
   }
 
   void showTimePickerDialog() {
+    DateTime currentSelectedDateTime = selectedTime.intTimeToDateTime();
     showCupertinoDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) {
-        return Align(
-          alignment: Alignment.center,
-          child: Container(
-            color: Colors.white,
-            height: 300.0,
-            child: CupertinoDatePicker(
-              mode: CupertinoDatePickerMode.time,
-              onDateTimeChanged: (DateTime date) {
-                setState(() {
-                  int totalTime = (date.hour * 60) + date.minute;
-                  selectedTime = totalTime;
-                  widget.timeSetter(totalTime);
-                  _textEditingController.text = totalTime.intTimeToTimeString();
-                });
-              },
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                      ),
+                    ),
+                    height: 200.0,
+                    child: CupertinoDatePicker(
+                      mode: CupertinoDatePickerMode.time,
+                      onDateTimeChanged: (DateTime date) {
+                        setState(() {
+                          currentSelectedDateTime = date;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10),
+                      bottomRight: Radius.circular(10),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  color: Colors.grey, width: 1.0),
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+                          ),
+                          child: const Text(
+                            Strings.CANCEL_TEXT,
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: ElevatedButton(
+                          onPressed: () => {
+                            onSelectTimeEvent(currentSelectedDateTime),
+                            Navigator.of(context).pop()
+                          },
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: ColorResource.BUTTON_NORMAL_COLOR,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.0),
+                            ),
+                          ),
+                          child: const Text(
+                            Strings.SELECT_TEXT,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         );
       },
     );
+  }
+
+  void onSelectTimeEvent(DateTime date) {
+    setState(() {
+      int totalTime = (date.hour * 60) + date.minute;
+      selectedTime = totalTime;
+      widget.timeSetter(totalTime);
+      _textEditingController.text = totalTime.intTimeToTimeString();
+    });
   }
 }
