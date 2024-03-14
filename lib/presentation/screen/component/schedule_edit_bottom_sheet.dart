@@ -20,21 +20,18 @@ String currentContent = "";
 int currentId = 0;
 
 class ScheduleEditBottomSheet extends StatefulWidget {
-  final DateTime prevDateTime;
+  final Schedule prevSchedule;
+
+  /*final DateTime prevDateTime;
   final int prevStartTime;
   final int prevEndTime;
   final int prevSelectedColorId;
   final String prevContent;
-  final int prevId;
+  final int prevId;*/
 
   const ScheduleEditBottomSheet({
     super.key,
-    required this.prevDateTime,
-    required this.prevStartTime,
-    required this.prevEndTime,
-    required this.prevSelectedColorId,
-    required this.prevContent,
-    required this.prevId,
+    required this.prevSchedule,
   });
 
   @override
@@ -45,12 +42,12 @@ class ScheduleEditBottomSheet extends StatefulWidget {
 class _ScheduleEditBottomSheetState extends State<ScheduleEditBottomSheet> {
   @override
   void initState() {
-    currentDateTime = widget.prevDateTime;
-    currentStartTime = widget.prevStartTime;
-    currentEndTime = widget.prevEndTime;
-    currentSelectedColorId = widget.prevSelectedColorId;
-    currentContent = widget.prevContent;
-    currentId = widget.prevId;
+    currentDateTime = widget.prevSchedule.date;
+    currentStartTime = widget.prevSchedule.startTime;
+    currentEndTime = widget.prevSchedule.endTime;
+    currentSelectedColorId = widget.prevSchedule.colorCode;
+    currentContent = widget.prevSchedule.content;
+    currentId = widget.prevSchedule.id;
     super.initState();
   }
 
@@ -70,7 +67,7 @@ class _ScheduleEditBottomSheetState extends State<ScheduleEditBottomSheet> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _BottomSheetHeader(
-                selectedDate: widget.prevDateTime,
+                selectedDate: widget.prevSchedule.date,
               ),
               ColorSelectionField(
                 initialSelectedColorId: currentSelectedColorId,

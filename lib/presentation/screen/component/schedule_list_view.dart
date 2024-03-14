@@ -69,14 +69,7 @@ class ScheduleListView extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
       ),
       builder: (_) {
-        return ScheduleEditBottomSheet(
-          prevDateTime: schedule.date,
-          prevStartTime: schedule.startTime,
-          prevEndTime: schedule.endTime,
-          prevSelectedColorId: schedule.colorCode,
-          prevContent: schedule.content,
-          prevId: schedule.id,
-        );
+        return ScheduleEditBottomSheet(prevSchedule: schedule,);
       },
     );
   }
