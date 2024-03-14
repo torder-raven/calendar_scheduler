@@ -78,8 +78,8 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
           ),
         )
         .then(
-          (temporaryDeletedScheduleId) => _db.deleteScheduleById(
-            scheduleId: temporaryDeletedScheduleId,
+          (_) => _db.deleteScheduleById(
+            scheduleId: scheduleId,
           ),
         );
   }
@@ -121,7 +121,6 @@ extension _ScheduleDaoDataMapper on ScheduleDaoData {
         startTime: Value(startTime),
         endTime: Value(endTime),
         colorCode: Value(colorCode),
-        id: Value(id),
       );
 }
 
