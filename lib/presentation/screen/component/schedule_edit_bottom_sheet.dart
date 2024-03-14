@@ -8,6 +8,7 @@ import '../../../domain/entity/schedule.dart';
 import '../../../domain/usecase/update_schedule.dart';
 import '../../const/colors.dart';
 import '../../const/strings.dart';
+import '../../util/toast_util.dart';
 import 'color_selection_field.dart';
 import 'content_input_field.dart';
 
@@ -79,9 +80,9 @@ class _ScheduleEditBottomSheetState extends State<ScheduleEditBottomSheet> {
                   });
                 },
               ),
-              Spacer(),
+              const Spacer(),
               _TimeInputRenderer(),
-              Spacer(),
+              const Spacer(),
               ContentInputField(
                 initialContent: currentContent,
                 contentSetter: (String content) {
@@ -90,8 +91,8 @@ class _ScheduleEditBottomSheetState extends State<ScheduleEditBottomSheet> {
                   });
                 },
               ),
-              Spacer(),
-              Container(child: _SaveScheduleButton()),
+              const Spacer(),
+              const _EditScheduleButton(),
             ],
           ),
         ),
@@ -170,8 +171,8 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
   }
 }
 
-class _SaveScheduleButton extends StatelessWidget {
-  const _SaveScheduleButton({super.key});
+class _EditScheduleButton extends StatelessWidget {
+  const _EditScheduleButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +180,7 @@ class _SaveScheduleButton extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton(
           onPressed: () {
-            editSchedule(context);
+            onPressEditEvent(context);
           },
           style: ElevatedButton.styleFrom(
             elevation: 0,
@@ -195,7 +196,31 @@ class _SaveScheduleButton extends StatelessWidget {
         ));
   }
 
-  Future<void> editSchedule(BuildContext context) async {
+  void onPressEditEvent(context) {
+    if (checkInputValidations()) {
+      editSchedule();
+      Navigator.of(context).pop();
+    }
+  }
+
+  bool checkInputValidations() {
+    bool isTimeInputValid() => currentStartTime < currentEndTime;
+    bool isContentInputValid() => currentContent.isNotEmpty;
+
+    if (!isTimeInputValid()) {
+      ToastUtil().showDefaultToast(Strings.INPUT_ERROR_TIME);
+      return false;
+    }
+
+    if (!isContentInputValid()) {
+      ToastUtil().showDefaultToast(Strings.INPUT_ERROR_CONTENT);
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<void> editSchedule() async {
     final updateSchedule = serviceLocator<UpdateScheduleUsecase>();
     final schedule = Schedule(
       date: currentDateTime,
@@ -206,6 +231,5 @@ class _SaveScheduleButton extends StatelessWidget {
       id: currentId,
     );
     await updateSchedule.invoke(schedule: schedule);
-    Navigator.of(context).pop();
   }
 }

@@ -108,7 +108,7 @@ class _TimeInputFieldState extends State<TimeInputField> {
                     child: CupertinoDatePicker(
                       mode: CupertinoDatePickerMode.time,
                       onDateTimeChanged: (DateTime date) {
-                          currentSelectedDateTime = date;
+                        currentSelectedDateTime = date;
                       },
                     ),
                   ),
@@ -185,10 +185,10 @@ class _TimeInputFieldState extends State<TimeInputField> {
 
   void onSelectTimeEvent(DateTime date) {
     setState(() {
-      int totalTime = (date.hour * 60) + date.minute;
-      selectedTime = totalTime;
-      widget.timeSetter(totalTime);
-      _textEditingController.text = totalTime.intTimeToTimeString();
+      selectedTime = (date.hour * 60) + date.minute;
+      if (selectedTime == 0) {selectedTime = (DateTime.now().hour * 60) + (DateTime.now().minute);}
+      widget.timeSetter(selectedTime);
+      _textEditingController.text = selectedTime.intTimeToTimeString();
     });
   }
 }

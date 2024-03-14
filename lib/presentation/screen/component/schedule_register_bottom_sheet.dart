@@ -2,6 +2,7 @@ import 'package:calendar_scheduler/domain/usecase/register_schedule.dart';
 import 'package:calendar_scheduler/presentation/const/colors.dart';
 import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:calendar_scheduler/presentation/screen/component/time_input_field.dart';
+import 'package:calendar_scheduler/presentation/util/toast_util.dart';
 import 'package:flutter/material.dart';
 
 import '../../../di/locator.dart';
@@ -169,7 +170,7 @@ class _SaveScheduleButton extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton(
           onPressed: () {
-            saveSchedule(context);
+            onPressSaveEvent(context);
           },
           style: ElevatedButton.styleFrom(
             elevation: 0,
@@ -185,7 +186,31 @@ class _SaveScheduleButton extends StatelessWidget {
         ));
   }
 
-  Future<void> saveSchedule(BuildContext context) async {
+  void onPressSaveEvent(context) {
+    if (checkInputValidations()) {
+      saveSchedule();
+      Navigator.of(context).pop();
+    }
+  }
+
+  bool checkInputValidations() {
+    bool isTimeInputValid() => currentStartTime < currentEndTime;
+    bool isContentInputValid() => currentContent.isNotEmpty;
+
+    if (!isTimeInputValid()) {
+      ToastUtil().showDefaultToast(Strings.INPUT_ERROR_TIME);
+      return false;
+    }
+
+    if (!isContentInputValid()) {
+      ToastUtil().showDefaultToast(Strings.INPUT_ERROR_CONTENT);
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<void> saveSchedule() async {
     final registerSchedule = serviceLocator<RegisterScheduleUsecase>();
     final schedule = Schedule(
       date: currentDateTime,
@@ -195,6 +220,5 @@ class _SaveScheduleButton extends StatelessWidget {
       content: currentContent,
     );
     await registerSchedule.invoke(schedule: schedule);
-    Navigator.of(context).pop();
   }
 }
