@@ -8,6 +8,8 @@ class Strings {
   static const CANCEL = "CANCEL";
   static const SAVE = "저장";
   static const EDIT = "수정";
+  static const SELECT_TEXT = "선택하기";
+  static const CANCEL_TEXT = "취소";
   static const DELETE_CONFIRM_TEXT = "정말 삭제하시겠습니까?";
   static const TEMP_DELETE_WARNING = "*스와이프하면 영구삭제됩니다.";
   static const TEMP_DELETE_TITLE = "휴지통";
