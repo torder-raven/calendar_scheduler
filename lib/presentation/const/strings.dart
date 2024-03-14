@@ -17,4 +17,5 @@ class Strings {
   static const LABEL_START_TIME = "시작일";
   static const LABEL_END_TIME = "마감일";
   static const CONTENT_HINT_TEXT = "오늘은 어떤 하루였나요?";
+  static const SCHEDULE_FILTER_TITLE = "일정필터";
 }

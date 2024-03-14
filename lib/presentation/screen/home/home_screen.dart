@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: homeAppBar(
         context: context,
+        onFilterPressed: goToFilterScheduleScreen,
         onDeletePressed: goToTempDeleteScreen,
       ),
       floatingActionButton: renderFloatingActionButton(),
@@ -69,12 +70,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   AppBar homeAppBar({
     required BuildContext context,
+    required VoidCallback onFilterPressed,
     required VoidCallback onDeletePressed,
   }) {
     return appBar(
       context: context,
       title: Strings.TITLE,
       actions: [
+        IconButton(
+          onPressed: onFilterPressed,
+          icon: const Icon(
+            Icons.filter_list_alt,
+            color: Colors.white,
+          ),
+        ),
         IconButton(
           icon: const Icon(
             Icons.delete,
@@ -84,6 +93,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ],
     );
+  }
+
+  void goToFilterScheduleScreen() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return const ScheduleFilterScreen();
+    }));
   }
 
   void goToTempDeleteScreen() {
