@@ -11,6 +11,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
     required LocalDataBase db,
   }) : _db = db;
 
+  /// 일정 삭제
   @override
   Future<void> deleteSchedule({required int scheduleId}) {
     return _db.deleteScheduleById(
@@ -18,6 +19,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
     );
   }
 
+  /// 전체 일정 가져오기
   @override
   Stream<List<Schedule>> getAllSchedule({required DateTime date}) {
     return _db
@@ -29,6 +31,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
             .toList());
   }
 
+  /// 특정 Color에 해당하는 일정 가져오기
   @override
   Future<List<Schedule>> getScheduleByColor({required int colorCode}) {
     return _db
@@ -40,6 +43,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
             .toList());
   }
 
+  /// 휴지통(삭제 처리된)에 있는 일정 가져오기
   @override
   Future<List<Schedule>> getTemporaryDeleteSchedule() {
     return _db.getAllScheduleByDeleted().then((scheduleDaoDataList) =>
@@ -48,14 +52,15 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
             .toList());
   }
 
+  /// 일정 생성
   @override
   Future<void> registerSchedule({required Schedule schedule}) {
-    _db.getAllSchedule().then((value) => print(value.length));
     return _db.registerSchedule(
       schedule.toRegisterScheduleDao(),
     );
   }
 
+  /// 특정 일정을 삭제 처리함
   @override
   Future<void> temporaryDeleteSchedule({required int scheduleId}) {
     return _db
@@ -69,6 +74,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
             ));
   }
 
+  /// 알정 업데이트
   @override
   Future<void> updateSchedule({required Schedule schedule}) {
     return _db.updateScheduleById(

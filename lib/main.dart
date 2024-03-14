@@ -9,6 +9,7 @@ void main() async {
 
   await initializeDateFormatting();
   initServiceLocator();
+
   runApp(
     MaterialApp(
       home: HomeScreen(),

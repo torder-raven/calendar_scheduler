@@ -25,16 +25,18 @@ class LocalDataBase extends _$LocalDataBase {
 
   // Stream 방식으로 모든 Schedule 조회
   Stream<List<ScheduleDaoData>> getAllScheduleAsStream() =>
-      select(scheduleDao).watch();
+      (select(scheduleDao)..where((tbl) => tbl.isDeleted.not())).watch();
 
   // Future 방식으로 모든 Schedule 조회
-  Future<List<ScheduleDaoData>> getAllSchedule() => select(scheduleDao).get();
+  Future<List<ScheduleDaoData>> getAllSchedule() =>
+      (select(scheduleDao)..where((tbl) => tbl.isDeleted.not())).get();
 
   // Future 방식으로 특정 조건(Date)에 맞는 Schedule 조회
   Stream<List<ScheduleDaoData>> getAllScheduleByDateTime({
     required DateTime datetime,
   }) =>
       (select(scheduleDao)
+            ..where((tbl) => tbl.isDeleted.not())
             ..where((tbl) => tbl.date.year.equals(datetime.year))
             ..where((tbl) => tbl.date.month.equals(datetime.month))
             ..where((tbl) => tbl.date.day.equals(datetime.day)))
@@ -44,7 +46,9 @@ class LocalDataBase extends _$LocalDataBase {
   Future<List<ScheduleDaoData>> getAllScheduleByColorCode({
     required int colorCode,
   }) =>
-      (select(scheduleDao)..where((tbl) => tbl.colorCode.equals(colorCode)))
+      (select(scheduleDao)
+            ..where((tbl) => tbl.isDeleted.not())
+            ..where((tbl) => tbl.colorCode.equals(colorCode)))
           .get();
 
   // Future 방식으로 특정 조건(isDeleted)에 맞는 Schedule 조회
@@ -55,7 +59,9 @@ class LocalDataBase extends _$LocalDataBase {
   Future<ScheduleDaoData> getScheduleById({
     required int scheduleId,
   }) =>
-      (select(scheduleDao)..where((tbl) => tbl.id.equals(scheduleId)))
+      (select(scheduleDao)
+            ..where((tbl) => tbl.isDeleted.not())
+            ..where((tbl) => tbl.id.equals(scheduleId)))
           .getSingle();
 
   // Schedule 생성
@@ -93,10 +99,4 @@ LazyDatabase _openConnection() {
     );
     return NativeDatabase(dbFile);
   });
-}
-
-extension TEST on Expression<bool> {
-  printDate() {
-    print(isLiteral);
-  }
 }
