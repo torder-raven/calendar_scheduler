@@ -29,6 +29,6 @@ final defaultTextTheme = TextTheme(
   bodySmall: TextStyle(
     fontWeight: FontWeight.w400,
     color: Colors.black54,
-    fontSize: 16.0,
+    fontSize: 14.0,
   )
 );
