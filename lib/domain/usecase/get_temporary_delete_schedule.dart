@@ -6,5 +6,6 @@ class GetTemporaryDeleteScheduleUsecase {
 
   GetTemporaryDeleteScheduleUsecase({required ScheduleRepository repository}) : _repository = repository;
 
-  Future<List<Schedule>> invoke() => _repository.getTemporaryDeleteSchedule();
+List<Schedule>> invoke() => _repository.getTemporaryDeleteSchedule();
+  Stream<List<Schedule>> invoke() => _repository.getTemporaryDeleteSchedule();
 }

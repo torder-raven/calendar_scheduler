@@ -98,3 +98,4 @@ class NormalItem extends StatelessWidget {
     );
   }
 }
+

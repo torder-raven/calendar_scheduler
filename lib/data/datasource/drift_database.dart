@@ -87,9 +87,9 @@ class LocalDataBase extends _$LocalDataBase {
             ))
           .write(data);
 
-  Future<List<TemporaryDeletedScheduleDaoData>>
+  Stream<List<TemporaryDeletedScheduleDaoData>>
   getAllTemporaryDeletedSchedules() =>
-      select(temporaryDeletedScheduleDao).get();
+      select(temporaryDeletedScheduleDao).watch();
 
   Future<int> registerTemporaryDeletedSchedule(
           TemporaryDeletedScheduleDaoCompanion data) =>
