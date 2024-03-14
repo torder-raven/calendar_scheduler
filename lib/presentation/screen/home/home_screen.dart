@@ -1,14 +1,16 @@
+import 'package:calendar_scheduler/presentation/const/strings.dart';
 import 'package:calendar_scheduler/presentation/extension.dart';
+import 'package:calendar_scheduler/presentation/screen/component/app_bar.dart';
 import 'package:calendar_scheduler/presentation/screen/component/calendar.dart';
 import 'package:calendar_scheduler/presentation/screen/component/date_banner.dart';
 import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_list_view.dart';
+import 'package:calendar_scheduler/presentation/screen/filter_screen/schedule_filter_screen.dart';
 import 'package:calendar_scheduler/presentation/screen/temp_delete/temp_delete_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../const/colors.dart';
 import '../component/schedule_register_bottom_sheet.dart';
-import 'home_screen_appbar.dart';
 
 final _FIRST_DAY = DateTime.utc(1900);
 final _LAST_DAY = DateTime.utc(3000);
@@ -31,8 +33,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: homeScreenAppBar(
-        theme: Theme.of(context),
+      appBar: homeAppBar(
+        context: context,
+        onFilterPressed: goToFilterScheduleScreen,
         onDeletePressed: goToTempDeleteScreen,
       ),
       floatingActionButton: renderFloatingActionButton(),
@@ -65,6 +68,39 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  AppBar homeAppBar({
+    required BuildContext context,
+    required VoidCallback onFilterPressed,
+    required VoidCallback onDeletePressed,
+  }) {
+    return appBar(
+      context: context,
+      title: Strings.TITLE,
+      actions: [
+        IconButton(
+          onPressed: onFilterPressed,
+          icon: const Icon(
+            Icons.filter_list_alt,
+            color: Colors.white,
+          ),
+        ),
+        IconButton(
+          icon: const Icon(
+            Icons.delete,
+            color: Colors.white,
+          ),
+          onPressed: onDeletePressed,
+        ),
+      ],
+    );
+  }
+
+  void goToFilterScheduleScreen() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return const ScheduleFilterScreen();
+    }));
+  }
+
   void goToTempDeleteScreen() {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return const TempDeleteScreen();
@@ -83,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           builder: (_) {
             return ScheduleRegisterBottomSheet(
-              selectedDate: _selectedDay
+              selectedDate: _selectedDay,
             );
           },
         );

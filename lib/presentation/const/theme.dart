@@ -7,15 +7,15 @@ const _DEFAULT_FONT = "Pretendard";
 final calendarTheme = ThemeData(
   fontFamily: _DEFAULT_FONT,
   primaryColor: ColorResource.PRIMARY_COLOR,
-  textTheme: defaultTextTheme
+  textTheme: defaultTextTheme,
 );
 
-final defaultTextTheme = TextTheme(
+const defaultTextTheme = TextTheme(
   displayMedium: TextStyle(
-      fontWeight: FontWeight.w600,
-      color: Colors.black54,
-      fontSize: 16.0,
-    ),
+    fontWeight: FontWeight.w600,
+    color: Colors.black54,
+    fontSize: 16.0,
+  ),
   displaySmall: TextStyle(
     fontWeight: FontWeight.w600,
     color: Colors.black54,
@@ -30,5 +30,5 @@ final defaultTextTheme = TextTheme(
     fontWeight: FontWeight.w400,
     color: Colors.black54,
     fontSize: 14.0,
-  )
+  ),
 );

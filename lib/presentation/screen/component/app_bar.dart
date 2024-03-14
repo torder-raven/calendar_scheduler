@@ -1,19 +1,22 @@
-import 'package:calendar_scheduler/presentation/const/strings.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 
-AppBar tempDeleteScreenAppBar({
-  required ThemeData theme,
-  required VoidCallback backPressed,
+AppBar appBar({
+  required BuildContext context,
+  String? title,
+  List<Widget>? actions,
 }) {
+  final theme = Theme.of(context);
   return AppBar(
     title: Text(
-      Strings.TEMP_DELETE_TITLE,
+      title ?? "",
       style: theme.textTheme.headlineMedium!.copyWith(
         fontWeight: FontWeight.w800,
         color: Colors.white,
       ),
     ),
     backgroundColor: theme.primaryColor,
+    actions: actions,
+    iconTheme: const IconThemeData(color: Colors.white),
+    centerTitle: true,
   );
 }

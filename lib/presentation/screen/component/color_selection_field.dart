@@ -2,15 +2,20 @@ import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_register_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
-import '../../const/colors.dart';
 import '../../const/strings.dart';
 import '../../const/styles.dart';
 
 class ColorSelectionField extends StatelessWidget {
-  final int? selectedColorId;
+  final List<Color> colors;
+  final int selectedColorId;
   final ColorIdSetter colorIdSetter;
-  const ColorSelectionField(
-      {super.key, this.selectedColorId, required this.colorIdSetter});
+
+  const ColorSelectionField({
+    super.key,
+    required this.colors,
+    required this.selectedColorId,
+    required this.colorIdSetter,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +35,6 @@ class ColorSelectionField extends StatelessWidget {
   }
 
   Row renderColors() {
-    List<Color> colors = ColorResource.selectorColors;
     return Row(
       children: List.generate(colors.length, (index) {
         return Padding(
