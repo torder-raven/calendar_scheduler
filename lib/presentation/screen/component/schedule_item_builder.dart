@@ -16,7 +16,8 @@ class TempDeleteItem extends StatelessWidget {
   const TempDeleteItem({super.key, required this.schedule});
 
   void tempDeleteItem() {
-    serviceLocator<TemporaryDeleteScheduleUsecase>().invoke(scheduleId: schedule.id);
+    serviceLocator<TemporaryDeleteScheduleUsecase>()
+        .invoke(scheduleId: schedule.id);
   }
 
   @override
@@ -51,8 +52,7 @@ class DeleteItem extends StatelessWidget {
   const DeleteItem({super.key, required this.schedule});
 
   void deleteItem() {
-    serviceLocator<DeleteScheduleUsecase>()
-        .invoke(scheduleId: schedule.id);
+    serviceLocator<DeleteScheduleUsecase>().invoke(scheduleId: schedule.id);
   }
 
   @override
@@ -79,6 +79,22 @@ class DeleteItem extends StatelessWidget {
           color: schedule.colorCode,
         ),
       ),
+    );
+  }
+}
+
+class NormalItem extends StatelessWidget {
+  final Schedule schedule;
+
+  const NormalItem({super.key, required this.schedule});
+
+  @override
+  Widget build(BuildContext context) {
+    return ScheduleCard(
+      startTime: schedule.startTime,
+      endTime: schedule.endTime,
+      content: schedule.content,
+      color: schedule.colorCode,
     );
   }
 }

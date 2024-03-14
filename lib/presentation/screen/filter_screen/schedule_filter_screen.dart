@@ -101,7 +101,7 @@ class _ScheduleListView extends StatelessWidget {
             return DefaultComponent.defaultSizedBoxWithHeight;
           },
           itemBuilder: (context, index) =>
-              TempDeleteItem(schedule: list[index]),
+              NormalItem(schedule: list[index]),
         );
       },
     );
