@@ -42,7 +42,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   @override
   Future<void> registerSchedule({required Schedule schedule}) {
     return _db.registerSchedule(
-      schedule.toRegisterScheduleDao(),
+      schedule.toScheduleDao(),
     );
   }
 
@@ -50,7 +50,7 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   Future<void> updateSchedule({required Schedule schedule}) {
     return _db.updateScheduleById(
       id: schedule.id,
-      data: schedule.toRegisterScheduleDao(),
+      data: schedule.toScheduleDao(),
     );
   }
 
@@ -126,11 +126,21 @@ extension _ScheduleDaoDataMapper on ScheduleDaoData {
 }
 
 extension _ScheduleMapper on Schedule {
-  ScheduleDaoCompanion toRegisterScheduleDao() => ScheduleDaoCompanion(
-        content: Value(content),
-        date: Value(date),
-        startTime: Value(startTime),
-        endTime: Value(endTime),
-        colorCode: Value(colorCode),
-      );
+  ScheduleDaoCompanion toScheduleDao() => switch (id) {
+        Schedule.DEFAULT_ID_VALUE => ScheduleDaoCompanion(
+            content: Value(content),
+            date: Value(date),
+            startTime: Value(startTime),
+            endTime: Value(endTime),
+            colorCode: Value(colorCode),
+          ),
+        _ => ScheduleDaoCompanion(
+            content: Value(content),
+            date: Value(date),
+            startTime: Value(startTime),
+            endTime: Value(endTime),
+            colorCode: Value(colorCode),
+            id: Value(id),
+          )
+      };
 }
