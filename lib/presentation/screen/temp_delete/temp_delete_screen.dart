@@ -84,7 +84,7 @@ class _ScheduleList extends StatelessWidget {
               return Center(
                 child: Text(
                   Strings.EMPTY_SCHEDULE,
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               );
             }
