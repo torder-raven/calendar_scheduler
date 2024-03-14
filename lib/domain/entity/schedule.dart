@@ -1,4 +1,6 @@
 class Schedule {
+  static const DEFAULT_ID_VALUE = -1;
+
   final String content;
   final DateTime date;
   final int startTime;
@@ -12,6 +14,6 @@ class Schedule {
     required this.endTime,
     required this.colorCode,
     required this.content,
-    required this.id
+    this.id = DEFAULT_ID_VALUE,
   });
 }

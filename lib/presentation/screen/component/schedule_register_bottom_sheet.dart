@@ -179,7 +179,6 @@ class _SaveScheduleButton extends StatelessWidget {
       endTime: currentEndTime,
       colorCode: currentSelectedColorId,
       content: currentContent,
-      id: 0,
     );
     await registerSchedule.invoke(schedule: schedule);
     Navigator.of(context).pop();

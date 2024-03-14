@@ -12,48 +12,58 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   }) : _db = db;
 
   @override
-  Future<void> deleteSchedule({required int scheduleId}) {
-    return _db.deleteScheduleById(
-      scheduleId: scheduleId,
-    );
-  }
-
-  @override
   Stream<List<Schedule>> getAllSchedule({required DateTime date}) {
     return _db
-        .getAllScheduleByDateTime(
+        .getAllSchedulesAsStreamByDateTime(
           datetime: date,
         )
-        .map((scheduleDaoDataList) => scheduleDaoDataList
-            .map((scheduleDaoData) => scheduleDaoData.toSchedule())
-            .toList());
+        .map(
+          (scheduleDaoDataList) => scheduleDaoDataList
+              .map(
+                (scheduleDaoData) => scheduleDaoData.toSchedule(),
+              )
+              .toList(),
+        );
   }
 
   @override
   Future<List<Schedule>> getScheduleByColor({required int colorCode}) {
     return _db
-        .getAllScheduleByColorCode(
+        .getAllSchedulesByColorCode(
           colorCode: colorCode,
         )
         .then((scheduleDaoDataList) => scheduleDaoDataList
-            .map((scheduleDaoData) => scheduleDaoData.toSchedule())
-            .toList());
-  }
-
-  @override
-  Future<List<Schedule>> getTemporaryDeleteSchedule() {
-    return _db.getAllScheduleByDeleted().then((scheduleDaoDataList) =>
-        scheduleDaoDataList
-            .map((scheduleDaoData) => scheduleDaoData.toSchedule())
+            .map(
+              (scheduleDaoData) => scheduleDaoData.toSchedule(),
+            )
             .toList());
   }
 
   @override
   Future<void> registerSchedule({required Schedule schedule}) {
-    _db.getAllSchedule().then((value) => print(value.length));
     return _db.registerSchedule(
-      schedule.toRegisterScheduleDao(),
+      schedule.toScheduleDao(),
     );
+  }
+
+  @override
+  Future<void> updateSchedule({required Schedule schedule}) {
+    return _db.updateScheduleById(
+      id: schedule.id,
+      data: schedule.toScheduleDao(),
+    );
+  }
+
+  @override
+  Future<List<Schedule>> getTemporaryDeleteSchedule() {
+    return _db.getAllTemporaryDeletedSchedules().then(
+          (scheduleDaoDataList) => scheduleDaoDataList
+              .map(
+                (temporaryDeletedSchedule) =>
+                    temporaryDeletedSchedule.toSchedule(),
+              )
+              .toList(),
+        );
   }
 
   @override
@@ -62,20 +72,36 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
         .getScheduleById(
           scheduleId: scheduleId,
         )
-        .then((scheduleDaoData) => _db.updateScheduleById(
-              id: scheduleDaoData.id,
-              data:
-                  scheduleDaoData.copyWith(isDeleted: true).toCompanion(false),
-            ));
+        .then(
+          (scheduleDaoData) => _db.registerTemporaryDeletedSchedule(
+            scheduleDaoData.toTemporaryDeletedScheduleDao(),
+          ),
+        )
+        .then(
+          (_) => _db.deleteScheduleById(
+            scheduleId: scheduleId,
+          ),
+        );
   }
 
   @override
-  Future<void> updateSchedule({required Schedule schedule}) {
-    return _db.updateScheduleById(
-      id: schedule.id,
-      data: schedule.toRegisterScheduleDao(),
+  Future<void> deleteSchedule({required int scheduleId}) {
+    return _db.deleteTemporaryDeletedScheduleById(
+      temporaryDeletedScheduleId: scheduleId,
     );
   }
+}
+
+extension _TemporaryDeletedScheduleDaoDataMapper
+    on TemporaryDeletedScheduleDaoData {
+  Schedule toSchedule() => Schedule(
+        date: date,
+        startTime: startTime,
+        endTime: endTime,
+        colorCode: colorCode,
+        content: content,
+        id: id,
+      );
 }
 
 extension _ScheduleDaoDataMapper on ScheduleDaoData {
@@ -87,18 +113,33 @@ extension _ScheduleDaoDataMapper on ScheduleDaoData {
         content: content,
         id: id,
       );
-}
 
-extension _ScheduleMapper on Schedule {
-  /**
-   * Register의 경우 id 값이 포함될 경우 충돌이 발생!
-   * DB에 생성하는 경우에 사용!
-   */
-  ScheduleDaoCompanion toRegisterScheduleDao() => ScheduleDaoCompanion(
+  TemporaryDeletedScheduleDaoCompanion toTemporaryDeletedScheduleDao() =>
+      TemporaryDeletedScheduleDaoCompanion(
         content: Value(content),
         date: Value(date),
         startTime: Value(startTime),
         endTime: Value(endTime),
         colorCode: Value(colorCode),
       );
+}
+
+extension _ScheduleMapper on Schedule {
+  ScheduleDaoCompanion toScheduleDao() => switch (id) {
+        Schedule.DEFAULT_ID_VALUE => ScheduleDaoCompanion(
+            content: Value(content),
+            date: Value(date),
+            startTime: Value(startTime),
+            endTime: Value(endTime),
+            colorCode: Value(colorCode),
+          ),
+        _ => ScheduleDaoCompanion(
+            content: Value(content),
+            date: Value(date),
+            startTime: Value(startTime),
+            endTime: Value(endTime),
+            colorCode: Value(colorCode),
+            id: Value(id),
+          )
+      };
 }
