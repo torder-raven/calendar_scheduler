@@ -1,9 +1,10 @@
 import 'package:calendar_scheduler/di/locator.dart';
 import 'package:calendar_scheduler/domain/usecase/get_all_schedule.dart';
-import 'package:calendar_scheduler/presentation/const/strings.dart';
-import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
-import 'package:calendar_scheduler/presentation/screen/component/schedule_card.dart';
+import 'package:calendar_scheduler/presentation/screen/component/schedule_item_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import '../../const/strings.dart';
+import 'default_component.dart';
 
 class ScheduleListView extends StatelessWidget {
   final DateTime date;
@@ -33,27 +34,23 @@ class ScheduleListView extends StatelessWidget {
                   ),
                 );
               }
+             
+            final list = snapshot.requireData;
 
-              final list = snapshot.requireData;
-
-              return ListView.separated(
-                itemBuilder: (BuildContext context, int index) {
-                  final schedule = list[index];
-
-                  return ScheduleCard(
-                    startTime: schedule.startTime,
-                    endTime: schedule.endTime,
-                    content: schedule.content,
-                    color: schedule.colorCode,
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return DefaultComponent.defaultSizedBoxWithHeightSmall;
-                },
-                itemCount: list.length,
-              );
-            }),
+            return ListView.separated(
+              itemCount: snapshot.data?.length ?? 0,
+              separatorBuilder: (context, index) {
+                return DefaultComponent.defaultSizedBoxWithHeight;
+              },
+              itemBuilder: (context, index) => TempDeleteItem(schedule: list[index]),
+            );
+          },
+        ),
       ),
     );
   }
+
+  @override
+  void dispose() {}
 }
+
