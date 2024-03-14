@@ -27,7 +27,6 @@ class ScheduleRegisterBottomSheet extends StatefulWidget {
 
 class _ScheduleRegisterBottomSheetState
     extends State<ScheduleRegisterBottomSheet> {
-
   @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
@@ -47,7 +46,7 @@ class _ScheduleRegisterBottomSheetState
                 selectedDate: widget.selectedDate,
               ),
               ColorSelectionField(
-                selectedColorId: currentSelectedColorId,
+                initialSelectedColorId: currentSelectedColorId,
                 colorIdSetter: (int id) {
                   setState(() {
                     currentSelectedColorId = id;
@@ -102,7 +101,7 @@ class _BottomSheetHeader extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).pop();
         },
-        icon: Icon(Icons.close),
+        icon: const Icon(Icons.close),
       ),
     ]);
   }
@@ -120,6 +119,7 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
       children: [
         Expanded(
           child: TimeInputField(
+            initialTime: currentStartTime,
             selectedTimeType: Strings.LABEL_START_TIME,
             timeSetter: (int time) {
               setState(() {
@@ -133,6 +133,7 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
         ),
         Expanded(
           child: TimeInputField(
+            initialTime: currentEndTime,
             selectedTimeType: Strings.LABEL_END_TIME,
             timeSetter: (int time) {
               setState(() {

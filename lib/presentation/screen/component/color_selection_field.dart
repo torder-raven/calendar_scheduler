@@ -7,10 +7,10 @@ import '../../const/strings.dart';
 import '../../const/styles.dart';
 
 class ColorSelectionField extends StatelessWidget {
-  final int? selectedColorId;
+  final int? initialSelectedColorId;
   final ColorIdSetter colorIdSetter;
   const ColorSelectionField(
-      {super.key, this.selectedColorId, required this.colorIdSetter});
+      {super.key, this.initialSelectedColorId, required this.colorIdSetter});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class ColorSelectionField extends StatelessWidget {
               width: 30.0,
               height: 30.0,
               decoration: BoxDecoration(
-                image: colors[index].value == selectedColorId
+                image: colors[index].value == initialSelectedColorId
                     ? DecorationImage(
                         image: AssetImage("img_check".convertToPngFileFormat()),
                       )
