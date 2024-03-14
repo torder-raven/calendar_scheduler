@@ -7,6 +7,7 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
+import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 
 part 'drift_database.g.dart';
 
@@ -116,6 +117,12 @@ LazyDatabase _openConnection() {
         _DB_FILE_NAME,
       ),
     );
-    return NativeDatabase(dbFile);
+
+    // Also work around limitations on old Android versions
+    if (Platform.isAndroid) {
+      await applyWorkaroundToOpenSqlite3OnOldAndroidVersions();
+    }
+
+    return NativeDatabase.createInBackground(dbFile);
   });
 }
