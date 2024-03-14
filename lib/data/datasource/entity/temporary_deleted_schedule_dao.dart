@@ -1,8 +1,6 @@
 import 'package:drift/drift.dart';
 
-import '../drift_database.dart';
-
-class ScheduleDao extends Table {
+class TemporaryDeletedScheduleDao extends Table {
   IntColumn get id => integer().autoIncrement()();
 
   TextColumn get content => text()();
