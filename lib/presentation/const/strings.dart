@@ -23,5 +23,6 @@ class Strings {
   static const CONTENT_HINT_TEXT = "오늘은 어떤 하루였나요?";
   static const INPUT_ERROR_TIME = "입력 시간을 다시 확인해주세요.";
   static const INPUT_ERROR_CONTENT = "내용을 입력해주세요.";
+  static const SCHEDULE_FILTER_TITLE = "일정필터";
 }
 

@@ -13,7 +13,7 @@ import 'content_input_field.dart';
 
 int currentStartTime = 0;
 int currentEndTime = 0;
-int currentSelectedColorId = ColorResource.selectorColors[0].value;
+int currentSelectedColorId = 0;
 String currentContent = "";
 
 class ScheduleRegisterBottomSheet extends StatefulWidget {
@@ -28,6 +28,14 @@ class ScheduleRegisterBottomSheet extends StatefulWidget {
 
 class _ScheduleRegisterBottomSheetState
     extends State<ScheduleRegisterBottomSheet> {
+  final colors = ColorResource.selectorColors;
+
+  @override
+  void initState() {
+    super.initState();
+    currentSelectedColorId = colors.first.value;
+  }
+
   @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
@@ -47,7 +55,8 @@ class _ScheduleRegisterBottomSheetState
                 selectedDate: widget.selectedDate,
               ),
               ColorSelectionField(
-                initialSelectedColorId: currentSelectedColorId,
+                colors: colors,
+                selectedColorId: currentSelectedColorId,
                 colorIdSetter: (int id) {
                   setState(() {
                     currentSelectedColorId = id;
@@ -162,6 +171,7 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
 
 class _SaveScheduleButton extends StatelessWidget {
   final currentDateTime;
+
   const _SaveScheduleButton({required this.currentDateTime, super.key});
 
   @override
