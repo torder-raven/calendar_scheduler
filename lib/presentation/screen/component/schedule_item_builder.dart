@@ -1,6 +1,8 @@
 import 'package:calendar_scheduler/domain/usecase/delete_shcedule.dart';
 import 'package:calendar_scheduler/domain/usecase/temporary_delete_schedule.dart';
+import 'package:calendar_scheduler/presentation/const/colors.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../di/locator.dart';
 import '../../../domain/entity/schedule.dart';
@@ -44,7 +46,8 @@ class _DeleteItemState extends State<DeleteItem> {
     return Dismissible(
       key: ObjectKey(widget.schedule.id),
       direction: DismissDirection.horizontal,
-      confirmDismiss: (direction) => showDeleteDialog(widget.schedule.id, context),
+      confirmDismiss: (direction) =>
+          showDeleteDialog(widget.schedule.id, context),
       child: GestureDetector(
         child: ScheduleCard(
           startTime: widget.schedule.startTime,
@@ -58,22 +61,29 @@ class _DeleteItemState extends State<DeleteItem> {
 }
 
 Future<bool?> showDeleteDialog(
-    int sheduleId,
-    BuildContext context,
-    ) {
+  int sheduleId,
+  BuildContext context,
+) {
   return showDialog<bool>(
     context: context,
     builder: (ctx) {
       return AlertDialog(
-        title: const Text(Strings.DELETE_CONFIRM_TEXT),
+        title: Text(
+        Strings.DELETE_CONFIRM_TITLE,
+        style: Theme.of(context)
+            .textTheme
+            .titleMedium
+            ?.copyWith(color: ColorResource.BUTTON_NORMAL_COLOR),
+      ),
         actions: <Widget>[
-          ElevatedButton(
+          TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: const Text(Strings.CANCEL),
           ),
-          ElevatedButton(
+          TextButton(
             onPressed: () => {
-              serviceLocator<DeleteScheduleUsecase>().invoke(scheduleId: sheduleId),
+              serviceLocator<DeleteScheduleUsecase>()
+                  .invoke(scheduleId: sheduleId),
               Navigator.of(context).pop(true)
             },
             child: Text(Strings.DELETE),
@@ -85,22 +95,29 @@ Future<bool?> showDeleteDialog(
 }
 
 Future<bool?> showTempDeleteDialog(
-    int sheduleId,
-    BuildContext context,
-    ) {
+  int sheduleId,
+  BuildContext context,
+) {
   return showDialog<bool>(
     context: context,
     builder: (ctx) {
       return AlertDialog(
-        title: const Text(Strings.TEMP_DELETE_CONFIRM_TEXT),
+        title: Text(
+          Strings.TEMP_DELETE_CONFIRM_TITLE,
+          style: Theme.of(context)
+              .textTheme
+              .titleMedium
+              ?.copyWith(color: ColorResource.BUTTON_NORMAL_COLOR),
+        ),
         actions: <Widget>[
-          ElevatedButton(
+          TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: const Text(Strings.CANCEL),
           ),
-          ElevatedButton(
+          TextButton(
             onPressed: () => {
-              serviceLocator<TemporaryDeleteScheduleUsecase>().invoke(scheduleId: sheduleId),
+              serviceLocator<TemporaryDeleteScheduleUsecase>()
+                  .invoke(scheduleId: sheduleId),
             },
             child: Text(Strings.DELETE),
           ),

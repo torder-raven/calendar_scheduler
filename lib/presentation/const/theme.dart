@@ -21,4 +21,14 @@ final defaultTextTheme = TextTheme(
     color: Colors.black54,
     fontSize: 10.0,
   ),
+  titleMedium: TextStyle(
+    fontWeight: FontWeight.w400,
+    color: Colors.black54,
+    fontSize: 19.0,
+  ),
+  bodySmall: TextStyle(
+    fontWeight: FontWeight.w400,
+    color: Colors.black54,
+    fontSize: 16.0,
+  )
 );
