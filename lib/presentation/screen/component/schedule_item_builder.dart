@@ -27,13 +27,13 @@ class TempDeleteItem extends StatelessWidget {
       direction: DismissDirection.horizontal,
       confirmDismiss: (direction) => Platform.isAndroid
           ? androidDialog(
-              onConfirm: tempDeleteItem,
-              title: Strings.TEMP_DELETE_CONFIRM_TITLE,
-              context: context)
+          onConfirm: tempDeleteItem,
+          title: Strings.TEMP_DELETE_CONFIRM_TITLE,
+          context: context)
           : iosDialog(
-              onConfirm: tempDeleteItem,
-              title: Strings.TEMP_DELETE_CONFIRM_TITLE,
-              context: context),
+          onConfirm: tempDeleteItem,
+          title: Strings.TEMP_DELETE_CONFIRM_TITLE,
+          context: context),
       child: GestureDetector(
         child: ScheduleCard(
           startTime: schedule.startTime,
@@ -62,15 +62,15 @@ class DeleteItem extends StatelessWidget {
       direction: DismissDirection.horizontal,
       confirmDismiss: (direction) => Platform.isAndroid
           ? androidDialog(
-              onConfirm: deleteItem,
-              title: Strings.DELETE_CONFIRM_TITLE,
-              context: context,
-            )
+        onConfirm: deleteItem,
+        title: Strings.DELETE_CONFIRM_TITLE,
+        context: context,
+      )
           : iosDialog(
-              onConfirm: deleteItem,
-              title: Strings.DELETE_CONFIRM_TITLE,
-              context: context,
-            ),
+        onConfirm: deleteItem,
+        title: Strings.DELETE_CONFIRM_TITLE,
+        context: context,
+      ),
       child: GestureDetector(
         child: ScheduleCard(
           startTime: schedule.startTime,
@@ -98,3 +98,4 @@ class NormalItem extends StatelessWidget {
     );
   }
 }
+

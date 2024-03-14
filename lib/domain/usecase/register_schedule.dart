@@ -6,5 +6,5 @@ class RegisterScheduleUsecase {
 
   RegisterScheduleUsecase({required ScheduleRepository repository}) : _repository = repository;
 
-  Future<void> invoke({required Schedule schedule}) async => await _repository.registerSchedule(schedule: schedule);
+  Future<void> invoke({required Schedule schedule}) => _repository.registerSchedule(schedule: schedule);
 }
