@@ -1,7 +1,8 @@
 import 'package:calendar_scheduler/domain/usecase/get_temporary_delete_schedule.dart';
+import 'package:calendar_scheduler/presentation/screen/component/app_bar.dart';
 import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
-import 'package:calendar_scheduler/presentation/screen/temp_delete/temp_delete_screen_app_bar.dart';
 import 'package:flutter/material.dart';
+
 import '../../../di/locator.dart';
 import '../../const/strings.dart';
 import '../component/schedule_item_builder.dart';
@@ -17,10 +18,10 @@ class _TempDeleteScreenState extends State<TempDeleteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: tempDeleteScreenAppBar(
-          theme: Theme.of(context),
-         backPressed: () {  },
-        ),
+      appBar: appBar(
+        context: context,
+        title: Strings.TEMP_DELETE_TITLE,
+      ),
       body: SafeArea(
         child: Column(
           children: [
