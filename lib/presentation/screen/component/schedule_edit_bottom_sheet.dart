@@ -184,7 +184,7 @@ class _EditScheduleButton extends StatelessWidget {
           },
           style: ElevatedButton.styleFrom(
             elevation: 0,
-            backgroundColor: ColorResource.BUTTON_EDIT_COLOR,
+            backgroundColor: ColorResource.BUTTON_NORMAL_COLOR,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(6.0),
             ),
