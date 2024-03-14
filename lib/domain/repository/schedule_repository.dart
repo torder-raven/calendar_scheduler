@@ -7,5 +7,5 @@ abstract interface class ScheduleRepository {
   Future<void> registerSchedule({required Schedule schedule});
   Stream<List<Schedule>> getAllSchedule({required DateTime date});
   Future<List<Schedule>> getScheduleByColor({required int colorCode});
-  Future<List<Schedule>> getTemporaryDeleteSchedule();
+  Stream<List<Schedule>> getTemporaryDeleteSchedule();
 }

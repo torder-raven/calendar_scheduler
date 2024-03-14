@@ -55,8 +55,8 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   }
 
   @override
-  Future<List<Schedule>> getTemporaryDeleteSchedule() {
-    return _db.getAllTemporaryDeletedSchedules().then(
+  Stream<List<Schedule>> getTemporaryDeleteSchedule() {
+    return _db.getAllTemporaryDeletedSchedules().map(
           (scheduleDaoDataList) => scheduleDaoDataList
               .map(
                 (temporaryDeletedSchedule) =>

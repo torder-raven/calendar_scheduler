@@ -71,8 +71,8 @@ class _ScheduleList extends StatelessWidget {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: FutureBuilder(
-          future: serviceLocator<GetTemporaryDeleteScheduleUsecase>().invoke(),
+        child: StreamBuilder(
+          stream: serviceLocator<GetTemporaryDeleteScheduleUsecase>().invoke(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return const Center(
@@ -84,7 +84,7 @@ class _ScheduleList extends StatelessWidget {
               return Center(
                 child: Text(
                   Strings.EMPTY_SCHEDULE,
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               );
             }
