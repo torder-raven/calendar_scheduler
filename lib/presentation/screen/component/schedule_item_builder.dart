@@ -16,7 +16,6 @@ class TempDeleteItem extends StatelessWidget {
   const TempDeleteItem({super.key, required this.schedule});
 
   void tempDeleteItem() {
-    print("1111111");
     serviceLocator<TemporaryDeleteScheduleUsecase>().invoke(scheduleId: schedule.id);
   }
 
