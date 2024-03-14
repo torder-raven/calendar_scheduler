@@ -26,8 +26,8 @@ Future<bool?> androidDialog({
             ),
             TextButton(
                 onPressed: () {
+                  onConfirm();
                   Navigator.of(context).pop(true);
-                  onConfirm;
                 },
                 child: Text(Strings.DELETE)),
           ],
@@ -53,16 +53,15 @@ Future<bool?> iosDialog({
         ),
         actions: <Widget>[
           TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(true);
-              onConfirm;
-            },
+            onPressed: () => Navigator.of(context).pop(false),
             child: const Text(Strings.CANCEL),
           ),
           TextButton(
-            onPressed: onConfirm,
-            child: Text(Strings.DELETE),
-          ),
+              onPressed: () {
+                onConfirm();
+                Navigator.of(context).pop(true);
+              },
+              child: Text(Strings.DELETE)),
         ],
       );
     },
