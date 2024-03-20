@@ -92,14 +92,9 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   }
 
   @override
-  Stream<List<Schedule>> searchSingleSchedule({required String keyword}) {
-    return _db.searchSchedule(keyword: keyword).map(
-          (scheduleDaoDataList) => scheduleDaoDataList
-              .map(
-                (scheduleDaoData) => scheduleDaoData.toSchedule(),
-              )
-              .toList(),
-        );
+  Future<List<Schedule>> searchSingleSchedule({required String keyword}) {
+    return _db.searchSchedule(keyword: keyword).then((scheduleDaoData) =>
+        scheduleDaoData.map((e) => e.toSchedule()).toList());
   }
 }
 

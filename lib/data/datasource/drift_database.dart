@@ -44,9 +44,9 @@ class LocalDataBase extends _$LocalDataBase {
 
   Future<List<ScheduleDaoData>> getAllSchedules() => select(scheduleDao).get();
 
-  Stream<List<ScheduleDaoData>> searchSchedule({required String keyword}) =>
-      ((select(scheduleDao))..where((tbl) => tbl.content.equals(keyword)))
-          .watch();
+  Future<List<ScheduleDaoData>> searchSchedule({required String keyword}) =>
+      ((select(scheduleDao))..where((tbl) => tbl.content.contains(keyword)))
+          .get();
 
   Future<List<ScheduleDaoData>> getAllSchedulesByColorCode({
     required int colorCode,

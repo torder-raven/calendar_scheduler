@@ -6,5 +6,5 @@ class SearchSingleScheduleUsecase {
 
   SearchSingleScheduleUsecase({required ScheduleRepository repository}) : _repository = repository;
 
-  Stream<List<Schedule>> invoke({required String keyword}) => _repository.searchSingleSchedule(keyword: keyword);
+  Future<List<Schedule>> invoke({required String keyword}) => _repository.searchSingleSchedule(keyword: keyword);
 }

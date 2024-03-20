@@ -59,18 +59,18 @@ class ScheduleListView extends StatelessWidget {
 
   @override
   void dispose() {}
+}
 
-  void showEditBottomSheet(BuildContext context, Schedule schedule) {
-    showModalBottomSheet(
-      backgroundColor: Colors.white,
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
-      ),
-      builder: (_) {
-        return ScheduleEditBottomSheet(prevSchedule: schedule,);
-      },
-    );
-  }
+void showEditBottomSheet(BuildContext context, Schedule schedule) {
+  showModalBottomSheet(
+    backgroundColor: Colors.white,
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
+    ),
+    builder: (_) {
+      return ScheduleEditBottomSheet(prevSchedule: schedule,);
+    },
+  );
 }
