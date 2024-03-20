@@ -53,41 +53,39 @@ class _ScheduleEditBottomSheetState extends State<ScheduleEditBottomSheet> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Container(
+        padding: EdgeInsets.only(bottom: bottomInset),
         width: MediaQuery.of(context).size.width,
         height: ((MediaQuery.of(context).size.height / 2) + bottomInset),
-        child: Padding(
-          padding: EdgeInsets.only(bottom: bottomInset),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _BottomSheetHeader(
-                selectedDate: widget.prevSchedule.date,
-              ),
-              ColorSelectionField(
-                colors: colors,
-                selectedColorId: currentSelectedColorId,
-                colorIdSetter: (int id) {
-                  setState(() {
-                    currentSelectedColorId = id;
-                  });
-                },
-              ),
-              const Spacer(),
-              _TimeInputRenderer(),
-              const Spacer(),
-              ContentInputField(
-                initialContent: currentContent,
-                contentSetter: (String content) {
-                  setState(() {
-                    currentContent = content;
-                  });
-                },
-              ),
-              const Spacer(),
-              const _EditScheduleButton(),
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _BottomSheetHeader(
+              selectedDate: widget.prevSchedule.date,
+            ),
+            ColorSelectionField(
+              colors: colors,
+              selectedColorId: currentSelectedColorId,
+              colorIdSetter: (int id) {
+                setState(() {
+                  currentSelectedColorId = id;
+                });
+              },
+            ),
+            const Spacer(),
+            _TimeInputRenderer(),
+            const Spacer(),
+            ContentInputField(
+              initialContent: currentContent,
+              contentSetter: (String content) {
+                setState(() {
+                  currentContent = content;
+                });
+              },
+            ),
+            const Spacer(),
+            const _EditScheduleButton(),
+          ],
         ),
       ),
     );
