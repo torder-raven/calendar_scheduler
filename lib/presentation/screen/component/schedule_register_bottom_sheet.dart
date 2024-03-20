@@ -1,9 +1,13 @@
+import 'dart:js';
+
 import 'package:calendar_scheduler/domain/usecase/register_schedule.dart';
 import 'package:calendar_scheduler/presentation/const/colors.dart';
 import 'package:calendar_scheduler/presentation/extension.dart';
+import 'package:calendar_scheduler/presentation/provider/schedule_provider.dart';
 import 'package:calendar_scheduler/presentation/screen/component/time_input_field.dart';
 import 'package:calendar_scheduler/presentation/util/validation_util.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../di/locator.dart';
 import '../../../domain/entity/schedule.dart';
@@ -11,10 +15,6 @@ import '../../const/strings.dart';
 import 'color_selection_field.dart';
 import 'content_input_field.dart';
 
-int currentStartTime = 0;
-int currentEndTime = 0;
-int currentSelectedColorId = 0;
-String currentContent = "";
 
 class ScheduleRegisterBottomSheet extends StatefulWidget {
   final DateTime selectedDate;
@@ -29,11 +29,12 @@ class ScheduleRegisterBottomSheet extends StatefulWidget {
 class _ScheduleRegisterBottomSheetState
     extends State<ScheduleRegisterBottomSheet> {
   final colors = ColorResource.selectorColors;
+  final provider = Provider.of<ScheduleProvider>(context as BuildContext);
 
   @override
   void initState() {
     super.initState();
-    currentSelectedColorId = colors.first.value;
+    provider.updateCurrentColorSelectedId(colors.first.value);
   }
 
   @override
@@ -55,10 +56,10 @@ class _ScheduleRegisterBottomSheetState
             ),
             ColorSelectionField(
               colors: colors,
-              selectedColorId: currentSelectedColorId,
+              selectedColorId: provider.currentSelectedColorId,
               colorIdSetter: (int id) {
                 setState(() {
-                  currentSelectedColorId = id;
+                  provider.updateCurrentColorSelectedId(id);
                 });
               },
             ),
@@ -66,10 +67,10 @@ class _ScheduleRegisterBottomSheetState
             _TimeInputRenderer(),
             const Spacer(),
             ContentInputField(
-              initialContent: currentContent,
+              initialContent: provider.currentContent,
               contentSetter: (String content) {
                 setState(() {
-                  currentContent = content;
+                  provider.updateCurrentContent(content);
                 });
               },
             ),
@@ -90,10 +91,10 @@ class _ScheduleRegisterBottomSheetState
   }
 
   void resetPrevData() {
-    currentStartTime = 0;
+/*    currentStartTime = 0;
     currentEndTime = 0;
     currentSelectedColorId = ColorResource.selectorColors[0].value;
-    currentContent = "";
+    currentContent = "";*/
   }
 }
 
@@ -139,11 +140,11 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
       children: [
         Expanded(
           child: TimeInputField(
-            initialTime: currentStartTime,
+            initialTime: Provider.of<ScheduleProvider>(context).currentStartTime,
             selectedTimeType: Strings.LABEL_START_TIME,
             timeSetter: (int time) {
               setState(() {
-                currentStartTime = time;
+                Provider.of<ScheduleProvider>(context).updateCurrentStatTime(time);
               });
             },
           ),
@@ -153,11 +154,11 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
         ),
         Expanded(
           child: TimeInputField(
-            initialTime: currentEndTime,
+            initialTime: Provider.of<ScheduleProvider>(context).currentEndTime,
             selectedTimeType: Strings.LABEL_END_TIME,
             timeSetter: (int time) {
               setState(() {
-                currentEndTime = time;
+                Provider.of<ScheduleProvider>(context).updateCurrentEndTime(time);
               });
             },
           ),
@@ -196,9 +197,9 @@ class _SaveScheduleButton extends StatelessWidget {
 
   void onPressSaveEvent(context) {
     if (ValidationUtil.checkInputValidations(
-      currentStartTime,
-      currentEndTime,
-      currentContent,
+      Provider.of<ScheduleProvider>(context).currentStartTime,
+      Provider.of<ScheduleProvider>(context).currentEndTime,
+      Provider.of<ScheduleProvider>(context).currentContent,
     )) {
       saveSchedule();
       Navigator.of(context).pop();
@@ -209,10 +210,10 @@ class _SaveScheduleButton extends StatelessWidget {
     final registerSchedule = serviceLocator<RegisterScheduleUsecase>();
     final schedule = Schedule(
       date: currentDateTime,
-      startTime: currentStartTime,
-      endTime: currentEndTime,
-      colorCode: currentSelectedColorId,
-      content: currentContent,
+      startTime: Provider.of<ScheduleProvider>(context as BuildContext).currentStartTime,
+      endTime: Provider.of<ScheduleProvider>(context as BuildContext).currentEndTime,
+      colorCode: Provider.of<ScheduleProvider>(context as BuildContext).currentSelectedColorId,
+      content: Provider.of<ScheduleProvider>(context as BuildContext).currentContent,
     );
     await registerSchedule.invoke(schedule: schedule);
   }
