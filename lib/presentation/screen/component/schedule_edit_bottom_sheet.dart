@@ -1,5 +1,6 @@
 import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:calendar_scheduler/presentation/screen/component/time_input_field.dart';
+import 'package:calendar_scheduler/presentation/util/validation_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -188,27 +189,14 @@ class _EditScheduleButton extends StatelessWidget {
   }
 
   void onPressEditEvent(context) {
-    if (checkInputValidations()) {
+    if (ValidationUtil.checkInputValidations(
+      currentStartTime,
+      currentEndTime,
+      currentContent,
+    )) {
       editSchedule();
       Navigator.of(context).pop();
     }
-  }
-
-  bool checkInputValidations() {
-    bool isTimeInputValid() => currentStartTime < currentEndTime;
-    bool isContentInputValid() => currentContent.isNotEmpty;
-
-    if (!isTimeInputValid()) {
-      ToastUtil().showDefaultToast(Strings.INPUT_ERROR_TIME);
-      return false;
-    }
-
-    if (!isContentInputValid()) {
-      ToastUtil().showDefaultToast(Strings.INPUT_ERROR_CONTENT);
-      return false;
-    }
-
-    return true;
   }
 
   Future<void> editSchedule() async {
