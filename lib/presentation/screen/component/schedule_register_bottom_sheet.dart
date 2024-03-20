@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:calendar_scheduler/domain/usecase/register_schedule.dart';
 import 'package:calendar_scheduler/presentation/const/colors.dart';
 import 'package:calendar_scheduler/presentation/extension.dart';
@@ -15,7 +13,6 @@ import '../../const/strings.dart';
 import 'color_selection_field.dart';
 import 'content_input_field.dart';
 
-
 class ScheduleRegisterBottomSheet extends StatefulWidget {
   final DateTime selectedDate;
 
@@ -29,12 +26,10 @@ class ScheduleRegisterBottomSheet extends StatefulWidget {
 class _ScheduleRegisterBottomSheetState
     extends State<ScheduleRegisterBottomSheet> {
   final colors = ColorResource.selectorColors;
-  final provider = Provider.of<ScheduleProvider>(context as BuildContext);
 
   @override
   void initState() {
     super.initState();
-    provider.updateCurrentColorSelectedId(colors.first.value);
   }
 
   @override
@@ -56,22 +51,22 @@ class _ScheduleRegisterBottomSheetState
             ),
             ColorSelectionField(
               colors: colors,
-              selectedColorId: provider.currentSelectedColorId,
+              selectedColorId:
+                  Provider.of<ScheduleProvider>(context).currentSelectedColorId,
               colorIdSetter: (int id) {
-                setState(() {
-                  provider.updateCurrentColorSelectedId(id);
-                });
+                context
+                    .read<ScheduleProvider>()
+                    .updateCurrentColorSelectedId(id);
               },
             ),
             const Spacer(),
             _TimeInputRenderer(),
             const Spacer(),
             ContentInputField(
-              initialContent: provider.currentContent,
+              initialContent:
+                  Provider.of<ScheduleProvider>(context).currentContent,
               contentSetter: (String content) {
-                setState(() {
-                  provider.updateCurrentContent(content);
-                });
+                context.read<ScheduleProvider>().updateCurrentContent(content);
               },
             ),
             const Spacer(),
@@ -86,15 +81,7 @@ class _ScheduleRegisterBottomSheetState
 
   @override
   void dispose() {
-    resetPrevData();
     super.dispose();
-  }
-
-  void resetPrevData() {
-/*    currentStartTime = 0;
-    currentEndTime = 0;
-    currentSelectedColorId = ColorResource.selectorColors[0].value;
-    currentContent = "";*/
   }
 }
 
@@ -140,12 +127,11 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
       children: [
         Expanded(
           child: TimeInputField(
-            initialTime: Provider.of<ScheduleProvider>(context).currentStartTime,
+            initialTime:
+                Provider.of<ScheduleProvider>(context).currentStartTime,
             selectedTimeType: Strings.LABEL_START_TIME,
             timeSetter: (int time) {
-              setState(() {
-                Provider.of<ScheduleProvider>(context).updateCurrentStatTime(time);
-              });
+              context.read<ScheduleProvider>().updateCurrentStatTime(time);
             },
           ),
         ),
@@ -157,9 +143,7 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
             initialTime: Provider.of<ScheduleProvider>(context).currentEndTime,
             selectedTimeType: Strings.LABEL_END_TIME,
             timeSetter: (int time) {
-              setState(() {
-                Provider.of<ScheduleProvider>(context).updateCurrentEndTime(time);
-              });
+              context.read<ScheduleProvider>().updateCurrentEndTime(time);
             },
           ),
         )
@@ -196,24 +180,26 @@ class _SaveScheduleButton extends StatelessWidget {
   }
 
   void onPressSaveEvent(context) {
+    final scheduleProvider = (context as BuildContext).read<ScheduleProvider>();
     if (ValidationUtil.checkInputValidations(
-      Provider.of<ScheduleProvider>(context).currentStartTime,
-      Provider.of<ScheduleProvider>(context).currentEndTime,
-      Provider.of<ScheduleProvider>(context).currentContent,
+      scheduleProvider.currentStartTime,
+      scheduleProvider.currentEndTime,
+      scheduleProvider.currentContent,
     )) {
-      saveSchedule();
+      saveSchedule(context);
       Navigator.of(context).pop();
     }
   }
 
-  Future<void> saveSchedule() async {
+  Future<void> saveSchedule(BuildContext context) async {
+    final scheduleProvider = context.read<ScheduleProvider>();
     final registerSchedule = serviceLocator<RegisterScheduleUsecase>();
     final schedule = Schedule(
       date: currentDateTime,
-      startTime: Provider.of<ScheduleProvider>(context as BuildContext).currentStartTime,
-      endTime: Provider.of<ScheduleProvider>(context as BuildContext).currentEndTime,
-      colorCode: Provider.of<ScheduleProvider>(context as BuildContext).currentSelectedColorId,
-      content: Provider.of<ScheduleProvider>(context as BuildContext).currentContent,
+      startTime: scheduleProvider.currentStartTime,
+      endTime: scheduleProvider.currentEndTime,
+      colorCode: scheduleProvider.currentSelectedColorId,
+      content: scheduleProvider.currentContent,
     );
     await registerSchedule.invoke(schedule: schedule);
   }
