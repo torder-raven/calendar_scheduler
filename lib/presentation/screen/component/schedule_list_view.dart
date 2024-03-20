@@ -3,7 +3,6 @@ import 'package:calendar_scheduler/domain/usecase/get_all_schedule.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_edit_bottom_sheet.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_item_builder.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import '../../../domain/entity/schedule.dart';
 import '../../const/strings.dart';
 import 'default_component.dart';
