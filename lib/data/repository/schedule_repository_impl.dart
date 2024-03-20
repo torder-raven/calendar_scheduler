@@ -90,6 +90,17 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
       temporaryDeletedScheduleId: scheduleId,
     );
   }
+
+  @override
+  Stream<List<Schedule>> searchSingleSchedule({required String keyword}) {
+    return _db.searchSchedule(keyword: keyword).map(
+          (scheduleDaoDataList) => scheduleDaoDataList
+              .map(
+                (scheduleDaoData) => scheduleDaoData.toSchedule(),
+              )
+              .toList(),
+        );
+  }
 }
 
 extension _TemporaryDeletedScheduleDaoDataMapper
