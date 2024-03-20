@@ -1,4 +1,3 @@
-import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_register_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
@@ -43,19 +42,23 @@ class ColorSelectionField extends StatelessWidget {
             onTap: () {
               colorIdSetter(colors[index].value);
             },
-            child: Container(
-              width: 30.0,
-              height: 30.0,
-              decoration: BoxDecoration(
-                image: colors[index].value == selectedColorId
-                    ? DecorationImage(
-                        image: AssetImage("img_check".convertToPngFileFormat()),
+            child: Stack(children: [
+              Container(
+                width: 30.0,
+                height: 30.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: colors[index],
+                ),
+                child: colors[index].value == selectedColorId
+                    ? const Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 16,
                       )
                     : null,
-                shape: BoxShape.circle,
-                color: colors[index],
               ),
-            ),
+            ]),
           ),
         );
       }),

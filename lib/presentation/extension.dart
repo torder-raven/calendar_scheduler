@@ -19,12 +19,6 @@ extension IntExtension on int {
   String addUnit(String unit) => "$this$unit";
 }
 
-extension Formatter on String {
-  String convertToPngFileFormat() {
-    return "asset/img/$this.png";
-  }
-}
-
 extension DateTimeExtension on DateTime {
   String toFormattedString(String format) => DateFormat(format).format(this);
 
