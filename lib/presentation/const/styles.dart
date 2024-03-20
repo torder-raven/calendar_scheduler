@@ -23,4 +23,12 @@ class Styles {
     ),
     borderRadius: BorderRadius.circular(8.0),
   );
+
+  static final ButtonStyle normalButtonStyle = ElevatedButton.styleFrom(
+    elevation: 0,
+    backgroundColor: ColorResource.BUTTON_NORMAL_COLOR,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(6.0),
+    ),
+  );
 }

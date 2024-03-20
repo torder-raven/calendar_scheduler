@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import '../../../di/locator.dart';
 import '../../../domain/entity/schedule.dart';
 import '../../const/strings.dart';
+import '../../const/styles.dart';
 import 'color_selection_field.dart';
 import 'content_input_field.dart';
 
@@ -153,25 +154,20 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
 }
 
 class _SaveScheduleButton extends StatelessWidget {
-  final currentDateTime;
+  final DateTime currentDateTime;
 
-  const _SaveScheduleButton({required this.currentDateTime, super.key});
+  const _SaveScheduleButton({required this.currentDateTime});
 
   @override
   Widget build(BuildContext context) {
+    final scheduleProvider = context.read<ScheduleProvider>();
     return SizedBox(
         width: double.infinity,
         child: ElevatedButton(
           onPressed: () {
-            onPressSaveEvent(context);
+            onPressSaveEvent(scheduleProvider, context);
           },
-          style: ElevatedButton.styleFrom(
-            elevation: 0,
-            backgroundColor: ColorResource.BUTTON_NORMAL_COLOR,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-          ),
+          style: Styles.normalButtonStyle,
           child: const Text(
             Strings.SAVE,
             style: TextStyle(color: Colors.white),
@@ -179,20 +175,18 @@ class _SaveScheduleButton extends StatelessWidget {
         ));
   }
 
-  void onPressSaveEvent(context) {
-    final scheduleProvider = (context as BuildContext).read<ScheduleProvider>();
+  void onPressSaveEvent(scheduleProvider, context) {
     if (ValidationUtil.checkInputValidations(
       scheduleProvider.currentStartTime,
       scheduleProvider.currentEndTime,
       scheduleProvider.currentContent,
     )) {
-      saveSchedule(context);
+      saveSchedule(scheduleProvider, context);
       Navigator.of(context).pop();
     }
   }
 
-  Future<void> saveSchedule(BuildContext context) async {
-    final scheduleProvider = context.read<ScheduleProvider>();
+  Future<void> saveSchedule(scheduleProvider, context) async {
     final registerSchedule = serviceLocator<RegisterScheduleUsecase>();
     final schedule = Schedule(
       date: currentDateTime,
