@@ -1,18 +1,25 @@
 import 'package:calendar_scheduler/di/locator.dart';
+import 'package:calendar_scheduler/domain/entity/schedule.dart';
 import 'package:calendar_scheduler/domain/usecase/search_single_schedule.dart';
+import 'package:calendar_scheduler/presentation/const/strings.dart';
+import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_item_builder.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_list_view.dart';
 import 'package:flutter/material.dart';
-import '../../../domain/entity/schedule.dart';
-import '../../const/strings.dart';
-import 'default_component.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../const/keys.dart';
 
 class SearchView extends SearchDelegate {
+  late SharedPreferences _prefs;
+
+  SearchView() {
+    _initPrefs();
+  }
+
   @override
   List<Widget>? buildActions(BuildContext context) => [
         IconButton(
-          onPressed: () =>
-              {if (query.isEmpty) close(context, null) else query = ''},
+          onPressed: () => query.isEmpty ? close(context, null) : query = '',
           icon: const Icon(Icons.clear),
         ),
       ];
@@ -25,51 +32,53 @@ class SearchView extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: DefaultComponent.defaultSmallPaddingSize,
-        child: _buildSearchResult(),
-      ),
+    return Padding(
+      padding: DefaultComponent.defaultSmallPaddingSize,
+      child: _buildSearchResult(),
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<Schedule> suggestions = [];
-
-    return ListView.builder(
-        itemCount: suggestions.length,
-        itemBuilder: (context, index) {
-          final suggestion = suggestions[index];
-          return ListTile(
-            title: Text(suggestion.content),
-            onTap: () {},
-          );
-        });
-  }
-
-  Widget _buildSearchResult() {
-    return FutureBuilder(
-      future:
-          serviceLocator<SearchSingleScheduleUsecase>().invoke(keyword: query),
+    return FutureBuilder<List<String>>(
+      future: _getRecentKeyword(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else return _handleSearchResult(snapshot);
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasData) {
+          final suggestions = snapshot.data!
+              .where((element) => element.contains(query))
+              .toList();
+          return _buildSearchSuggestionTile(suggestions);
+        }
+        return Container();
       },
     );
   }
 
-  Widget _handleSearchResult(AsyncSnapshot snapshot) {
-    if (snapshot.hasData && snapshot.data.isEmpty) {
+  Widget _buildSearchResult() {
+    return FutureBuilder<List<Schedule>>(
+      future:
+          serviceLocator<SearchSingleScheduleUsecase>().invoke(keyword: query),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else {
+          return _handleSearchResult(snapshot);
+        }
+      },
+    );
+  }
+
+  Widget _handleSearchResult(AsyncSnapshot<List<Schedule>> snapshot) {
+    if (snapshot.hasData && snapshot.data!.isEmpty) {
       return Center(
         child: Text(
           Strings.EMPTY_SCHEDULE,
         ),
       );
     } else {
+      _saveRecentKeyword(query);
       final list = snapshot.requireData;
       return _buildListView(list);
     }
@@ -89,4 +98,32 @@ class SearchView extends SearchDelegate {
       ),
     );
   }
+
+  Widget _buildSearchSuggestionTile(List<String> suggestions) {
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(suggestions[index]),
+          onTap: () {
+            query = suggestions[index];
+          },
+        );
+      },
+    );
+  }
+
+  _initPrefs() async {
+    _prefs = await SharedPreferences.getInstance();
+  }
+
+  _saveRecentKeyword(String keyword) async {
+    Set<String> newList =
+        _prefs.getStringList(Keys.RECENT_KEYWORD_LIST_KEY)?.toSet() ?? {};
+    newList.add(keyword);
+    _prefs.setStringList(Keys.RECENT_KEYWORD_LIST_KEY, newList.toList());
+  }
+
+  Future<List<String>> _getRecentKeyword() async =>
+      _prefs.getStringList(Keys.RECENT_KEYWORD_LIST_KEY) ?? [];
 }
