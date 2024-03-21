@@ -1,6 +1,12 @@
 import 'package:calendar_scheduler/presentation/const/colors.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../../di/locator.dart';
+import '../../../domain/entity/schedule.dart';
+import '../../../domain/usecase/register_schedule.dart';
+import '../../../domain/usecase/update_schedule.dart';
+import '../../util/validation_util.dart';
+
 class ScheduleProvider with ChangeNotifier {
   int _currentId = 0;
   int get currentId => _currentId;
@@ -42,5 +48,38 @@ class ScheduleProvider with ChangeNotifier {
 
   void updateCurrentContent(String content) {
     _currentContent = content;
+  }
+
+  bool isFieldInputValid() {
+    return ValidationUtil.checkInputValidations(
+      currentStartTime,
+      currentEndTime,
+      currentContent,
+    );
+  }
+
+  Future<void> saveSchedule() async {
+    final registerSchedule = serviceLocator<RegisterScheduleUsecase>();
+    final schedule = Schedule(
+      date: currentDateTime,
+      startTime: currentStartTime,
+      endTime: currentEndTime,
+      colorCode: currentSelectedColorId,
+      content: currentContent,
+    );
+    await registerSchedule.invoke(schedule: schedule);
+  }
+
+  Future<void> editSchedule() async {
+    final updateSchedule = serviceLocator<UpdateScheduleUsecase>();
+    final schedule = Schedule(
+      date: currentDateTime,
+      startTime: currentStartTime,
+      endTime: currentEndTime,
+      colorCode: currentSelectedColorId,
+      content: currentContent,
+      id: currentId,
+    );
+    await updateSchedule.invoke(schedule: schedule);
   }
 }

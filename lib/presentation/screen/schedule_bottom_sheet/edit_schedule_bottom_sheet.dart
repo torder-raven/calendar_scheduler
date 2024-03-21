@@ -1,13 +1,10 @@
 import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:calendar_scheduler/presentation/screen/component/field/time_input_field.dart';
-import 'package:calendar_scheduler/presentation/util/validation_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../di/locator.dart';
 import '../../../domain/entity/schedule.dart';
-import '../../../domain/usecase/update_schedule.dart';
 import '../../const/colors.dart';
 import '../../const/strings.dart';
 import '../../const/styles.dart';
@@ -194,26 +191,9 @@ class _EditScheduleButton extends StatelessWidget {
   }
 
   void onPressEditEvent(scheduleProvider, context) {
-    if (ValidationUtil.checkInputValidations(
-      scheduleProvider.currentStartTime,
-      scheduleProvider.currentEndTime,
-      scheduleProvider.currentContent,
-    )) {
-      editSchedule(scheduleProvider);
+    if (scheduleProvider.isFieldInputValid()) {
+      scheduleProvider.editSchedule();
       Navigator.of(context).pop();
     }
-  }
-
-  Future<void> editSchedule(scheduleProvider) async {
-    final updateSchedule = serviceLocator<UpdateScheduleUsecase>();
-    final schedule = Schedule(
-      date: scheduleProvider.currentDateTime,
-      startTime: scheduleProvider.currentStartTime,
-      endTime: scheduleProvider.currentEndTime,
-      colorCode: scheduleProvider.currentSelectedColorId,
-      content: scheduleProvider.currentContent,
-      id: scheduleProvider.currentId,
-    );
-    await updateSchedule.invoke(schedule: schedule);
   }
 }
