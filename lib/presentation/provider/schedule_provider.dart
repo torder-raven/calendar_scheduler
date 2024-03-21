@@ -2,6 +2,9 @@ import 'package:calendar_scheduler/presentation/const/colors.dart';
 import 'package:flutter/cupertino.dart';
 
 class ScheduleProvider with ChangeNotifier {
+  DateTime _currentDateTime = DateTime.now();
+  DateTime get currentDateTime => _currentDateTime;
+
   int _currentStartTime = 0;
   int get currentStartTime => _currentStartTime;
 
@@ -13,6 +16,10 @@ class ScheduleProvider with ChangeNotifier {
 
   String _currentContent = "";
   String get currentContent => _currentContent;
+
+  void updateCurrentDateTime(DateTime dateTime) {
+    _currentDateTime = dateTime;
+  }
 
   void updateCurrentStatTime(int time) {
     _currentStartTime = time;
@@ -30,5 +37,4 @@ class ScheduleProvider with ChangeNotifier {
   void updateCurrentContent(String content) {
     _currentContent = content;
   }
-
 }

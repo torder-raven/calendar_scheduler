@@ -34,6 +34,12 @@ class _ScheduleRegisterBottomSheetState
   }
 
   @override
+  void didChangeDependencies() {
+    initCurrentDateTime();
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
@@ -47,9 +53,7 @@ class _ScheduleRegisterBottomSheetState
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _BottomSheetHeader(
-              selectedDate: widget.selectedDate,
-            ),
+            const _BottomSheetHeader(),
             ColorSelectionField(
               colors: colors,
               selectedColorId:
@@ -71,9 +75,7 @@ class _ScheduleRegisterBottomSheetState
               },
             ),
             const Spacer(),
-            _SaveScheduleButton(
-              currentDateTime: widget.selectedDate,
-            ),
+            const _SaveScheduleButton(),
           ],
         ),
       ),
@@ -84,6 +86,11 @@ class _ScheduleRegisterBottomSheetState
   void dispose() {
     super.dispose();
   }
+
+  void initCurrentDateTime() {
+    Provider.of<ScheduleProvider>(context)
+        .updateCurrentDateTime(widget.selectedDate);
+  }
 }
 
 typedef ContentSetter = void Function(String content);
@@ -91,13 +98,14 @@ typedef ColorIdSetter = void Function(int id);
 typedef TimeSetter = void Function(int time);
 
 class _BottomSheetHeader extends StatelessWidget {
-  final DateTime selectedDate;
-
-  const _BottomSheetHeader({super.key, required this.selectedDate});
+  const _BottomSheetHeader();
 
   @override
   Widget build(BuildContext context) {
-    String title = selectedDate.toFormattedString(Strings.DATE_FORMAT);
+    String title = context
+        .read<ScheduleProvider>()
+        .currentDateTime
+        .toFormattedString(Strings.DATE_FORMAT);
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       Text(
         title,
@@ -154,9 +162,7 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
 }
 
 class _SaveScheduleButton extends StatelessWidget {
-  final DateTime currentDateTime;
-
-  const _SaveScheduleButton({required this.currentDateTime});
+  const _SaveScheduleButton();
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +195,7 @@ class _SaveScheduleButton extends StatelessWidget {
   Future<void> saveSchedule(scheduleProvider, context) async {
     final registerSchedule = serviceLocator<RegisterScheduleUsecase>();
     final schedule = Schedule(
-      date: currentDateTime,
+      date: scheduleProvider.currentDateTime,
       startTime: scheduleProvider.currentStartTime,
       endTime: scheduleProvider.currentEndTime,
       colorCode: scheduleProvider.currentSelectedColorId,
