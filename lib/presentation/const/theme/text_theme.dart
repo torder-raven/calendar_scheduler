@@ -1,16 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'colors.dart';
-
-const _DEFAULT_FONT = "Pretendard";
-
-final calendarTheme = ThemeData(
-  fontFamily: _DEFAULT_FONT,
-  primaryColor: ColorResource.PRIMARY_COLOR,
-  textTheme: defaultTextTheme,
-);
-
-const defaultTextTheme = TextTheme(
+const textTheme = TextTheme(
   displayMedium: TextStyle(
     fontWeight: FontWeight.w600,
     color: Colors.black54,
