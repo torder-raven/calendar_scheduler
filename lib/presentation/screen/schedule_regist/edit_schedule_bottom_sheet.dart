@@ -1,31 +1,34 @@
-import 'package:calendar_scheduler/domain/usecase/register_schedule.dart';
-import 'package:calendar_scheduler/presentation/const/colors.dart';
 import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:calendar_scheduler/presentation/screen/component/time_input_field.dart';
 import 'package:calendar_scheduler/presentation/util/validation_util.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../di/locator.dart';
 import '../../../domain/entity/schedule.dart';
+import '../../../domain/usecase/update_schedule.dart';
+import '../../const/colors.dart';
 import '../../const/strings.dart';
 import '../../const/styles.dart';
 import '../provider/schedule_provider.dart';
-import 'color_selection_field.dart';
-import 'content_input_field.dart';
+import '../component/color_selection_field.dart';
+import '../component/content_input_field.dart';
 
-class ScheduleRegisterBottomSheet extends StatefulWidget {
-  final DateTime selectedDate;
+class EditScheduleBottomSheet extends StatefulWidget {
+  final Schedule prevSchedule;
 
-  const ScheduleRegisterBottomSheet({super.key, required this.selectedDate});
+  const EditScheduleBottomSheet({
+    super.key,
+    required this.prevSchedule,
+  });
 
   @override
-  State<ScheduleRegisterBottomSheet> createState() =>
-      _ScheduleRegisterBottomSheetState();
+  State<EditScheduleBottomSheet> createState() =>
+      _EditScheduleBottomSheetState();
 }
 
-class _ScheduleRegisterBottomSheetState
-    extends State<ScheduleRegisterBottomSheet> {
+class _EditScheduleBottomSheetState extends State<EditScheduleBottomSheet> {
   final colors = ColorResource.selectorColors;
 
   @override
@@ -76,22 +79,30 @@ class _ScheduleRegisterBottomSheetState
               },
             ),
             const Spacer(),
-            const _SaveScheduleButton(),
+            const _EditScheduleButton(),
           ],
         ),
       ),
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   void initPrevCurrentScheduleData() {
+    context.watch<ScheduleProvider>().updateCurrentId(widget.prevSchedule.id);
     context
         .watch<ScheduleProvider>()
-        .updateCurrentDateTime(widget.selectedDate);
+        .updateCurrentDateTime(widget.prevSchedule.date);
+    context
+        .watch<ScheduleProvider>()
+        .updateCurrentColorSelectedId(widget.prevSchedule.colorCode);
+    context
+        .watch<ScheduleProvider>()
+        .updateCurrentStatTime(widget.prevSchedule.startTime);
+    context
+        .watch<ScheduleProvider>()
+        .updateCurrentEndTime(widget.prevSchedule.endTime);
+    context
+        .watch<ScheduleProvider>()
+        .updateCurrentContent(widget.prevSchedule.content);
   }
 }
 
@@ -162,8 +173,8 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
   }
 }
 
-class _SaveScheduleButton extends StatelessWidget {
-  const _SaveScheduleButton();
+class _EditScheduleButton extends StatelessWidget {
+  const _EditScheduleButton();
 
   @override
   Widget build(BuildContext context) {
@@ -172,36 +183,37 @@ class _SaveScheduleButton extends StatelessWidget {
         width: double.infinity,
         child: ElevatedButton(
           onPressed: () {
-            onPressSaveEvent(scheduleProvider, context);
+            onPressEditEvent(scheduleProvider, context);
           },
           style: Styles.normalButtonStyle,
           child: const Text(
-            Strings.SAVE,
+            Strings.EDIT,
             style: TextStyle(color: Colors.white),
           ),
         ));
   }
 
-  void onPressSaveEvent(scheduleProvider, context) {
+  void onPressEditEvent(scheduleProvider, context) {
     if (ValidationUtil.checkInputValidations(
       scheduleProvider.currentStartTime,
       scheduleProvider.currentEndTime,
       scheduleProvider.currentContent,
     )) {
-      saveSchedule(scheduleProvider);
+      editSchedule(scheduleProvider);
       Navigator.of(context).pop();
     }
   }
 
-  Future<void> saveSchedule(scheduleProvider) async {
-    final registerSchedule = serviceLocator<RegisterScheduleUsecase>();
+  Future<void> editSchedule(scheduleProvider) async {
+    final updateSchedule = serviceLocator<UpdateScheduleUsecase>();
     final schedule = Schedule(
       date: scheduleProvider.currentDateTime,
       startTime: scheduleProvider.currentStartTime,
       endTime: scheduleProvider.currentEndTime,
       colorCode: scheduleProvider.currentSelectedColorId,
       content: scheduleProvider.currentContent,
+      id: scheduleProvider.currentId,
     );
-    await registerSchedule.invoke(schedule: schedule);
+    await updateSchedule.invoke(schedule: schedule);
   }
 }

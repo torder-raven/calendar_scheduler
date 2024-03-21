@@ -1,9 +1,9 @@
-import 'package:calendar_scheduler/presentation/screen/component/schedule_register_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
 import '../../const/colors.dart';
 import '../../const/strings.dart';
 import '../../const/styles.dart';
+import '../schedule_regist/create_schedule_bottom_sheet.dart';
 
 class ContentInputField extends StatefulWidget {
   final String initialContent;

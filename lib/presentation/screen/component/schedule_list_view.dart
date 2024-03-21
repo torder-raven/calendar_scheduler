@@ -1,6 +1,6 @@
 import 'package:calendar_scheduler/di/locator.dart';
 import 'package:calendar_scheduler/domain/usecase/get_all_schedule.dart';
-import 'package:calendar_scheduler/presentation/screen/component/schedule_edit_bottom_sheet.dart';
+import 'package:calendar_scheduler/presentation/screen/schedule_regist/edit_schedule_bottom_sheet.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_item_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -72,7 +72,7 @@ class ScheduleListView extends StatelessWidget {
       builder: (_) {
         return ChangeNotifierProvider(
           create: (BuildContext context) => ScheduleProvider(),
-          child: ScheduleEditBottomSheet(
+          child: EditScheduleBottomSheet(
             prevSchedule: schedule,
           ),
         );

@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../const/colors.dart';
-import '../component/schedule_register_bottom_sheet.dart';
 import '../provider/schedule_provider.dart';
+import '../schedule_regist/create_schedule_bottom_sheet.dart';
 
 final _FIRST_DAY = DateTime.utc(1900);
 final _LAST_DAY = DateTime.utc(3000);
@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (_) {
             return ChangeNotifierProvider (
               create: (BuildContext context) => ScheduleProvider(),
-              child: ScheduleRegisterBottomSheet(
+              child: CreateScheduleBottomSheet(
                 selectedDate: _selectedDay,
               ),
             );
