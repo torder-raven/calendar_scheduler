@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import '../../const/colors.dart';
 import '../../const/strings.dart';
 import '../component/schedule_register_bottom_sheet.dart';
+import '../component/search_view.dart';
 
 part 'home_app_bar.dart';
 
@@ -36,14 +37,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _homeAppBar(
+      appBar: homeAppBar(
+        context: context,
         onFilterPressed: goToFilterScheduleScreen,
         onDeletePressed: goToTempDeleteScreen,
+        onSearchPressed: showSearchDelegate,
       ),
-      floatingActionButton: _floatingActionButton(
-        context: context,
-        selectedDay: _selectedDay,
-      ),
+      floatingActionButton: renderFloatingActionButton(),
       body: SafeArea(
         child: Column(
           children: [
@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
             DefaultComponent.defaultSizedBoxWithHeightSmall,
             ScheduleListView(
               date: _selectedDay,
-            )
+            ),
           ],
         ),
       ),
@@ -83,6 +83,13 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return const TempDeleteScreen();
     }));
+  }
+
+  void showSearchDelegate() {
+    showSearch(
+      context: context,
+      delegate: SearchView(),
+    );
   }
 
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {

@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:calendar_scheduler/data/datasource/entity/schedule_dao.dart';
@@ -45,6 +44,10 @@ class LocalDataBase extends _$LocalDataBase {
 
   Future<List<ScheduleDaoData>> getAllSchedules() => select(scheduleDao).get();
 
+  Future<List<ScheduleDaoData>> searchSchedule({required String keyword}) =>
+      ((select(scheduleDao))..where((tbl) => tbl.content.contains(keyword)))
+          .get();
+
   Future<List<ScheduleDaoData>> getAllSchedulesByColorCode({
     required int colorCode,
   }) =>
@@ -88,8 +91,8 @@ class LocalDataBase extends _$LocalDataBase {
           .write(data);
 
   Stream<List<TemporaryDeletedScheduleDaoData>>
-  getAllTemporaryDeletedSchedules() =>
-      select(temporaryDeletedScheduleDao).watch();
+      getAllTemporaryDeletedSchedules() =>
+          select(temporaryDeletedScheduleDao).watch();
 
   Future<int> registerTemporaryDeletedSchedule(
           TemporaryDeletedScheduleDaoCompanion data) =>
