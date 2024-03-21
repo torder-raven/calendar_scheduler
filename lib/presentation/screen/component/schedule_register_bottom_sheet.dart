@@ -57,7 +57,7 @@ class _ScheduleRegisterBottomSheetState
             ColorSelectionField(
               colors: colors,
               selectedColorId:
-                  Provider.of<ScheduleProvider>(context).currentSelectedColorId,
+                  context.watch<ScheduleProvider>().currentSelectedColorId,
               colorIdSetter: (int id) {
                 setState(() {
                   context
@@ -70,8 +70,7 @@ class _ScheduleRegisterBottomSheetState
             _TimeInputRenderer(),
             const Spacer(),
             ContentInputField(
-              initialContent:
-                  Provider.of<ScheduleProvider>(context).currentContent,
+              initialContent: context.watch<ScheduleProvider>().currentContent,
               contentSetter: (String content) {
                 context.read<ScheduleProvider>().updateCurrentContent(content);
               },
@@ -90,7 +89,8 @@ class _ScheduleRegisterBottomSheetState
   }
 
   void initPrevCurrentScheduleData() {
-    Provider.of<ScheduleProvider>(context)
+    context
+        .watch<ScheduleProvider>()
         .updateCurrentDateTime(widget.selectedDate);
   }
 }
@@ -138,8 +138,7 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
       children: [
         Expanded(
           child: TimeInputField(
-            initialTime:
-                Provider.of<ScheduleProvider>(context).currentStartTime,
+            initialTime: context.watch<ScheduleProvider>().currentStartTime,
             selectedTimeType: Strings.LABEL_START_TIME,
             timeSetter: (int time) {
               context.read<ScheduleProvider>().updateCurrentStatTime(time);
@@ -151,7 +150,7 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
         ),
         Expanded(
           child: TimeInputField(
-            initialTime: Provider.of<ScheduleProvider>(context).currentEndTime,
+            initialTime: context.watch<ScheduleProvider>().currentEndTime,
             selectedTimeType: Strings.LABEL_END_TIME,
             timeSetter: (int time) {
               context.read<ScheduleProvider>().updateCurrentEndTime(time);
