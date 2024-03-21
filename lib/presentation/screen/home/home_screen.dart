@@ -1,6 +1,5 @@
-import 'package:calendar_scheduler/presentation/const/strings.dart';
 import 'package:calendar_scheduler/presentation/extension.dart';
-import 'package:calendar_scheduler/presentation/screen/component/calendar.dart';
+import 'package:calendar_scheduler/presentation/screen/component/calendar/calendar.dart';
 import 'package:calendar_scheduler/presentation/screen/component/date_banner.dart';
 import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_list_view.dart';
