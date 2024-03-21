@@ -11,7 +11,7 @@ import '../../../domain/usecase/update_schedule.dart';
 import '../../const/colors.dart';
 import '../../const/strings.dart';
 import '../../const/styles.dart';
-import '../../provider/schedule_provider.dart';
+import '../provider/schedule_provider.dart';
 import 'color_selection_field.dart';
 import 'content_input_field.dart';
 

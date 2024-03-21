@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/entity/schedule.dart';
 import '../../const/strings.dart';
-import '../../provider/schedule_provider.dart';
+import '../provider/schedule_provider.dart';
 import 'default_component.dart';
 
 class ScheduleListView extends StatelessWidget {

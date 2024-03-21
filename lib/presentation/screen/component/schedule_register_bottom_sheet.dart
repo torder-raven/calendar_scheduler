@@ -1,7 +1,6 @@
 import 'package:calendar_scheduler/domain/usecase/register_schedule.dart';
 import 'package:calendar_scheduler/presentation/const/colors.dart';
 import 'package:calendar_scheduler/presentation/extension.dart';
-import 'package:calendar_scheduler/presentation/provider/schedule_provider.dart';
 import 'package:calendar_scheduler/presentation/screen/component/time_input_field.dart';
 import 'package:calendar_scheduler/presentation/util/validation_util.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +10,7 @@ import '../../../di/locator.dart';
 import '../../../domain/entity/schedule.dart';
 import '../../const/strings.dart';
 import '../../const/styles.dart';
+import '../provider/schedule_provider.dart';
 import 'color_selection_field.dart';
 import 'content_input_field.dart';
 
