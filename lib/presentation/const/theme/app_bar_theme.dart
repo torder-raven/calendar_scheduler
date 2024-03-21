@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
+part of 'theme.dart';
 
-import '../colors.dart';
-
-AppBarTheme appBarTheme = const AppBarTheme(
+const appBarTheme = AppBarTheme(
   titleTextStyle: TextStyle(
     fontSize: 28.0,
     fontWeight: FontWeight.w800,
