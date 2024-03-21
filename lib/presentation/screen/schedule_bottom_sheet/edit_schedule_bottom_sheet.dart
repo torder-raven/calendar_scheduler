@@ -4,13 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../domain/entity/schedule.dart';
+import '../../../../domain/entity/schedule.dart';
 import '../../const/colors.dart';
 import '../../const/strings.dart';
 import '../../const/styles.dart';
-import '../provider/schedule_provider.dart';
 import '../component/field/color_selection_field.dart';
 import '../component/field/content_input_field.dart';
+import '../provider/schedule_provider.dart';
 
 class EditScheduleBottomSheet extends StatefulWidget {
   final Schedule prevSchedule;
