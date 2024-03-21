@@ -1,6 +1,4 @@
-import 'package:calendar_scheduler/presentation/const/strings.dart';
 import 'package:calendar_scheduler/presentation/extension.dart';
-import 'package:calendar_scheduler/presentation/screen/component/app_bar.dart';
 import 'package:calendar_scheduler/presentation/screen/component/calendar.dart';
 import 'package:calendar_scheduler/presentation/screen/component/date_banner.dart';
 import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
@@ -13,6 +11,8 @@ import 'package:provider/provider.dart';
 import '../../const/colors.dart';
 import '../component/schedule_bottom_sheet/create_schedule_bottom_sheet.dart';
 import '../provider/schedule_provider.dart';
+import '../component/search_view.dart';
+import 'home_appbar.dart';
 
 final _FIRST_DAY = DateTime.utc(1900);
 final _LAST_DAY = DateTime.utc(3000);
@@ -36,13 +36,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: homeAppBar(
-        context: context,
-        onFilterPressed: goToFilterScheduleScreen,
-        onDeletePressed: goToTempDeleteScreen,
-      ),
+          context: context,
+          onFilterPressed: goToFilterScheduleScreen,
+          onDeletePressed: goToTempDeleteScreen,
+          onSearchPressed: showSearchDelegate),
       floatingActionButton: renderFloatingActionButton(),
       body: SafeArea(
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           children: [
             Calendar(
               focusedDay: _selectedDay,
@@ -58,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
             DefaultComponent.defaultSizedBoxWithHeightSmall,
             ScheduleListView(
               date: _selectedDay,
-            )
+            ),
           ],
         ),
       ),
@@ -68,45 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     super.dispose();
-  }
-
-  AppBar homeAppBar({
-    required BuildContext context,
-    required VoidCallback onFilterPressed,
-    required VoidCallback onDeletePressed,
-  }) {
-    return appBar(
-      context: context,
-      title: Strings.TITLE,
-      actions: [
-        IconButton(
-          onPressed: onFilterPressed,
-          icon: const Icon(
-            Icons.filter_list_alt,
-            color: Colors.white,
-          ),
-        ),
-        IconButton(
-          icon: const Icon(
-            Icons.delete,
-            color: Colors.white,
-          ),
-          onPressed: onDeletePressed,
-        ),
-      ],
-    );
-  }
-
-  void goToFilterScheduleScreen() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return const ScheduleFilterScreen();
-    }));
-  }
-
-  void goToTempDeleteScreen() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return const TempDeleteScreen();
-    }));
   }
 
   FloatingActionButton renderFloatingActionButton() {
@@ -131,6 +93,35 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       backgroundColor: ColorResource.PRIMARY_COLOR,
       child: Icon(Icons.add),
+    );
+  }
+
+  void goToFilterScheduleScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return const ScheduleFilterScreen();
+        },
+      ),
+    );
+  }
+
+  void goToTempDeleteScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return const TempDeleteScreen();
+        },
+      ),
+    );
+  }
+
+  void showSearchDelegate() {
+    showSearch(
+      context: context,
+      delegate: SearchView(),
     );
   }
 

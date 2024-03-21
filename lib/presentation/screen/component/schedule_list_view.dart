@@ -60,6 +60,7 @@ class ScheduleListView extends StatelessWidget {
 
   @override
   void dispose() {}
+}
 
   void showEditBottomSheet(BuildContext context, Schedule schedule) {
     showModalBottomSheet(
