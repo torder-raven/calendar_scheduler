@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 import '../../const/colors.dart';
 import '../provider/schedule_provider.dart';
-import '../schedule_regist/create_schedule_bottom_sheet.dart';
+import '../schedule_bottom_sheet/create_schedule_bottom_sheet.dart';
 
 final _FIRST_DAY = DateTime.utc(1900);
 final _LAST_DAY = DateTime.utc(3000);

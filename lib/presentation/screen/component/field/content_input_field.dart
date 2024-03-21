@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../const/colors.dart';
-import '../../const/strings.dart';
-import '../../const/styles.dart';
-import '../schedule_regist/create_schedule_bottom_sheet.dart';
+import '../../../const/colors.dart';
+import '../../../const/strings.dart';
+import '../../../const/styles.dart';
+import '../../schedule_bottom_sheet/create_schedule_bottom_sheet.dart';
 
 class ContentInputField extends StatefulWidget {
   final String initialContent;
