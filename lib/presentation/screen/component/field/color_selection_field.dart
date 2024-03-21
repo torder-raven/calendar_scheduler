@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../const/strings.dart';
 import '../../../const/styles.dart';
-import '../../schedule_bottom_sheet/create_schedule_bottom_sheet.dart';
 
 class ColorSelectionField extends StatefulWidget {
   final List<Color> colors;
@@ -81,3 +80,5 @@ class _ColorSelectionFieldState extends State<ColorSelectionField> {
     );
   }
 }
+
+typedef ColorIdSetter = void Function(int id);

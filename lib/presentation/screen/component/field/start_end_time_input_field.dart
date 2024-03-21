@@ -2,17 +2,51 @@ import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 import '../../../const/colors.dart';
 import '../../../const/strings.dart';
 import '../../../const/styles.dart';
-import '../../schedule_bottom_sheet/create_schedule_bottom_sheet.dart';
+import '../../provider/schedule_provider.dart';
 
-class TimeInputField extends StatefulWidget {
+class StartEndTimeInputField extends StatelessWidget {
+  const StartEndTimeInputField({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: _StartEndTimeInputField(
+            initialTime: context.watch<ScheduleProvider>().currentStartTime,
+            selectedTimeType: Strings.LABEL_START_TIME,
+            timeSetter: (int time) {
+              context.read<ScheduleProvider>().updateCurrentStatTime(time);
+            },
+          ),
+        ),
+        const SizedBox(
+          width: 4.0,
+        ),
+        Expanded(
+          child: _StartEndTimeInputField(
+            initialTime: context.watch<ScheduleProvider>().currentEndTime,
+            selectedTimeType: Strings.LABEL_END_TIME,
+            timeSetter: (int time) {
+              context.read<ScheduleProvider>().updateCurrentEndTime(time);
+            },
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class _StartEndTimeInputField extends StatefulWidget {
   final int initialTime;
   final String selectedTimeType;
   final TimeSetter timeSetter;
-  const TimeInputField({
+  const _StartEndTimeInputField({
     super.key,
     required this.selectedTimeType,
     required this.timeSetter,
@@ -20,10 +54,10 @@ class TimeInputField extends StatefulWidget {
   });
 
   @override
-  State<TimeInputField> createState() => _TimeInputFieldState();
+  State<_StartEndTimeInputField> createState() => _StartEndTimeInputFieldState();
 }
 
-class _TimeInputFieldState extends State<TimeInputField> {
+class _StartEndTimeInputFieldState extends State<_StartEndTimeInputField> {
   int selectedTime = 0;
   final TextEditingController _textEditingController = TextEditingController();
 
@@ -186,9 +220,13 @@ class _TimeInputFieldState extends State<TimeInputField> {
   void onSelectTimeEvent(DateTime date) {
     setState(() {
       selectedTime = (date.hour * 60) + date.minute;
-      if (selectedTime == 0) {selectedTime = (DateTime.now().hour * 60) + (DateTime.now().minute);}
+      if (selectedTime == 0) {
+        selectedTime = (DateTime.now().hour * 60) + (DateTime.now().minute);
+      }
       widget.timeSetter(selectedTime);
       _textEditingController.text = selectedTime.intTimeToTimeString();
     });
   }
 }
+
+typedef TimeSetter = void Function(int time);

@@ -1,16 +1,16 @@
-import 'package:calendar_scheduler/presentation/extension.dart';
-import 'package:calendar_scheduler/presentation/screen/component/field/time_input_field.dart';
+import 'package:calendar_scheduler/presentation/screen/component/bottom_sheet_header.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../domain/entity/schedule.dart';
-import '../../const/colors.dart';
-import '../../const/strings.dart';
-import '../../const/styles.dart';
-import '../component/field/color_selection_field.dart';
-import '../component/field/content_input_field.dart';
-import '../provider/schedule_provider.dart';
+import '../../../const/colors.dart';
+import '../../../const/strings.dart';
+import '../../../const/styles.dart';
+import '../../provider/schedule_provider.dart';
+import '../field/color_selection_field.dart';
+import '../field/content_input_field.dart';
+import '../field/start_end_time_input_field.dart';
 
 class EditScheduleBottomSheet extends StatefulWidget {
   final Schedule prevSchedule;
@@ -53,7 +53,7 @@ class _EditScheduleBottomSheetState extends State<EditScheduleBottomSheet> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const _BottomSheetHeader(),
+            const BottomSheetHeader(),
             ColorSelectionField(
               colors: colors,
               selectedColorId:
@@ -65,7 +65,7 @@ class _EditScheduleBottomSheetState extends State<EditScheduleBottomSheet> {
               },
             ),
             const Spacer(),
-            _TimeInputRenderer(),
+            const StartEndTimeInputField(),
             const Spacer(),
             ContentInputField(
               initialContent: context.watch<ScheduleProvider>().currentContent,
@@ -98,68 +98,6 @@ class _EditScheduleBottomSheetState extends State<EditScheduleBottomSheet> {
     context
         .watch<ScheduleProvider>()
         .updateCurrentContent(widget.prevSchedule.content);
-  }
-}
-
-typedef ContentSetter = void Function(String content);
-typedef ColorIdSetter = void Function(int id);
-typedef TimeSetter = void Function(int time);
-
-class _BottomSheetHeader extends StatelessWidget {
-  const _BottomSheetHeader();
-
-  @override
-  Widget build(BuildContext context) {
-    String title = context
-        .read<ScheduleProvider>()
-        .currentDateTime
-        .toFormattedString(Strings.DATE_FORMAT);
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Text(
-        title,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w800,
-        ),
-      ),
-      IconButton(
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        icon: const Icon(Icons.close),
-      ),
-    ]);
-  }
-}
-
-class _TimeInputRenderer extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: TimeInputField(
-            initialTime: context.watch<ScheduleProvider>().currentStartTime,
-            selectedTimeType: Strings.LABEL_START_TIME,
-            timeSetter: (int time) {
-              context.read<ScheduleProvider>().updateCurrentStatTime(time);
-            },
-          ),
-        ),
-        const SizedBox(
-          width: 4.0,
-        ),
-        Expanded(
-          child: TimeInputField(
-            initialTime: context.watch<ScheduleProvider>().currentEndTime,
-            selectedTimeType: Strings.LABEL_END_TIME,
-            timeSetter: (int time) {
-              context.read<ScheduleProvider>().updateCurrentEndTime(time);
-            },
-          ),
-        )
-      ],
-    );
   }
 }
 

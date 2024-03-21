@@ -1,12 +1,12 @@
 import 'package:calendar_scheduler/di/locator.dart';
 import 'package:calendar_scheduler/domain/usecase/get_all_schedule.dart';
+import 'package:calendar_scheduler/presentation/screen/component/schedule_bottom_sheet/edit_schedule_bottom_sheet.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_item_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/entity/schedule.dart';
 import '../../const/strings.dart';
 import '../provider/schedule_provider.dart';
-import '../schedule_bottom_sheet/edit_schedule_bottom_sheet.dart';
 import 'default_component.dart';
 
 class ScheduleListView extends StatelessWidget {
