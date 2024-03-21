@@ -35,7 +35,7 @@ class _ScheduleRegisterBottomSheetState
 
   @override
   void didChangeDependencies() {
-    initCurrentDateTime();
+    initPrevCurrentScheduleData();
     super.didChangeDependencies();
   }
 
@@ -59,9 +59,11 @@ class _ScheduleRegisterBottomSheetState
               selectedColorId:
                   Provider.of<ScheduleProvider>(context).currentSelectedColorId,
               colorIdSetter: (int id) {
-                context
-                    .read<ScheduleProvider>()
-                    .updateCurrentColorSelectedId(id);
+                setState(() {
+                  context
+                      .read<ScheduleProvider>()
+                      .updateCurrentColorSelectedId(id);
+                });
               },
             ),
             const Spacer(),
@@ -87,7 +89,7 @@ class _ScheduleRegisterBottomSheetState
     super.dispose();
   }
 
-  void initCurrentDateTime() {
+  void initPrevCurrentScheduleData() {
     Provider.of<ScheduleProvider>(context)
         .updateCurrentDateTime(widget.selectedDate);
   }
@@ -187,12 +189,12 @@ class _SaveScheduleButton extends StatelessWidget {
       scheduleProvider.currentEndTime,
       scheduleProvider.currentContent,
     )) {
-      saveSchedule(scheduleProvider, context);
+      saveSchedule(scheduleProvider);
       Navigator.of(context).pop();
     }
   }
 
-  Future<void> saveSchedule(scheduleProvider, context) async {
+  Future<void> saveSchedule(scheduleProvider) async {
     final registerSchedule = serviceLocator<RegisterScheduleUsecase>();
     final schedule = Schedule(
       date: scheduleProvider.currentDateTime,

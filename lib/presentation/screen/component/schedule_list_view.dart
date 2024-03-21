@@ -3,9 +3,10 @@ import 'package:calendar_scheduler/domain/usecase/get_all_schedule.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_edit_bottom_sheet.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_item_builder.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import '../../../domain/entity/schedule.dart';
 import '../../const/strings.dart';
+import '../../provider/schedule_provider.dart';
 import 'default_component.dart';
 
 class ScheduleListView extends StatelessWidget {
@@ -69,7 +70,12 @@ class ScheduleListView extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
       ),
       builder: (_) {
-        return ScheduleEditBottomSheet(prevSchedule: schedule,);
+        return ChangeNotifierProvider(
+          create: (BuildContext context) => ScheduleProvider(),
+          child: ScheduleEditBottomSheet(
+            prevSchedule: schedule,
+          ),
+        );
       },
     );
   }

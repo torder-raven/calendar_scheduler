@@ -2,6 +2,9 @@ import 'package:calendar_scheduler/presentation/const/colors.dart';
 import 'package:flutter/cupertino.dart';
 
 class ScheduleProvider with ChangeNotifier {
+  int _currentId = 0;
+  int get currentId => _currentId;
+
   DateTime _currentDateTime = DateTime.now();
   DateTime get currentDateTime => _currentDateTime;
 
@@ -17,6 +20,10 @@ class ScheduleProvider with ChangeNotifier {
   String _currentContent = "";
   String get currentContent => _currentContent;
 
+  void updateCurrentId(int id) {
+    _currentId = id;
+  }
+
   void updateCurrentDateTime(DateTime dateTime) {
     _currentDateTime = dateTime;
   }
@@ -31,7 +38,6 @@ class ScheduleProvider with ChangeNotifier {
 
   void updateCurrentColorSelectedId(int id) {
     _currentSelectedColorId = id;
-    notifyListeners();
   }
 
   void updateCurrentContent(String content) {

@@ -3,22 +3,17 @@ import 'package:calendar_scheduler/presentation/screen/component/time_input_fiel
 import 'package:calendar_scheduler/presentation/util/validation_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../di/locator.dart';
 import '../../../domain/entity/schedule.dart';
 import '../../../domain/usecase/update_schedule.dart';
 import '../../const/colors.dart';
 import '../../const/strings.dart';
-import '../../util/toast_util.dart';
+import '../../const/styles.dart';
+import '../../provider/schedule_provider.dart';
 import 'color_selection_field.dart';
 import 'content_input_field.dart';
-
-DateTime currentDateTime = DateTime.now();
-int currentStartTime = 0;
-int currentEndTime = 0;
-int currentSelectedColorId = ColorResource.selectorColors[0].value;
-String currentContent = "";
-int currentId = 0;
 
 class ScheduleEditBottomSheet extends StatefulWidget {
   final Schedule prevSchedule;
@@ -38,13 +33,13 @@ class _ScheduleEditBottomSheetState extends State<ScheduleEditBottomSheet> {
 
   @override
   void initState() {
-    currentDateTime = widget.prevSchedule.date;
-    currentStartTime = widget.prevSchedule.startTime;
-    currentEndTime = widget.prevSchedule.endTime;
-    currentSelectedColorId = widget.prevSchedule.colorCode;
-    currentContent = widget.prevSchedule.content;
-    currentId = widget.prevSchedule.id;
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    initPrevCurrentScheduleData();
+    super.didChangeDependencies();
   }
 
   @override
@@ -61,15 +56,16 @@ class _ScheduleEditBottomSheetState extends State<ScheduleEditBottomSheet> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _BottomSheetHeader(
-              selectedDate: widget.prevSchedule.date,
-            ),
+            const _BottomSheetHeader(),
             ColorSelectionField(
               colors: colors,
-              selectedColorId: currentSelectedColorId,
+              selectedColorId:
+                  Provider.of<ScheduleProvider>(context).currentSelectedColorId,
               colorIdSetter: (int id) {
                 setState(() {
-                  currentSelectedColorId = id;
+                  context
+                      .read<ScheduleProvider>()
+                      .updateCurrentColorSelectedId(id);
                 });
               },
             ),
@@ -77,11 +73,10 @@ class _ScheduleEditBottomSheetState extends State<ScheduleEditBottomSheet> {
             _TimeInputRenderer(),
             const Spacer(),
             ContentInputField(
-              initialContent: currentContent,
+              initialContent:
+                  Provider.of<ScheduleProvider>(context).currentContent,
               contentSetter: (String content) {
-                setState(() {
-                  currentContent = content;
-                });
+                context.read<ScheduleProvider>().updateCurrentContent(content);
               },
             ),
             const Spacer(),
@@ -91,6 +86,21 @@ class _ScheduleEditBottomSheetState extends State<ScheduleEditBottomSheet> {
       ),
     );
   }
+
+  void initPrevCurrentScheduleData() {
+    Provider.of<ScheduleProvider>(context)
+        .updateCurrentId(widget.prevSchedule.id);
+    Provider.of<ScheduleProvider>(context)
+        .updateCurrentDateTime(widget.prevSchedule.date);
+    Provider.of<ScheduleProvider>(context)
+        .updateCurrentColorSelectedId(widget.prevSchedule.colorCode);
+    Provider.of<ScheduleProvider>(context)
+        .updateCurrentStatTime(widget.prevSchedule.startTime);
+    Provider.of<ScheduleProvider>(context)
+        .updateCurrentEndTime(widget.prevSchedule.endTime);
+    Provider.of<ScheduleProvider>(context)
+        .updateCurrentContent(widget.prevSchedule.content);
+  }
 }
 
 typedef ContentSetter = void Function(String content);
@@ -98,13 +108,14 @@ typedef ColorIdSetter = void Function(int id);
 typedef TimeSetter = void Function(int time);
 
 class _BottomSheetHeader extends StatelessWidget {
-  final DateTime selectedDate;
-
-  const _BottomSheetHeader({super.key, required this.selectedDate});
+  const _BottomSheetHeader();
 
   @override
   Widget build(BuildContext context) {
-    String title = selectedDate.toFormattedString(Strings.DATE_FORMAT);
+    String title = context
+        .read<ScheduleProvider>()
+        .currentDateTime
+        .toFormattedString(Strings.DATE_FORMAT);
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       Text(
         title,
@@ -135,12 +146,11 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
       children: [
         Expanded(
           child: TimeInputField(
-            initialTime: currentStartTime,
+            initialTime:
+                Provider.of<ScheduleProvider>(context).currentStartTime,
             selectedTimeType: Strings.LABEL_START_TIME,
             timeSetter: (int time) {
-              setState(() {
-                currentStartTime = time;
-              });
+              context.read<ScheduleProvider>().updateCurrentStatTime(time);
             },
           ),
         ),
@@ -149,12 +159,10 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
         ),
         Expanded(
           child: TimeInputField(
-            initialTime: currentEndTime,
+            initialTime: Provider.of<ScheduleProvider>(context).currentEndTime,
             selectedTimeType: Strings.LABEL_END_TIME,
             timeSetter: (int time) {
-              setState(() {
-                currentEndTime = time;
-              });
+              context.read<ScheduleProvider>().updateCurrentEndTime(time);
             },
           ),
         )
@@ -164,23 +172,18 @@ class _TimeInputRendererState extends State<_TimeInputRenderer> {
 }
 
 class _EditScheduleButton extends StatelessWidget {
-  const _EditScheduleButton({super.key});
+  const _EditScheduleButton();
 
   @override
   Widget build(BuildContext context) {
+    final scheduleProvider = context.read<ScheduleProvider>();
     return SizedBox(
         width: double.infinity,
         child: ElevatedButton(
           onPressed: () {
-            onPressEditEvent(context);
+            onPressEditEvent(scheduleProvider, context);
           },
-          style: ElevatedButton.styleFrom(
-            elevation: 0,
-            backgroundColor: ColorResource.BUTTON_NORMAL_COLOR,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6.0),
-            ),
-          ),
+          style: Styles.normalButtonStyle,
           child: const Text(
             Strings.EDIT,
             style: TextStyle(color: Colors.white),
@@ -188,26 +191,26 @@ class _EditScheduleButton extends StatelessWidget {
         ));
   }
 
-  void onPressEditEvent(context) {
+  void onPressEditEvent(scheduleProvider, context) {
     if (ValidationUtil.checkInputValidations(
-      currentStartTime,
-      currentEndTime,
-      currentContent,
+      scheduleProvider.currentStartTime,
+      scheduleProvider.currentEndTime,
+      scheduleProvider.currentContent,
     )) {
-      editSchedule();
+      editSchedule(scheduleProvider);
       Navigator.of(context).pop();
     }
   }
 
-  Future<void> editSchedule() async {
+  Future<void> editSchedule(scheduleProvider) async {
     final updateSchedule = serviceLocator<UpdateScheduleUsecase>();
     final schedule = Schedule(
-      date: currentDateTime,
-      startTime: currentStartTime,
-      endTime: currentEndTime,
-      colorCode: currentSelectedColorId,
-      content: currentContent,
-      id: currentId,
+      date: scheduleProvider.currentDateTime,
+      startTime: scheduleProvider.currentStartTime,
+      endTime: scheduleProvider.currentEndTime,
+      colorCode: scheduleProvider.currentSelectedColorId,
+      content: scheduleProvider.currentContent,
+      id: scheduleProvider.currentId,
     );
     await updateSchedule.invoke(schedule: schedule);
   }
