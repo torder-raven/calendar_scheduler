@@ -8,4 +8,5 @@ abstract interface class ScheduleRepository {
   Stream<List<Schedule>> getAllSchedule({required DateTime date});
   Future<List<Schedule>> getScheduleByColor({required int colorCode});
   Stream<List<Schedule>> getTemporaryDeleteSchedule();
+  Future<List<Schedule>> searchSingleSchedule({required String keyword});
 }
