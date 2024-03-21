@@ -2,7 +2,6 @@ import 'package:calendar_scheduler/di/locator.dart';
 import 'package:calendar_scheduler/domain/usecase/get_schedule_by_color.dart';
 import 'package:calendar_scheduler/presentation/const/colors.dart';
 import 'package:calendar_scheduler/presentation/const/strings.dart';
-import 'package:calendar_scheduler/presentation/screen/component/app_bar.dart';
 import 'package:calendar_scheduler/presentation/screen/component/color_selection_field.dart';
 import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_item_builder.dart';
@@ -28,9 +27,8 @@ class _ScheduleFilterScreenState extends State<ScheduleFilterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar(
-        context: context,
-        title: Strings.SCHEDULE_FILTER_TITLE,
+      appBar: AppBar(
+        title: const Text(Strings.SCHEDULE_FILTER_TITLE),
       ),
       body: SafeArea(
         child: Column(

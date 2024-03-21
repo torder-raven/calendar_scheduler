@@ -1,6 +1,5 @@
 import 'package:calendar_scheduler/presentation/const/strings.dart';
 import 'package:calendar_scheduler/presentation/extension.dart';
-import 'package:calendar_scheduler/presentation/screen/component/app_bar.dart';
 import 'package:calendar_scheduler/presentation/screen/component/calendar.dart';
 import 'package:calendar_scheduler/presentation/screen/component/date_banner.dart';
 import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
@@ -10,7 +9,9 @@ import 'package:calendar_scheduler/presentation/screen/temp_delete/temp_delete_s
 import 'package:flutter/material.dart';
 
 import '../../const/colors.dart';
+import '../../const/strings.dart';
 import '../component/schedule_register_bottom_sheet.dart';
+part 'home_app_bar.dart';
 
 final _FIRST_DAY = DateTime.utc(1900);
 final _LAST_DAY = DateTime.utc(3000);
@@ -33,8 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: homeAppBar(
-        context: context,
+      appBar: _homeAppBar(
         onFilterPressed: goToFilterScheduleScreen,
         onDeletePressed: goToTempDeleteScreen,
       ),
@@ -66,33 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void dispose() {
     super.dispose();
-  }
-
-  AppBar homeAppBar({
-    required BuildContext context,
-    required VoidCallback onFilterPressed,
-    required VoidCallback onDeletePressed,
-  }) {
-    return appBar(
-      context: context,
-      title: Strings.TITLE,
-      actions: [
-        IconButton(
-          onPressed: onFilterPressed,
-          icon: const Icon(
-            Icons.filter_list_alt,
-            color: Colors.white,
-          ),
-        ),
-        IconButton(
-          icon: const Icon(
-            Icons.delete,
-            color: Colors.white,
-          ),
-          onPressed: onDeletePressed,
-        ),
-      ],
-    );
   }
 
   void goToFilterScheduleScreen() {
