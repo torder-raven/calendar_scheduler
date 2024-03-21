@@ -4,7 +4,7 @@ import '../../../const/strings.dart';
 import '../../../const/styles.dart';
 import '../../schedule_bottom_sheet/create_schedule_bottom_sheet.dart';
 
-class ColorSelectionField extends StatelessWidget {
+class ColorSelectionField extends StatefulWidget {
   final List<Color> colors;
   final int selectedColorId;
   final ColorIdSetter colorIdSetter;
@@ -15,6 +15,19 @@ class ColorSelectionField extends StatelessWidget {
     required this.selectedColorId,
     required this.colorIdSetter,
   });
+
+  @override
+  State<ColorSelectionField> createState() => _ColorSelectionFieldState();
+}
+
+class _ColorSelectionFieldState extends State<ColorSelectionField> {
+  int? _selectedColorId;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedColorId = widget.selectedColorId;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +48,15 @@ class ColorSelectionField extends StatelessWidget {
 
   Row renderColors() {
     return Row(
-      children: List.generate(colors.length, (index) {
+      children: List.generate(widget.colors.length, (index) {
         return Padding(
           padding: const EdgeInsets.only(right: 8.0),
           child: GestureDetector(
             onTap: () {
-              colorIdSetter(colors[index].value);
+              setState(() {
+                _selectedColorId = widget.colors[index].value;
+                widget.colorIdSetter(_selectedColorId!);
+              });
             },
             child: Stack(children: [
               Container(
@@ -48,9 +64,9 @@ class ColorSelectionField extends StatelessWidget {
                 height: 30.0,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: colors[index],
+                  color: widget.colors[index],
                 ),
-                child: colors[index].value == selectedColorId
+                child: widget.colors[index].value == _selectedColorId
                     ? const Icon(
                         Icons.check,
                         color: Colors.white,

@@ -59,11 +59,9 @@ class _EditScheduleBottomSheetState extends State<EditScheduleBottomSheet> {
               selectedColorId:
                   context.watch<ScheduleProvider>().currentSelectedColorId,
               colorIdSetter: (int id) {
-                setState(() {
-                  context
-                      .read<ScheduleProvider>()
-                      .updateCurrentColorSelectedId(id);
-                });
+                context
+                    .read<ScheduleProvider>()
+                    .updateCurrentColorSelectedId(id);
               },
             ),
             const Spacer(),
@@ -134,12 +132,7 @@ class _BottomSheetHeader extends StatelessWidget {
   }
 }
 
-class _TimeInputRenderer extends StatefulWidget {
-  @override
-  State<_TimeInputRenderer> createState() => _TimeInputRendererState();
-}
-
-class _TimeInputRendererState extends State<_TimeInputRenderer> {
+class _TimeInputRenderer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
