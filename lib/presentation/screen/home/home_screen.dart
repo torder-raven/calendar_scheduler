@@ -10,7 +10,10 @@ import 'package:flutter/material.dart';
 import '../../const/colors.dart';
 import '../../const/strings.dart';
 import '../component/schedule_register_bottom_sheet.dart';
+
 part 'home_app_bar.dart';
+
+part 'home_floating_button.dart';
 
 final _FIRST_DAY = DateTime.utc(1900);
 final _LAST_DAY = DateTime.utc(3000);
@@ -37,7 +40,10 @@ class _HomeScreenState extends State<HomeScreen> {
         onFilterPressed: goToFilterScheduleScreen,
         onDeletePressed: goToTempDeleteScreen,
       ),
-      floatingActionButton: renderFloatingActionButton(),
+      floatingActionButton: _floatingActionButton(
+        context: context,
+        selectedDay: _selectedDay,
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -77,28 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return const TempDeleteScreen();
     }));
-  }
-
-  FloatingActionButton renderFloatingActionButton() {
-    return FloatingActionButton(
-      onPressed: () {
-        showModalBottomSheet(
-          backgroundColor: Colors.white,
-          context: context,
-          isScrollControlled: true,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
-          ),
-          builder: (_) {
-            return ScheduleRegisterBottomSheet(
-              selectedDate: _selectedDay,
-            );
-          },
-        );
-      },
-      backgroundColor: ColorResource.PRIMARY_COLOR,
-      child: Icon(Icons.add),
-    );
   }
 
   void onDaySelected(DateTime selectedDay, DateTime focusedDay) {
