@@ -24,6 +24,8 @@ class Strings {
   static const INPUT_ERROR_TIME = "입력 시간을 다시 확인해주세요.";
   static const INPUT_ERROR_CONTENT = "내용을 입력해주세요.";
   static const SCHEDULE_FILTER_TITLE = "일정필터";
-  static const SCHEDULE_SEARCH_PLACE_HOLDER ="일정을 검색해보세요!";
+  static const SCHEDULE_SEARCH_PLACE_HOLDER = "일정을 검색해보세요!";
+  static const REPEAT_SCHEDULE_ON_OTHER_DATE = "다른 날 또 하기";
+  static const CHANGE_SCHEDULE_DATE = "날짜 바꾸기";
+  static const CLOSE = "닫기";
 }
-

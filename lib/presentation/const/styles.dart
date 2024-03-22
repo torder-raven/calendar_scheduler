@@ -24,9 +24,10 @@ class Styles {
     borderRadius: BorderRadius.circular(8.0),
   );
 
-  static final ButtonStyle normalButtonStyle = ElevatedButton.styleFrom(
-    elevation: 0,
-    backgroundColor: ColorResource.BUTTON_NORMAL_COLOR,
+  // TODO rebase 시 삭제 예정
+  static final ButtonStyle dialogButtonStyle = ElevatedButton.styleFrom(
+    splashFactory: NoSplash.splashFactory,
+    elevation: 0, backgroundColor: ColorResource.PRIMARY_COLOR, // 변경된 부분
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(6.0),
     ),
