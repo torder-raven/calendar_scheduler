@@ -6,9 +6,11 @@ import 'package:calendar_scheduler/presentation/screen/component/schedule_list_v
 import 'package:calendar_scheduler/presentation/screen/filter_screen/schedule_filter_screen.dart';
 import 'package:calendar_scheduler/presentation/screen/temp_delete/temp_delete_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../const/colors.dart';
-import '../component/schedule_register_bottom_sheet.dart';
+import '../component/schedule_bottom_sheet/create_schedule_bottom_sheet.dart';
+import '../provider/schedule_provider.dart';
 import '../component/search_view.dart';
 import 'home_appbar.dart';
 
@@ -80,8 +82,11 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
           ),
           builder: (_) {
-            return ScheduleRegisterBottomSheet(
-              selectedDate: _selectedDay,
+            return ChangeNotifierProvider (
+              create: (BuildContext context) => ScheduleProvider(),
+              child: CreateScheduleBottomSheet(
+                selectedDate: _selectedDay,
+              ),
             );
           },
         );

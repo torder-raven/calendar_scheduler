@@ -3,7 +3,7 @@ import 'package:calendar_scheduler/domain/usecase/get_schedule_by_color.dart';
 import 'package:calendar_scheduler/presentation/const/colors.dart';
 import 'package:calendar_scheduler/presentation/const/strings.dart';
 import 'package:calendar_scheduler/presentation/screen/component/app_bar.dart';
-import 'package:calendar_scheduler/presentation/screen/component/color_selection_field.dart';
+import 'package:calendar_scheduler/presentation/screen/component/field/color_selection_field.dart';
 import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_item_builder.dart';
 import 'package:flutter/material.dart';
