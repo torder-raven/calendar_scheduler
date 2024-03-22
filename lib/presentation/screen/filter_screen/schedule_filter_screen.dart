@@ -2,10 +2,11 @@ import 'package:calendar_scheduler/di/locator.dart';
 import 'package:calendar_scheduler/domain/usecase/get_schedule_by_color.dart';
 import 'package:calendar_scheduler/presentation/const/colors.dart';
 import 'package:calendar_scheduler/presentation/const/strings.dart';
-import 'package:calendar_scheduler/presentation/screen/component/color_selection_field.dart';
 import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_item_builder.dart';
 import 'package:flutter/material.dart';
+
+import '../component/field/color_selection_field.dart';
 
 class ScheduleFilterScreen extends StatefulWidget {
   const ScheduleFilterScreen({super.key});
@@ -98,8 +99,7 @@ class _ScheduleListView extends StatelessWidget {
           separatorBuilder: (context, index) {
             return DefaultComponent.defaultSizedBoxWithHeight;
           },
-          itemBuilder: (context, index) =>
-              NormalItem(schedule: list[index]),
+          itemBuilder: (context, index) => NormalItem(schedule: list[index]),
         );
       },
     );

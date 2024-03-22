@@ -4,6 +4,7 @@ import 'package:calendar_scheduler/presentation/screen/component/schedule_bottom
 import 'package:calendar_scheduler/presentation/screen/component/schedule_item_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../../domain/entity/schedule.dart';
 import '../../const/strings.dart';
 import '../provider/schedule_provider.dart';
@@ -57,27 +58,23 @@ class ScheduleListView extends StatelessWidget {
       ),
     );
   }
-
-  @override
-  void dispose() {}
 }
 
-  void showEditBottomSheet(BuildContext context, Schedule schedule) {
-    showModalBottomSheet(
-      backgroundColor: Colors.white,
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
-      ),
-      builder: (_) {
-        return ChangeNotifierProvider(
-          create: (BuildContext context) => ScheduleProvider(),
-          child: EditScheduleBottomSheet(
-            prevSchedule: schedule,
-          ),
-        );
-      },
-    );
-  }
+void showEditBottomSheet(BuildContext context, Schedule schedule) {
+  showModalBottomSheet(
+    backgroundColor: Colors.white,
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
+    ),
+    builder: (_) {
+      return ChangeNotifierProvider(
+        create: (BuildContext context) => ScheduleProvider(),
+        child: EditScheduleBottomSheet(
+          prevSchedule: schedule,
+        ),
+      );
+    },
+  );
 }
