@@ -2,7 +2,6 @@ part of 'home_screen.dart';
 
 FloatingActionButton _floatingActionButton({
   required BuildContext context,
-  required DateTime selectedDay,
 }) {
   return FloatingActionButton(
     onPressed: () {
@@ -14,8 +13,15 @@ FloatingActionButton _floatingActionButton({
           borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
         ),
         builder: (_) {
-          return ScheduleRegisterBottomSheet(
-            selectedDate: selectedDay,
+          return ChangeNotifierProvider(
+            create: (BuildContext context) => ScheduleProvider(),
+            child: Consumer<CalendarProvider>(
+              builder: (context, value, child) {
+                return CreateScheduleBottomSheet(
+                  selectedDate: context.read<CalendarProvider>().selectedDay,
+                );
+              },
+            ),
           );
         },
       );

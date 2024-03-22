@@ -2,12 +2,12 @@ import 'package:calendar_scheduler/di/locator.dart';
 import 'package:calendar_scheduler/domain/usecase/get_all_schedule.dart';
 import 'package:calendar_scheduler/presentation/const/strings.dart';
 import 'package:calendar_scheduler/presentation/extension.dart';
+import 'package:calendar_scheduler/presentation/screen/component/calendar/provider/calendar_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DateBanner extends StatelessWidget {
-  final DateTime date;
-
-  const DateBanner({super.key, required this.date});
+  const DateBanner({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,28 +16,36 @@ class DateBanner extends StatelessWidget {
       fontWeight: FontWeight.w600,
       color: Colors.white,
     );
-
     return Container(
       color: theme.primaryColor,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              date.toFormattedString(Strings.DATE_FORMAT),
-              style: textStyle,
-            ),
-            countText(
-              style: textStyle,
-            ),
-          ],
+        child: Consumer<CalendarProvider>(
+          builder: (context, value, child) {
+            final date = context.read<CalendarProvider>().selectedDay;
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  date.toFormattedString(Strings.DATE_FORMAT),
+                  style: textStyle,
+                ),
+                countText(
+                  date: date,
+                  style: textStyle,
+                ),
+              ],
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget countText({required TextStyle style}) {
+  Widget countText({
+    required DateTime date,
+    required TextStyle style,
+  }) {
     return StreamBuilder(
         stream: serviceLocator<GetAllScheduleUsecase>().invoke(date),
         builder: (context, snapshot) {

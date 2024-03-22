@@ -1,40 +1,37 @@
 import 'package:calendar_scheduler/presentation/const/colors.dart';
+import 'package:calendar_scheduler/presentation/screen/component/calendar/provider/calendar_provider.dart';
 import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 part 'default_builder.dart';
 
 part 'default_day.dart';
 
+part 'marker_builder.dart';
+
 part 'selected_builder.dart';
 
 const CALENDAR_LOCALE = "ko_KR";
 
 class Calendar extends StatelessWidget {
-  final DateTime focusedDay;
   final DateTime firstDay;
   final DateTime lastDay;
-  final DateTime selectedDay;
-  final OnDaySelected onDaySelected;
 
   const Calendar({
     super.key,
-    required this.focusedDay,
     required this.firstDay,
     required this.lastDay,
-    required this.selectedDay,
-    required this.onDaySelected,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
-
     return TableCalendar(
       locale: CALENDAR_LOCALE,
-      focusedDay: focusedDay,
+      focusedDay: context.read<CalendarProvider>().focusedDay,
       firstDay: firstDay,
       lastDay: lastDay,
       headerStyle: HeaderStyle(
@@ -48,13 +45,29 @@ class Calendar extends StatelessWidget {
       calendarBuilders: const CalendarBuilders(
         selectedBuilder: _selectedBuilder,
         defaultBuilder: _defaultBuilder,
+        markerBuilder: _markerBuilder,
       ),
-      onDaySelected: onDaySelected,
-      selectedDayPredicate: selectedDayPredicate,
+      eventLoader: (day) =>
+          context.read<CalendarProvider>().scheduleMap[day] ?? [],
+      onDaySelected: (selectedDay, _) =>
+          context.read<CalendarProvider>().updateSelectedDay(selectedDay),
+      onPageChanged: (date) {
+        context.read<CalendarProvider>().updateFocusedDay(date);
+        context.read<CalendarProvider>().updateEvents();
+      },
+      selectedDayPredicate: (DateTime date) => selectedDayPredicate(
+        context: context,
+        date: date,
+      ),
     );
   }
 
-  bool selectedDayPredicate(DateTime date) {
+  bool selectedDayPredicate({
+    required BuildContext context,
+    required DateTime date,
+  }) {
+    final selectedDay = context.read<CalendarProvider>().selectedDay;
+
     return date.year == selectedDay.year &&
         date.month == selectedDay.month &&
         date.day == selectedDay.day;
