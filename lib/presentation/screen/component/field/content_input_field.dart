@@ -1,14 +1,17 @@
-import 'package:calendar_scheduler/presentation/screen/component/schedule_register_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
-import '../../const/colors.dart';
-import '../../const/strings.dart';
-import '../../const/styles.dart';
+import '../../../const/colors.dart';
+import '../../../const/strings.dart';
+import '../../../const/styles.dart';
 
 class ContentInputField extends StatefulWidget {
   final String initialContent;
   final ContentSetter contentSetter;
-  ContentInputField({super.key, required this.contentSetter, required this.initialContent});
+  const ContentInputField({
+    super.key,
+    required this.contentSetter,
+    required this.initialContent,
+  });
 
   @override
   State<ContentInputField> createState() => _ContentInputFieldState();
@@ -67,3 +70,5 @@ class _ContentInputFieldState extends State<ContentInputField> {
     super.dispose();
   }
 }
+
+typedef ContentSetter = void Function(String content);

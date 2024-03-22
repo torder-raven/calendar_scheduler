@@ -6,10 +6,12 @@ import 'package:calendar_scheduler/presentation/screen/component/schedule_list_v
 import 'package:calendar_scheduler/presentation/screen/filter_screen/schedule_filter_screen.dart';
 import 'package:calendar_scheduler/presentation/screen/temp_delete/temp_delete_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../const/colors.dart';
 import '../../const/strings.dart';
-import '../component/schedule_register_bottom_sheet.dart';
+import '../component/schedule_bottom_sheet/create_schedule_bottom_sheet.dart';
+import '../provider/schedule_provider.dart';
 import '../component/search_view.dart';
 
 part 'home_app_bar.dart';
@@ -46,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: renderFloatingActionButton(),
       body: SafeArea(
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           children: [
             Calendar(
               focusedDay: _selectedDay,
@@ -73,16 +76,51 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  FloatingActionButton renderFloatingActionButton() {
+    return FloatingActionButton(
+      onPressed: () {
+        showModalBottomSheet(
+          backgroundColor: Colors.white,
+          context: context,
+          isScrollControlled: true,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
+          ),
+          builder: (_) {
+            return ChangeNotifierProvider (
+              create: (BuildContext context) => ScheduleProvider(),
+              child: CreateScheduleBottomSheet(
+                selectedDate: _selectedDay,
+              ),
+            );
+          },
+        );
+      },
+      backgroundColor: ColorResource.PRIMARY_COLOR,
+      child: Icon(Icons.add),
+    );
+  }
+
   void goToFilterScheduleScreen() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return const ScheduleFilterScreen();
-    }));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return const ScheduleFilterScreen();
+        },
+      ),
+    );
   }
 
   void goToTempDeleteScreen() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return const TempDeleteScreen();
-    }));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return const TempDeleteScreen();
+        },
+      ),
+    );
   }
 
   void showSearchDelegate() {
