@@ -28,4 +28,5 @@ class Strings {
   static const REPEAT_SCHEDULE_ON_OTHER_DATE = "다른 날 또 하기";
   static const CHANGE_SCHEDULE_DATE = "날짜 바꾸기";
   static const CLOSE = "닫기";
+  static const CONFIRM = "확인";
 }

@@ -1,10 +1,13 @@
 import 'package:calendar_scheduler/di/locator.dart';
 import 'package:calendar_scheduler/domain/usecase/get_all_schedule.dart';
-import 'package:calendar_scheduler/presentation/screen/component/schedule_edit_bottom_sheet.dart';
+import 'package:calendar_scheduler/presentation/screen/component/schedule_bottom_sheet/edit_schedule_bottom_sheet.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_item_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../domain/entity/schedule.dart';
 import '../../const/strings.dart';
+import '../provider/schedule_provider.dart';
+import 'date_control_dialog.dart';
 import 'default_component.dart';
 
 class ScheduleListView extends StatelessWidget {
@@ -48,7 +51,7 @@ class ScheduleListView extends StatelessWidget {
                   showEditBottomSheet(context, list[index]);
                 },
                 onLongPress: () {
-                  DialogUtil.showDateControlDialog(context);
+                  DateControlDialog().showDateControlDialog(context, list[index]);
                 },
                 child: TempDeleteItem(schedule: list[index]),
               ),
@@ -72,7 +75,12 @@ void showEditBottomSheet(BuildContext context, Schedule schedule) {
       borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
     ),
     builder: (_) {
-      return ScheduleEditBottomSheet(prevSchedule: schedule,);
+      return ChangeNotifierProvider(
+        create: (BuildContext context) => ScheduleProvider(),
+        child: EditScheduleBottomSheet(
+          prevSchedule: schedule,
+        ),
+      );
     },
   );
 }
