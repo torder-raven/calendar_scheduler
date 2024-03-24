@@ -34,11 +34,11 @@ class _DateControlDialogWidget extends StatelessWidget {
           children: [
             renderDateControlActionButton(
               context,
-              Strings.REPEAT_SCHEDULE_ON_OTHER_DATE,
+              ControlType.REPEAT_SCHEDULE_ON_OTHER_DATE,
             ),
             renderDateControlActionButton(
               context,
-              Strings.CHANGE_SCHEDULE_DATE,
+              ControlType.CHANGE_SCHEDULE_DATE,
             ),
             renderCloseActionButton(context)
           ],
@@ -47,15 +47,14 @@ class _DateControlDialogWidget extends StatelessWidget {
     );
   }
 
-  Widget renderDateControlActionButton(
-      BuildContext context, String controlText) {
+  Widget renderDateControlActionButton(BuildContext context, ControlType type) {
     return ElevatedButton(
       onPressed: () {
-        showScheduleDatePicker(context, controlText, schedule);
+        showScheduleDatePicker(context, type, schedule);
       },
       style: Styles.dialogButtonStyle,
       child: Text(
-        controlText,
+        type.displayName,
         style: const TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.w700,
@@ -82,31 +81,30 @@ class _DateControlDialogWidget extends StatelessWidget {
   }
 
   void showScheduleDatePicker(
-      BuildContext context, controlText, Schedule schedule) {
+      BuildContext context, ControlType type, Schedule schedule) {
     showDialog(
       context: context,
       builder: (context) => ChangeNotifierProvider(
         create: (BuildContext context) => ScheduleProvider(),
-        child: _ScheduleDatePickerWidget(
-            schedule: schedule, controlText: controlText),
+        child: _ScheduleDatePickerWidget(schedule: schedule, type: type),
       ),
     );
   }
 }
 
 class _ScheduleDatePickerWidget extends StatelessWidget {
+  late DateTime selectedDateTime;
   final Schedule schedule;
-  final String controlText;
+  final ControlType type;
 
-  const _ScheduleDatePickerWidget({
+  _ScheduleDatePickerWidget({
     required this.schedule,
-    required this.controlText,
+    required this.type,
   });
 
   @override
   Widget build(BuildContext context) {
-    DateTime selectedDateTime = schedule.date;
-
+    selectedDateTime = schedule.date;
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -123,7 +121,7 @@ class _ScheduleDatePickerWidget extends StatelessWidget {
                     topRight: Radius.circular(10),
                   ),
                 ),
-                height: 200.0,
+                height: 210,
                 child: CupertinoDatePicker(
                   initialDateTime: schedule.date,
                   dateOrder: DatePickerDateOrder.ymd,
@@ -145,18 +143,11 @@ class _ScheduleDatePickerWidget extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Expanded(
-                    flex: 1,
-                    child: renderCancelButton(context),
-                  ),
+                  renderCancelButton(context),
                   const SizedBox(
                     width: 8,
                   ),
-                  Expanded(
-                    flex: 2,
-                    child: renderConfirmButton(
-                        context, selectedDateTime, schedule),
-                  ),
+                  renderConfirmButton(context, type, schedule)
                 ],
               ),
             ),
@@ -166,39 +157,45 @@ class _ScheduleDatePickerWidget extends StatelessWidget {
     );
   }
 
-  Widget renderCancelButton(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        removeStack(context);
-      },
-      style: Styles.cancelButtonStyle,
-      child: const Text(
-        Strings.CANCEL_TEXT,
-        style: TextStyle(
-          color: Colors.black,
+  Widget renderCancelButton(context) {
+    return Expanded(
+      flex: 1,
+      child: ElevatedButton(
+        onPressed: () {
+          dismissAllDialogs(context);
+        },
+        style: Styles.cancelButtonStyle,
+        child: const Text(
+          Strings.CANCEL_TEXT,
+          style: TextStyle(
+            color: Colors.black,
+          ),
         ),
       ),
     );
   }
 
-  Widget renderConfirmButton(context, selectedDateTime, schedule) {
-    return ElevatedButton(
-      onPressed: () async {
-        updateSchedule(context, controlText, selectedDateTime, schedule);
-        removeStack(context);
-      },
-      style: Styles.confirmButtonStyle,
-      child: const Text(
-        Strings.CONFIRM,
-        style: TextStyle(
-          color: Colors.white,
+  Widget renderConfirmButton(context, type, schedule) {
+    return Expanded(
+      flex: 2,
+      child: ElevatedButton(
+        onPressed: () async {
+          updateSchedule(context, type, schedule);
+          dismissAllDialogs(context);
+        },
+        style: Styles.confirmButtonStyle,
+        child: const Text(
+          Strings.CONFIRM,
+          style: TextStyle(
+            color: Colors.white,
+          ),
         ),
       ),
     );
   }
 
-  void updateSchedule(context, controlText, selectedDateTime, schedule) {
-    if (controlText == Strings.REPEAT_SCHEDULE_ON_OTHER_DATE) {
+  void updateSchedule(context, type, schedule) {
+    if (type == ControlType.REPEAT_SCHEDULE_ON_OTHER_DATE) {
       Provider.of<ScheduleProvider>(context, listen: false)
           .repeatSchedule(selectedDateTime, schedule);
     } else {
@@ -207,8 +204,15 @@ class _ScheduleDatePickerWidget extends StatelessWidget {
     }
   }
 
-  void removeStack(context) {
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
+  void dismissAllDialogs(context) {
+    Navigator.of(context).popUntil((route) => route.isFirst);
   }
+}
+
+enum ControlType {
+  REPEAT_SCHEDULE_ON_OTHER_DATE("다른 날 또 하기"),
+  CHANGE_SCHEDULE_DATE("날짜 바꾸기");
+
+  const ControlType(this.displayName);
+  final String displayName;
 }

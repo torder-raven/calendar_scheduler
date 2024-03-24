@@ -49,4 +49,5 @@ class Styles {
       borderRadius: BorderRadius.circular(6.0),
     ),
   );
+
 }
