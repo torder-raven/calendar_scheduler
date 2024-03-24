@@ -1,17 +1,16 @@
 import 'package:calendar_scheduler/presentation/extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import '../../../di/locator.dart';
+import 'package:provider/provider.dart';
 import '../../../domain/entity/schedule.dart';
-import '../../../domain/usecase/register_schedule.dart';
-import '../../../domain/usecase/update_schedule.dart';
 import '../../const/colors.dart';
 import '../../const/strings.dart';
 import '../../const/styles.dart';
+import '../provider/schedule_provider.dart';
 import 'default_component.dart';
 
 class DateControlDialog {
-   void showDateControlDialog(BuildContext context, Schedule schedule) {
+  void showDateControlDialog(BuildContext context, Schedule schedule) {
     showDialog(
       context: context,
       builder: (context) => _DateControlDialogWidget(schedule: schedule),
@@ -22,7 +21,7 @@ class DateControlDialog {
 class _DateControlDialogWidget extends StatelessWidget {
   final Schedule schedule;
 
-  const _DateControlDialogWidget({Key? key, required this.schedule}) : super(key: key);
+  const _DateControlDialogWidget({super.key, required this.schedule});
 
   @override
   Widget build(BuildContext context) {
@@ -33,32 +32,9 @@ class _DateControlDialogWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                showScheduleDatePicker(context, schedule, true);
-              },
-              style: Styles.dialogButtonStyle,
-              child: const Text(
-                Strings.REPEAT_SCHEDULE_ON_OTHER_DATE,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                showScheduleDatePicker(context, schedule, false);
-              },
-              style: Styles.dialogButtonStyle,
-              child: const Text(
-                Strings.CHANGE_SCHEDULE_DATE,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
+            dateControlActionButton(
+                context, Strings.REPEAT_SCHEDULE_ON_OTHER_DATE),
+            dateControlActionButton(context, Strings.CHANGE_SCHEDULE_DATE),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
@@ -79,22 +55,43 @@ class _DateControlDialogWidget extends StatelessWidget {
     );
   }
 
-  void showScheduleDatePicker(BuildContext context, Schedule schedule, bool repeatFlag) {
+  Widget dateControlActionButton(BuildContext context, String controlText) {
+    return ElevatedButton(
+      onPressed: () {
+        showScheduleDatePicker(context, controlText, schedule);
+      },
+      style: Styles.dialogButtonStyle,
+      child: Text(
+        controlText,
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
+  }
+
+  void showScheduleDatePicker(
+      BuildContext context, controlText, Schedule schedule) {
     showDialog(
       context: context,
-      builder: (context) => _ScheduleDatePickerWidget(schedule: schedule, repeatFlag: repeatFlag),
+      builder: (context) => ChangeNotifierProvider(
+        create: (BuildContext context) => ScheduleProvider(),
+        child: _ScheduleDatePickerWidget(
+            schedule: schedule, controlText: controlText),
+      ),
     );
   }
 }
 
 class _ScheduleDatePickerWidget extends StatelessWidget {
   final Schedule schedule;
-  final bool repeatFlag;
+  final String controlText;
 
   const _ScheduleDatePickerWidget({
     Key? key,
     required this.schedule,
-    required this.repeatFlag,
+    required this.controlText,
   }) : super(key: key);
 
   @override
@@ -143,14 +140,14 @@ class _ScheduleDatePickerWidget extends StatelessWidget {
                     flex: 1,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pop();
+                        removeStack(context);
                       },
                       style: ElevatedButton.styleFrom(
                         elevation: 0,
                         backgroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          side: const BorderSide(color: Colors.grey, width: 1.0),
+                          side:
+                              const BorderSide(color: Colors.grey, width: 1.0),
                           borderRadius: BorderRadius.circular(6.0),
                         ),
                       ),
@@ -169,20 +166,11 @@ class _ScheduleDatePickerWidget extends StatelessWidget {
                     flex: 2,
                     child: ElevatedButton(
                       onPressed: () async {
-                        if (repeatFlag)
-                          await repeatScheduleOnOtherDate(schedule, selectedDateTime);
-                        else
-                          await changeScheduleDate(schedule, selectedDateTime);
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pop();
+                        updateSchedule(
+                            context, controlText, selectedDateTime, schedule);
+                        removeStack(context);
                       },
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        backgroundColor: ColorResource.BUTTON_NORMAL_COLOR,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6.0),
-                        ),
-                      ),
+                      style: Styles.normalButtonStyle,
                       child: const Text(
                         Strings.CONFIRM,
                         style: TextStyle(
@@ -199,32 +187,19 @@ class _ScheduleDatePickerWidget extends StatelessWidget {
       ),
     );
   }
+
+  void updateSchedule(context, controlText, selectedDateTime, schedule) {
+    if (controlText == Strings.REPEAT_SCHEDULE_ON_OTHER_DATE) {
+      Provider.of<ScheduleProvider>(context, listen: false)
+          .repeatSchedule(selectedDateTime, schedule);
+    } else {
+      Provider.of<ScheduleProvider>(context, listen: false)
+          .changeScheduleDate(selectedDateTime, schedule);
+    }
+  }
+
+  void removeStack(context) {
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
+  }
 }
-
-
-Future<void> repeatScheduleOnOtherDate(
-    Schedule schedule, DateTime dateTime) async {
-  final registerSchedule = serviceLocator<RegisterScheduleUsecase>();
-  final prevSchedule = Schedule(
-    date: dateTime,
-    startTime: schedule.startTime,
-    endTime: schedule.endTime,
-    colorCode: schedule.colorCode,
-    content: schedule.content,
-  );
-  await registerSchedule.invoke(schedule: prevSchedule);
-}
-
-Future<void> changeScheduleDate(Schedule schedule, DateTime dateTime) async {
-  final updateSchedule = serviceLocator<UpdateScheduleUsecase>();
-  final prevSchedule = Schedule(
-    date: dateTime,
-    startTime: schedule.startTime,
-    endTime: schedule.endTime,
-    colorCode: schedule.colorCode,
-    content: schedule.content,
-    id: schedule.id,
-  );
-  await updateSchedule.invoke(schedule: prevSchedule);
-}
-
