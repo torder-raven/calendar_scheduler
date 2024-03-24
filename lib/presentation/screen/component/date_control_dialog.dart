@@ -133,7 +133,11 @@ class _ScheduleDatePickerWidget extends StatelessWidget {
               ),
             ),
             Container(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.only(
+                left: 16.0,
+                right: 16.0,
+                bottom: 16.0,
+              ),
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
