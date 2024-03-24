@@ -39,4 +39,14 @@ class Styles {
       borderRadius: BorderRadius.circular(6.0),
     ),
   );
+
+  static final ButtonStyle confirmButtonStyle = dialogButtonStyle;
+  static final ButtonStyle cancelButtonStyle = ElevatedButton.styleFrom(
+    elevation: 0,
+    backgroundColor: Colors.white,
+    shape: RoundedRectangleBorder(
+      side: const BorderSide(color: Colors.grey, width: 1.0),
+      borderRadius: BorderRadius.circular(6.0),
+    ),
+  );
 }

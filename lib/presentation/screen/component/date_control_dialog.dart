@@ -21,7 +21,7 @@ class DateControlDialog {
 class _DateControlDialogWidget extends StatelessWidget {
   final Schedule schedule;
 
-  const _DateControlDialogWidget({super.key, required this.schedule});
+  const _DateControlDialogWidget({required this.schedule});
 
   @override
   Widget build(BuildContext context) {
@@ -32,30 +32,23 @@ class _DateControlDialogWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            dateControlActionButton(
-                context, Strings.REPEAT_SCHEDULE_ON_OTHER_DATE),
-            dateControlActionButton(context, Strings.CHANGE_SCHEDULE_DATE),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: TextButton.styleFrom(
-                splashFactory: NoSplash.splashFactory,
-              ),
-              child: const Text(
-                Strings.CLOSE,
-                style: TextStyle(
-                  color: ColorResource.BUTTON_NORMAL_COLOR,
-                ),
-              ),
-            )
+            renderDateControlActionButton(
+              context,
+              Strings.REPEAT_SCHEDULE_ON_OTHER_DATE,
+            ),
+            renderDateControlActionButton(
+              context,
+              Strings.CHANGE_SCHEDULE_DATE,
+            ),
+            renderCloseActionButton(context)
           ],
         ),
       ),
     );
   }
 
-  Widget dateControlActionButton(BuildContext context, String controlText) {
+  Widget renderDateControlActionButton(
+      BuildContext context, String controlText) {
     return ElevatedButton(
       onPressed: () {
         showScheduleDatePicker(context, controlText, schedule);
@@ -66,6 +59,23 @@ class _DateControlDialogWidget extends StatelessWidget {
         style: const TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
+  }
+
+  Widget renderCloseActionButton(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      style: TextButton.styleFrom(
+        splashFactory: NoSplash.splashFactory,
+      ),
+      child: const Text(
+        Strings.CLOSE,
+        style: TextStyle(
+          color: ColorResource.BUTTON_NORMAL_COLOR,
         ),
       ),
     );
@@ -89,10 +99,9 @@ class _ScheduleDatePickerWidget extends StatelessWidget {
   final String controlText;
 
   const _ScheduleDatePickerWidget({
-    Key? key,
     required this.schedule,
     required this.controlText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -138,51 +147,51 @@ class _ScheduleDatePickerWidget extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        removeStack(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          side:
-                              const BorderSide(color: Colors.grey, width: 1.0),
-                          borderRadius: BorderRadius.circular(6.0),
-                        ),
-                      ),
-                      child: const Text(
-                        Strings.CANCEL_TEXT,
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
+                    child: renderCancelButton(context),
                   ),
                   const SizedBox(
                     width: 8,
                   ),
                   Expanded(
                     flex: 2,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        updateSchedule(
-                            context, controlText, selectedDateTime, schedule);
-                        removeStack(context);
-                      },
-                      style: Styles.normalButtonStyle,
-                      child: const Text(
-                        Strings.CONFIRM,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                    child: renderConfirmButton(
+                        context, selectedDateTime, schedule),
                   ),
                 ],
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget renderCancelButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        removeStack(context);
+      },
+      style: Styles.cancelButtonStyle,
+      child: const Text(
+        Strings.CANCEL_TEXT,
+        style: TextStyle(
+          color: Colors.black,
+        ),
+      ),
+    );
+  }
+
+  Widget renderConfirmButton(context, selectedDateTime, schedule) {
+    return ElevatedButton(
+      onPressed: () async {
+        updateSchedule(context, controlText, selectedDateTime, schedule);
+        removeStack(context);
+      },
+      style: Styles.confirmButtonStyle,
+      child: const Text(
+        Strings.CONFIRM,
+        style: TextStyle(
+          color: Colors.white,
         ),
       ),
     );
