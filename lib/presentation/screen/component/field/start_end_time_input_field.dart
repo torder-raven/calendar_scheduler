@@ -134,6 +134,7 @@ class _StartEndTimeInputFieldState extends State<_StartEndTimeInputField> {
                     decoration: Styles.dialogTopRadiusBoxStyle,
                     height: 200.0,
                     child: CupertinoDatePicker(
+                      initialDateTime: currentSelectedDateTime,
                       mode: CupertinoDatePickerMode.time,
                       onDateTimeChanged: (DateTime date) {
                         currentSelectedDateTime = date;
@@ -208,9 +209,6 @@ class _StartEndTimeInputFieldState extends State<_StartEndTimeInputField> {
   void onSelectTimeEvent(DateTime date) {
     setState(() {
       selectedTime = (date.hour * 60) + date.minute;
-      if (selectedTime == 0) {
-        selectedTime = (DateTime.now().hour * 60) + (DateTime.now().minute);
-      }
       widget.timeSetter(selectedTime);
       _textEditingController.text = selectedTime.intTimeToTimeString();
     });
