@@ -13,66 +13,23 @@ class _DatePickerBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     selectedDateTime = schedule.date;
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                decoration: Styles.dialogTopRadiusBoxStyle,
-                height: 200,
-                child: CupertinoDatePicker(
-                  initialDateTime: schedule.date,
-                  dateOrder: DatePickerDateOrder.ymd,
-                  mode: CupertinoDatePickerMode.date,
-                  onDateTimeChanged: (DateTime value) {
-                    selectedDateTime = value.toUtcDate();
-                  },
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(
-                left: 10.0,
-                right: 10.0,
-                bottom: 10.0,
-              ),
-              decoration: Styles.dialogBottomRadiusBoxStyle,
-              child: Row(
-                children: [
-                  renderCancelButton(context),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  renderConfirmButton(context)
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+    return CustomDatePicker(
+      dialogContent: datePickerDialogContent((DateTime value) {
+        selectedDateTime = value.toUtcDate();
+      }, selectedDateTime!),
+      cancelButton: renderCancelButton(context),
+      confirmButton: renderConfirmButton(context),
     );
   }
 
-  void loadScheduleEventByControlType(context) {
-    if (type == ControlType.REPEAT_SCHEDULE_ON_OTHER_DATE) {
-      repeatSchedule(context);
-    } else {
-      changeScheduleDate(context);
-    }
-  }
-
-  void repeatSchedule(context) {
-    Provider.of<ScheduleProvider>(context, listen: false)
-        .repeatSchedule(selectedDateTime, schedule);
-  }
-
-  void changeScheduleDate(context) {
-    Provider.of<ScheduleProvider>(context, listen: false)
-        .changeScheduleDate(selectedDateTime, schedule);
+  Widget datePickerDialogContent(
+      Function(DateTime) onDateTimeChanged, DateTime selectedDateTime) {
+    return CupertinoDatePicker(
+      initialDateTime: schedule.date,
+      dateOrder: DatePickerDateOrder.ymd,
+      mode: CupertinoDatePickerMode.date,
+      onDateTimeChanged: onDateTimeChanged,
+    );
   }
 
   Widget renderCancelButton(context) {
@@ -110,6 +67,24 @@ class _DatePickerBuilder extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void loadScheduleEventByControlType(context) {
+    if (type == ControlType.REPEAT_SCHEDULE_ON_OTHER_DATE) {
+      repeatSchedule(context);
+    } else {
+      changeScheduleDate(context);
+    }
+  }
+
+  void repeatSchedule(context) {
+    Provider.of<ScheduleProvider>(context, listen: false)
+        .repeatSchedule(selectedDateTime, schedule);
+  }
+
+  void changeScheduleDate(context) {
+    Provider.of<ScheduleProvider>(context, listen: false)
+        .changeScheduleDate(selectedDateTime, schedule);
   }
 
   void dismissAllDialogs(context) {
