@@ -26,6 +26,7 @@ class _DateControlDialogWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      surfaceTintColor: Colors.white,
       child: Container(
         padding: DefaultComponent.defaultPaddingSize,
         child: Column(
