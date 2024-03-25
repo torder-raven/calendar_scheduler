@@ -48,13 +48,13 @@ class LocalDataBase extends _$LocalDataBase {
       ((select(scheduleDao))..where((tbl) => tbl.content.contains(keyword)))
           .get();
 
-  Future<List<ScheduleDaoData>> searchScheduleBetween({
+  Stream<List<ScheduleDaoData>> searchScheduleBetween({
     required DateTime startDay,
     required DateTime endDay,
   }) =>
       ((select(scheduleDao))
         ..where((tbl) => tbl.date.isBetweenValues(startDay, endDay)))
-          .get();
+          .watch();
 
   Future<List<ScheduleDaoData>> getAllSchedulesByColorCode({
     required int colorCode,

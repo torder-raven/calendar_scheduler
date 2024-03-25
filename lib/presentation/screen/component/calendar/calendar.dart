@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import '../../../../domain/entity/schedule.dart';
+
 part 'default_builder.dart';
 
 part 'default_day.dart';
@@ -29,36 +31,40 @@ class Calendar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
-    return TableCalendar(
-      locale: CALENDAR_LOCALE,
-      focusedDay: context.read<CalendarProvider>().focusedDay,
-      firstDay: firstDay,
-      lastDay: lastDay,
-      headerStyle: HeaderStyle(
-        titleCentered: true,
-        formatButtonVisible: false,
-        titleTextStyle: textTheme.titleMedium!,
-      ),
-      calendarStyle: const CalendarStyle(
-        isTodayHighlighted: false,
-      ),
-      calendarBuilders: const CalendarBuilders(
-        selectedBuilder: _selectedBuilder,
-        defaultBuilder: _defaultBuilder,
-        markerBuilder: _markerBuilder,
-      ),
-      eventLoader: (day) =>
-          context.read<CalendarProvider>().scheduleMap[day] ?? [],
-      onDaySelected: (selectedDay, _) =>
-          context.read<CalendarProvider>().updateSelectedDay(selectedDay),
-      onPageChanged: (date) {
-        context.read<CalendarProvider>().updateFocusedDay(date);
-        context.read<CalendarProvider>().updateEvents();
-      },
-      selectedDayPredicate: (DateTime date) => selectedDayPredicate(
-        context: context,
-        date: date,
-      ),
+    return StreamBuilder<Map<DateTime, List<Schedule>>>(
+      stream: context.read<CalendarProvider>().scheduleStream(),
+      builder: (context, snapshot) {
+        final scheduleMap = snapshot.data;
+        return TableCalendar(
+          locale: CALENDAR_LOCALE,
+          focusedDay: context.read<CalendarProvider>().focusedDay,
+          firstDay: firstDay,
+          lastDay: lastDay,
+          headerStyle: HeaderStyle(
+            titleCentered: true,
+            formatButtonVisible: false,
+            titleTextStyle: textTheme.titleMedium!,
+          ),
+          calendarStyle: const CalendarStyle(
+            isTodayHighlighted: false,
+          ),
+          calendarBuilders: const CalendarBuilders(
+            selectedBuilder: _selectedBuilder,
+            defaultBuilder: _defaultBuilder,
+            markerBuilder: _markerBuilder,
+          ),
+          eventLoader: (day) => scheduleMap?[day] ?? [],
+          onDaySelected: (selectedDay, _) =>
+              context.read<CalendarProvider>().updateSelectedDay(selectedDay),
+          onPageChanged: (date) {
+            context.read<CalendarProvider>().updateFocusedDay(date);
+          },
+          selectedDayPredicate: (DateTime date) => selectedDayPredicate(
+            context: context,
+            date: date,
+          ),
+        );
+      }
     );
   }
 

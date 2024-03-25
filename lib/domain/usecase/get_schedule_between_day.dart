@@ -7,11 +7,11 @@ class GetScheduleBetweenDayUsecase {
   GetScheduleBetweenDayUsecase({required ScheduleRepository repository})
       : _repository = repository;
 
-  Future<Map<DateTime, List<Schedule>>> invoke({
+  Stream<Map<DateTime, List<Schedule>>> invoke({
     required DateTime startDay,
     required DateTime endDay,
   }) =>
-      _repository.getSchedule(
+      _repository.getScheduleBetweenDay(
         start: startDay,
         end: endDay,
       );

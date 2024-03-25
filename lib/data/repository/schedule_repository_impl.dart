@@ -98,13 +98,13 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
   }
 
   @override
-  Future<Map<DateTime, List<Schedule>>> getSchedule({
+  Stream<Map<DateTime, List<Schedule>>> getScheduleBetweenDay({
     required DateTime start,
     required DateTime end,
   }) {
     return _db
         .searchScheduleBetween(startDay: start, endDay: end)
-        .then((scheduleList) {
+        .map((scheduleList) {
       Map<DateTime, List<Schedule>> map = {};
       for (var scheduleDaoData in scheduleList) {
         final date = scheduleDaoData.date.toUtc();
