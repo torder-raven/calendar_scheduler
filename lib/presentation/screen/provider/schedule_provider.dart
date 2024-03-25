@@ -82,4 +82,30 @@ class ScheduleProvider with ChangeNotifier {
     );
     await updateSchedule.invoke(schedule: schedule);
   }
+
+  Future<void> repeatSchedule(selectedDateTime, schedule) async {
+    final registerSchedule = serviceLocator<RegisterScheduleUsecase>();
+    final prevSchedule = Schedule(
+      date: selectedDateTime,
+      startTime: schedule.startTime,
+      endTime: schedule.endTime,
+      colorCode: schedule.colorCode,
+      content: schedule.content,
+    );
+    await registerSchedule.invoke(schedule: prevSchedule);
+  }
+
+  Future<void> changeScheduleDate(selectedDateTime, schedule) async {
+    final updateSchedule = serviceLocator<UpdateScheduleUsecase>();
+    final prevSchedule = Schedule(
+      date: selectedDateTime,
+      startTime: schedule.startTime,
+      endTime: schedule.endTime,
+      colorCode: schedule.colorCode,
+      content: schedule.content,
+      id: schedule.id,
+    );
+    await updateSchedule.invoke(schedule: prevSchedule);
+  }
+
 }

@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../domain/entity/schedule.dart';
 import '../../const/strings.dart';
 import '../provider/schedule_provider.dart';
+import 'date_control_dialog/date_control_dialog.dart';
 import 'default_component.dart';
 
 class ScheduleListView extends StatelessWidget {
@@ -49,6 +50,9 @@ class ScheduleListView extends StatelessWidget {
                 onTap: () {
                   showEditBottomSheet(context, list[index]);
                 },
+                onLongPress: () {
+                  DateControlDialog.showDateControlDialog(context, list[index]);
+                },
                 child: TempDeleteItem(schedule: list[index]),
               ),
             );
@@ -62,22 +66,21 @@ class ScheduleListView extends StatelessWidget {
   void dispose() {}
 }
 
-  void showEditBottomSheet(BuildContext context, Schedule schedule) {
-    showModalBottomSheet(
-      backgroundColor: Colors.white,
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
-      ),
-      builder: (_) {
-        return ChangeNotifierProvider(
-          create: (BuildContext context) => ScheduleProvider(),
-          child: EditScheduleBottomSheet(
-            prevSchedule: schedule,
-          ),
-        );
-      },
-    );
-  }
+void showEditBottomSheet(BuildContext context, Schedule schedule) {
+  showModalBottomSheet(
+    backgroundColor: Colors.white,
+    context: context,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
+    ),
+    builder: (_) {
+      return ChangeNotifierProvider(
+        create: (BuildContext context) => ScheduleProvider(),
+        child: EditScheduleBottomSheet(
+          prevSchedule: schedule,
+        ),
+      );
+    },
+  );
 }
