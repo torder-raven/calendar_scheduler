@@ -21,18 +21,8 @@ part 'home_floating_button.dart';
 final _FIRST_DAY = DateTime.utc(1900);
 final _LAST_DAY = DateTime.utc(3000);
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +32,9 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, value, child) {
           return Scaffold(
             appBar: _homeAppBar(
-              onFilterPressed: goToFilterScheduleScreen,
-              onDeletePressed: goToTempDeleteScreen,
-              onSearchPressed: showSearchDelegate,
+              onFilterPressed: () => goToFilterScheduleScreen(context: context),
+              onDeletePressed: () => goToTempDeleteScreen(context: context),
+              onSearchPressed: () => showSearchDelegate(context: context),
             ),
             floatingActionButton: _floatingActionButton(context: context),
             body: SafeArea(
@@ -68,12 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  void goToFilterScheduleScreen() {
+  void goToFilterScheduleScreen({required BuildContext context}) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -84,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void goToTempDeleteScreen() {
+  void goToTempDeleteScreen({required BuildContext context}) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -95,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void showSearchDelegate() {
+  void showSearchDelegate({required BuildContext context}) {
     showSearch(
       context: context,
       delegate: SearchView(),
