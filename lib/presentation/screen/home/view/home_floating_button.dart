@@ -6,7 +6,7 @@ FloatingActionButton _floatingActionButton({
   return FloatingActionButton(
     onPressed: () => _onClickFloatingActionButton(context: context),
     backgroundColor: ColorResource.PRIMARY_COLOR,
-    child: const Icon(Icons.add),
+    child: const Icon(Icons.edit, color: Colors.white,),
   );
 }
 
