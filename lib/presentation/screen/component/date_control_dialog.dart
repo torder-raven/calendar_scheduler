@@ -10,7 +10,7 @@ import '../provider/schedule_provider.dart';
 import 'default_component.dart';
 
 class DateControlDialog {
-  void showDateControlDialog(BuildContext context, Schedule schedule) {
+  static void showDateControlDialog(BuildContext context, Schedule schedule) {
     showDialog(
       context: context,
       builder: (context) => _DateControlDialogWidget(schedule: schedule),
