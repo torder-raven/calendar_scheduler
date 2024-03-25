@@ -134,6 +134,7 @@ class _StartEndTimeInputFieldState extends State<_StartEndTimeInputField> {
                     decoration: Styles.dialogTopRadiusBoxStyle,
                     height: 200.0,
                     child: CupertinoDatePicker(
+                      initialDateTime: currentSelectedDateTime,
                       mode: CupertinoDatePickerMode.time,
                       onDateTimeChanged: (DateTime date) {
                         currentSelectedDateTime = date;
