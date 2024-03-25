@@ -10,7 +10,8 @@ import '../../../const/styles.dart';
 import '../../provider/schedule_provider.dart';
 
 class StartEndTimeInputField extends StatelessWidget {
-  const StartEndTimeInputField({super.key});
+  final bool firstInitFlag;
+  const StartEndTimeInputField({super.key, required this.firstInitFlag});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,7 @@ class StartEndTimeInputField extends StatelessWidget {
       children: [
         Expanded(
           child: _StartEndTimeInputField(
+            flag: firstInitFlag,
             initialTime: context.watch<ScheduleProvider>().currentStartTime,
             selectedTimeType: Strings.LABEL_START_TIME,
             timeSetter: (int time) {
@@ -30,6 +32,7 @@ class StartEndTimeInputField extends StatelessWidget {
         ),
         Expanded(
           child: _StartEndTimeInputField(
+            flag: firstInitFlag,
             initialTime: context.watch<ScheduleProvider>().currentEndTime,
             selectedTimeType: Strings.LABEL_END_TIME,
             timeSetter: (int time) {
@@ -43,18 +46,21 @@ class StartEndTimeInputField extends StatelessWidget {
 }
 
 class _StartEndTimeInputField extends StatefulWidget {
+  final bool flag;
   final int initialTime;
   final String selectedTimeType;
   final TimeSetter timeSetter;
+
   const _StartEndTimeInputField({
-    super.key,
+    required this.flag,
     required this.selectedTimeType,
     required this.timeSetter,
     required this.initialTime,
   });
 
   @override
-  State<_StartEndTimeInputField> createState() => _StartEndTimeInputFieldState();
+  State<_StartEndTimeInputField> createState() =>
+      _StartEndTimeInputFieldState();
 }
 
 class _StartEndTimeInputFieldState extends State<_StartEndTimeInputField> {
@@ -63,7 +69,7 @@ class _StartEndTimeInputFieldState extends State<_StartEndTimeInputField> {
 
   @override
   void initState() {
-    if (widget.initialTime != 0) {
+    if (!widget.flag) {
       selectedTime = widget.initialTime;
       _textEditingController.text = selectedTime.intTimeToTimeString();
     }

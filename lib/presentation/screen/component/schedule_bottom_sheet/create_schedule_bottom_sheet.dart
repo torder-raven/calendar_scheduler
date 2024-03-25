@@ -60,7 +60,7 @@ class _CreateScheduleBottomSheetState extends State<CreateScheduleBottomSheet> {
               },
             ),
             const Spacer(),
-            const StartEndTimeInputField(),
+            const StartEndTimeInputField(firstInitFlag: true,),
             const Spacer(),
             ContentInputField(
               initialContent: context.watch<ScheduleProvider>().currentContent,

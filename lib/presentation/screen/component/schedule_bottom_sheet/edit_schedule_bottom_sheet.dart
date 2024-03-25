@@ -65,7 +65,7 @@ class _EditScheduleBottomSheetState extends State<EditScheduleBottomSheet> {
               },
             ),
             const Spacer(),
-            const StartEndTimeInputField(),
+            const StartEndTimeInputField(firstInitFlag: false,),
             const Spacer(),
             ContentInputField(
               initialContent: context.watch<ScheduleProvider>().currentContent,
