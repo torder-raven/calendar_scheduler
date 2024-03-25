@@ -96,6 +96,26 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
     return _db.searchSchedule(keyword: keyword).then((scheduleDaoData) =>
         scheduleDaoData.map((e) => e.toSchedule()).toList());
   }
+
+  @override
+  Stream<Map<DateTime, List<Schedule>>> getScheduleBetweenDay({
+    required DateTime start,
+    required DateTime end,
+  }) {
+    return _db
+        .searchScheduleBetween(startDay: start, endDay: end)
+        .map((scheduleList) {
+      Map<DateTime, List<Schedule>> map = {};
+      for (var scheduleDaoData in scheduleList) {
+        final date = scheduleDaoData.date.toUtc();
+        if (!map.containsKey(date)) {
+          map[date] = [];
+        }
+        map[date]?.add(scheduleDaoData.toSchedule());
+      }
+      return map;
+    });
+  }
 }
 
 extension _TemporaryDeletedScheduleDaoDataMapper

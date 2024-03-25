@@ -1,18 +1,12 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+part of 'home_screen.dart';
 
-import '../../const/strings.dart';
-import '../component/app_bar.dart';
-
-AppBar homeAppBar({
-  required BuildContext context,
+AppBar _homeAppBar({
   required VoidCallback onFilterPressed,
   required VoidCallback onDeletePressed,
   required VoidCallback onSearchPressed,
 }) {
-  return appBar(
-    context: context,
-    title: Strings.TITLE,
+  return AppBar(
+    title: const Text(Strings.TITLE),
     actions: [
       IconButton(
         icon: const Icon(Icons.search, color: Colors.white),
@@ -26,11 +20,11 @@ AppBar homeAppBar({
         ),
       ),
       IconButton(
-        onPressed: onDeletePressed,
         icon: const Icon(
           Icons.delete,
           color: Colors.white,
         ),
+        onPressed: onDeletePressed,
       ),
     ],
   );

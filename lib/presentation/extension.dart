@@ -25,4 +25,12 @@ extension DateTimeExtension on DateTime {
   DateTime toUtcDate() {
     return DateTime.utc(year, month, day);
   }
+
+  DateTime firstDayInMonth() {
+    return DateTime(year, month, 1);
+  }
+
+  DateTime lastDayInMonth() {
+    return DateTime(year, month + 1, 0);
+  }
 }

@@ -10,6 +10,7 @@ import 'package:calendar_scheduler/domain/usecase/update_schedule.dart';
 import 'package:get_it/get_it.dart';
 
 import '../data/datasource/drift_database.dart';
+import '../domain/usecase/get_schedule_between_day.dart';
 import '../domain/usecase/search_single_schedule.dart';
 
 final serviceLocator = GetIt.instance;
@@ -39,4 +40,6 @@ void initServiceLocator() {
       () => GetTemporaryDeleteScheduleUsecase(repository: _repository));
   serviceLocator.registerLazySingleton<SearchSingleScheduleUsecase>(
       () => SearchSingleScheduleUsecase(repository: _repository));
+  serviceLocator.registerLazySingleton<GetScheduleBetweenDayUsecase>(
+      () => GetScheduleBetweenDayUsecase(repository: _repository));
 }

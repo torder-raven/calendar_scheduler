@@ -4,8 +4,8 @@ import 'package:calendar_scheduler/data/datasource/entity/schedule_dao.dart';
 import 'package:calendar_scheduler/data/datasource/entity/temporary_deleted_schedule_dao.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 
 part 'drift_database.g.dart';
@@ -47,6 +47,14 @@ class LocalDataBase extends _$LocalDataBase {
   Future<List<ScheduleDaoData>> searchSchedule({required String keyword}) =>
       ((select(scheduleDao))..where((tbl) => tbl.content.contains(keyword)))
           .get();
+
+  Stream<List<ScheduleDaoData>> searchScheduleBetween({
+    required DateTime startDay,
+    required DateTime endDay,
+  }) =>
+      ((select(scheduleDao))
+        ..where((tbl) => tbl.date.isBetweenValues(startDay, endDay)))
+          .watch();
 
   Future<List<ScheduleDaoData>> getAllSchedulesByColorCode({
     required int colorCode,
