@@ -209,9 +209,6 @@ class _StartEndTimeInputFieldState extends State<_StartEndTimeInputField> {
   void onSelectTimeEvent(DateTime date) {
     setState(() {
       selectedTime = (date.hour * 60) + date.minute;
-      if (selectedTime == 0) {
-        selectedTime = (DateTime.now().hour * 60) + (DateTime.now().minute);
-      }
       widget.timeSetter(selectedTime);
       _textEditingController.text = selectedTime.intTimeToTimeString();
     });
