@@ -1,7 +1,7 @@
 part of 'date_control_dialog.dart';
 
 class _DatePickerBuilder extends StatelessWidget {
-  late DateTime selectedDateTime;
+  DateTime? selectedDateTime;
   final Schedule schedule;
   final ControlType type;
 
@@ -15,7 +15,7 @@ class _DatePickerBuilder extends StatelessWidget {
     selectedDateTime = schedule.date;
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -42,9 +42,9 @@ class _DatePickerBuilder extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.only(
-                left: 16.0,
-                right: 16.0,
-                bottom: 16.0,
+                left: 10.0,
+                right: 10.0,
+                bottom: 10.0,
               ),
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -70,7 +70,7 @@ class _DatePickerBuilder extends StatelessWidget {
   }
 
   void loadScheduleEventByControlType(context) {
-    if(type == ControlType.REPEAT_SCHEDULE_ON_OTHER_DATE) {
+    if (type == ControlType.REPEAT_SCHEDULE_ON_OTHER_DATE) {
       repeatSchedule(context);
     } else {
       changeScheduleDate(context);
