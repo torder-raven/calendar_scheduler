@@ -53,6 +53,10 @@ class ScheduleListView extends StatelessWidget {
                     onTap: () {
                       showEditBottomSheet(context, list[index]);
                     },
+                    onLongPress: () {
+                      DateControlDialog.showDateControlDialog(
+                          context, list[index]);
+                    },
                     child: TempDeleteItem(schedule: list[index]),
                   ),
                 );
