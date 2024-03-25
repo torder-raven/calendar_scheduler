@@ -28,19 +28,8 @@ class CalendarProvider with ChangeNotifier {
 
   Stream<Map<DateTime, List<Schedule>>> scheduleStream() {
     return serviceLocator<GetScheduleBetweenDayUsecase>().invoke(
-      startDay: DateTime(
-        _focusedDay.year,
-        _focusedDay.month,
-        1,
-      ),
-      endDay: DateTime(
-        _focusedDay.year,
-        _focusedDay.month + 1,
-        0,
-        23,
-        59,
-        59,
-      ),
+      startDay: _focusedDay.firstDayInMonth(),
+      endDay: _focusedDay.lastDayInMonth(),
     );
   }
 }
