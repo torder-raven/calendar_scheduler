@@ -3,13 +3,13 @@ import 'package:calendar_scheduler/presentation/screen/component/calendar.dart';
 import 'package:calendar_scheduler/presentation/screen/component/date_banner.dart';
 import 'package:calendar_scheduler/presentation/screen/component/default_component.dart';
 import 'package:calendar_scheduler/presentation/screen/component/schedule_list_view.dart';
-import 'package:calendar_scheduler/presentation/screen/filter_screen/schedule_filter_screen.dart';
 import 'package:calendar_scheduler/presentation/screen/temp_delete/temp_delete_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../const/colors.dart';
 import '../component/schedule_bottom_sheet/create_schedule_bottom_sheet.dart';
+import '../filter_screen/view/schedule_filter_screen.dart';
 import '../provider/schedule_provider.dart';
 import '../component/search_view.dart';
 import 'home_appbar.dart';
