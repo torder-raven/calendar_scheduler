@@ -46,15 +46,16 @@ class _StartEndTimeInputField extends StatefulWidget {
   final int initialTime;
   final String selectedTimeType;
   final TimeSetter timeSetter;
+
   const _StartEndTimeInputField({
-    super.key,
     required this.selectedTimeType,
     required this.timeSetter,
     required this.initialTime,
   });
 
   @override
-  State<_StartEndTimeInputField> createState() => _StartEndTimeInputFieldState();
+  State<_StartEndTimeInputField> createState() =>
+      _StartEndTimeInputFieldState();
 }
 
 class _StartEndTimeInputFieldState extends State<_StartEndTimeInputField> {
@@ -63,7 +64,7 @@ class _StartEndTimeInputFieldState extends State<_StartEndTimeInputField> {
 
   @override
   void initState() {
-    if (widget.initialTime != 0) {
+    if (context.read<ScheduleProvider>().currentContent.isNotEmpty) {
       selectedTime = widget.initialTime;
       _textEditingController.text = selectedTime.intTimeToTimeString();
     }
