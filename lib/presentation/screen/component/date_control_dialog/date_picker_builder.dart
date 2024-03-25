@@ -15,21 +15,15 @@ class _DatePickerBuilder extends StatelessWidget {
     selectedDateTime = schedule.date;
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Align(
               alignment: Alignment.center,
               child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  ),
-                ),
-                height: 210,
+                decoration: Styles.dialogTopRadiusBoxStyle,
+                height: 200,
                 child: CupertinoDatePicker(
                   initialDateTime: schedule.date,
                   dateOrder: DatePickerDateOrder.ymd,
@@ -46,13 +40,7 @@ class _DatePickerBuilder extends StatelessWidget {
                 right: 10.0,
                 bottom: 10.0,
               ),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
-                ),
-              ),
+              decoration: Styles.dialogBottomRadiusBoxStyle,
               child: Row(
                 children: [
                   renderCancelButton(context),
