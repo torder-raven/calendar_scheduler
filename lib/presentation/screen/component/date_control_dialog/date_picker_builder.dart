@@ -69,7 +69,7 @@ class _DatePickerBuilder extends StatelessWidget {
     );
   }
 
-  void setCallBackEventByControlType(context) {
+  void loadScheduleEventByControlType(context) {
     if(type == ControlType.REPEAT_SCHEDULE_ON_OTHER_DATE) {
       repeatSchedule(context);
     } else {
@@ -110,7 +110,7 @@ class _DatePickerBuilder extends StatelessWidget {
       flex: 2,
       child: ElevatedButton(
         onPressed: () async {
-          setCallBackEventByControlType(context);
+          loadScheduleEventByControlType(context);
           dismissAllDialogs(context);
         },
         style: Styles.confirmButtonStyle,
