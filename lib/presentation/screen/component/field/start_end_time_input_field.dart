@@ -10,8 +10,7 @@ import '../../../const/styles.dart';
 import '../../provider/schedule_provider.dart';
 
 class StartEndTimeInputField extends StatelessWidget {
-  final bool firstInitFlag;
-  const StartEndTimeInputField({super.key, required this.firstInitFlag});
+  const StartEndTimeInputField({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,6 @@ class StartEndTimeInputField extends StatelessWidget {
       children: [
         Expanded(
           child: _StartEndTimeInputField(
-            flag: firstInitFlag,
             initialTime: context.watch<ScheduleProvider>().currentStartTime,
             selectedTimeType: Strings.LABEL_START_TIME,
             timeSetter: (int time) {
@@ -32,7 +30,6 @@ class StartEndTimeInputField extends StatelessWidget {
         ),
         Expanded(
           child: _StartEndTimeInputField(
-            flag: firstInitFlag,
             initialTime: context.watch<ScheduleProvider>().currentEndTime,
             selectedTimeType: Strings.LABEL_END_TIME,
             timeSetter: (int time) {
@@ -46,13 +43,11 @@ class StartEndTimeInputField extends StatelessWidget {
 }
 
 class _StartEndTimeInputField extends StatefulWidget {
-  final bool flag;
   final int initialTime;
   final String selectedTimeType;
   final TimeSetter timeSetter;
 
   const _StartEndTimeInputField({
-    required this.flag,
     required this.selectedTimeType,
     required this.timeSetter,
     required this.initialTime,
@@ -69,7 +64,7 @@ class _StartEndTimeInputFieldState extends State<_StartEndTimeInputField> {
 
   @override
   void initState() {
-    if (!widget.flag) {
+    if (context.read<ScheduleProvider>().currentContent.isNotEmpty) {
       selectedTime = widget.initialTime;
       _textEditingController.text = selectedTime.intTimeToTimeString();
     }
